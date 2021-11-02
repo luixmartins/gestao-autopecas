@@ -1,11 +1,9 @@
 package MODEL;
 
-public class ClienteFisica extends Cliente {
-
+public class ClienteFisica {
     private String cpf;
     private String rg;
 
-    /* Métodos Getter e Setter */
     public String getCpf() {
         return cpf;
     }
@@ -21,6 +19,6 @@ public class ClienteFisica extends Cliente {
     public void setRg(String rg) {
         this.rg = rg;
     }
-
-
+    
+    
 }

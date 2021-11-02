@@ -1,11 +1,10 @@
 package MODEL;
 
-public class ClienteJuridica extends Cliente{
+public class ClienteJuridica{
 
     private String cnpj;
     private String inscricao_estadual;
 
-    /* Métodos Getter e Setter */
     public String getCnpj() {
         return cnpj;
     }
@@ -21,5 +20,4 @@ public class ClienteJuridica extends Cliente{
     public void setInscricao_estadual(String inscricao_estadual) {
         this.inscricao_estadual = inscricao_estadual;
     }
-
 }

@@ -1,38 +1,48 @@
 package MODEL;
 
-public abstract class Cliente {
+public class Cliente {
 
     /* Atributos do Cliente*/
     private int cod_cliente;
     private String nome_cliente;
     private int tipo_cliente;
-    /* Atributos classe Contato e Endereço*/
-    private ClienteEndereco cliEnd;
-    private ClienteContato cliCont;
+    /* Associando Cliente Fisica */
+    private ClienteFisica cliFisica;
+    /* Associando Cliente Juridica*/
+    private ClienteJuridica cliJuridica;
+    /* Associando Endereço */
+    private ClienteEndereco cliEndereco;
+    /* Associando Contato*/
+    private ClienteContato cliContato;
 
-    /* Constructor */
+    /* Construtores */
     public Cliente() {
-        this.cliEnd = new ClienteEndereco();
-        this.cliCont = new ClienteContato();
+        this.cliFisica = new ClienteFisica();
+        this.cliJuridica = new ClienteJuridica();
+        this.cliEndereco = new ClienteEndereco();
+        this.cliContato = new ClienteContato();
     }
 
     public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente) {
         this.cod_cliente = cod_cliente;
         this.nome_cliente = nome_cliente;
         this.tipo_cliente = tipo_cliente;
-        this.cliEnd = new ClienteEndereco();
-        this.cliCont = new ClienteContato();
+        this.cliFisica = new ClienteFisica();
+        this.cliJuridica = new ClienteJuridica();
+        this.cliEndereco = new ClienteEndereco();
+        this.cliContato = new ClienteContato();
     }
 
-    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteEndereco cliEnd, ClienteContato cliCont) {
+    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteFisica cliFisica, ClienteJuridica cliJuridica, ClienteEndereco cliEndereco, ClienteContato cliContato) {
         this.cod_cliente = cod_cliente;
         this.nome_cliente = nome_cliente;
         this.tipo_cliente = tipo_cliente;
-        this.cliEnd = cliEnd;
-        this.cliCont = cliCont;
+        this.cliFisica = cliFisica;
+        this.cliJuridica = cliJuridica;
+        this.cliEndereco = cliEndereco;
+        this.cliContato = cliContato;
     }
 
-    /* Métodos Getter e Setter */
     public int getCod_cliente() {
         return cod_cliente;
     }
@@ -57,21 +67,36 @@ public abstract class Cliente {
         this.tipo_cliente = tipo_cliente;
     }
 
-    public ClienteEndereco getCliEnd() {
-        return cliEnd;
+    public ClienteFisica getCliFisica() {
+        return cliFisica;
     }
 
-    public void setCliEnd(ClienteEndereco cliEnd) {
-        this.cliEnd = cliEnd;
+    public void setCliFisica(ClienteFisica cliFisica) {
+        this.cliFisica = cliFisica;
     }
 
-    public ClienteContato getCliCont() {
-        return cliCont;
+    public ClienteJuridica getCliJuridica() {
+        return cliJuridica;
     }
 
-    public void setCliCont(ClienteContato cliCont) {
-        this.cliCont = cliCont;
+    public void setCliJuridica(ClienteJuridica cliJuridica) {
+        this.cliJuridica = cliJuridica;
     }
 
-    
+    public ClienteEndereco getCliEndereco() {
+        return cliEndereco;
+    }
+
+    public void setCliEndereco(ClienteEndereco cliEndereco) {
+        this.cliEndereco = cliEndereco;
+    }
+
+    public ClienteContato getCliContato() {
+        return cliContato;
+    }
+
+    public void setCliContato(ClienteContato cliContato) {
+        this.cliContato = cliContato;
+    }
+
 }

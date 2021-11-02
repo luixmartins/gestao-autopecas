@@ -2,23 +2,12 @@ package MODEL;
 
 public class ClienteEndereco {
 
-    private int cod_clienteendereco;
     private String rua;
     private int numero;
     private String bairro;
     private String cidade;
     private String estado;
     private int cep;
-    
-    /* Método Getter e Setter */
-
-    public int getCod_clienteendereco() {
-        return cod_clienteendereco;
-    }
-
-    public void setCod_clienteendereco(int cod_clienteendereco) {
-        this.cod_clienteendereco = cod_clienteendereco;
-    }
 
     public String getRua() {
         return rua;
@@ -67,6 +56,4 @@ public class ClienteEndereco {
     public void setCep(int cep) {
         this.cep = cep;
     }
-    
-    
 }

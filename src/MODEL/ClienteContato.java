@@ -2,19 +2,9 @@ package MODEL;
 
 public class ClienteContato {
 
-    private int cod_clientecontato;
     private int telefone_cliente;
     private int celular_cliente;
     private String email;
-
-    /* Métodos Getter e Setter */
-    public int getCod_clientecontato() {
-        return cod_clientecontato;
-    }
-
-    public void setCod_clientecontato(int cod_clientecontato) {
-        this.cod_clientecontato = cod_clientecontato;
-    }
 
     public int getTelefone_cliente() {
         return telefone_cliente;
@@ -39,5 +29,4 @@ public class ClienteContato {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
