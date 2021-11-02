@@ -37,7 +37,7 @@ public class ClienteDAO {
         }
         /* Inserindo o Endereço */
         String Endereco;
-        Endereco = "insert into clienteendereceo values (?,?,?,?,?,?,?,?)";
+        Endereco = "insert into clienteendereco values (?,?,?,?,?,?,?,?)";
         pst = Conexao.getInstance().prepareStatement(Endereco);
         pst.setInt(1, 0);
         pst.setString(2, cliEnd.getRua());
