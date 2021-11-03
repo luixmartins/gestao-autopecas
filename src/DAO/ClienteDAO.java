@@ -28,7 +28,6 @@ public class ClienteDAO {
         pst.setString(2, cliente.getNome_cliente());
         pst.setInt(3, cliente.getTipo_cliente());
         pst.execute();
-        pst.close();
         /* Pegando o ultimo ID inserido */
         ResultSet rs = pst.getGeneratedKeys();
         int id = 0;
@@ -48,7 +47,6 @@ public class ClienteDAO {
         pst.setInt(7, cliEnd.getCep());
         pst.setInt(8, id);
         pst.execute();
-        pst.close();
         /* Inserindo o Contato */
         String sqlContato;
         sqlContato = "insert into clientecontato values (?,?,?,?,?,?)";
@@ -60,7 +58,6 @@ public class ClienteDAO {
         pst.setInt(5, id);
         pst.setInt(6, id);
         pst.execute();
-        pst.close();
         /* Inserindo Pessoa Fisica */
         String sqlFisica;
         sqlFisica = "insert into clientefisica values (?,?,?)";
@@ -80,7 +77,6 @@ public class ClienteDAO {
         pst.setString(2, cliente.getNome_cliente());
         pst.setInt(3, cliente.getTipo_cliente());
         pst.execute();
-        pst.close();
         /* Pegando o ultimo ID inserido */
         ResultSet rs = pst.getGeneratedKeys();
         int id = 0;
@@ -100,7 +96,6 @@ public class ClienteDAO {
         pst.setInt(7, cliEnd.getCep());
         pst.setInt(8, id);
         pst.execute();
-        pst.close();
         /* Inserindo o Endereço */
         String sqlContato;
         sqlContato = "insert into clientecontato values (?,?,?,?,?,?)";
@@ -112,7 +107,6 @@ public class ClienteDAO {
         pst.setInt(5, id);
         pst.setInt(6, id);
         pst.execute();
-        pst.close();
         /* Inserindo Pessoa Fisica */
         String sqlJuridica;
         sqlJuridica = "insert into clientejuridica values (?,?,?)";
@@ -179,22 +173,19 @@ public class ClienteDAO {
         pst = Conexao.getInstance().prepareStatement(sql);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        pst.close();
 
         String deleta_endereco;
         deleta_endereco = "delete from clienteedereco where Cliente_cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_endereco);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        pst.close();
 
         String deleta_contato;
         deleta_contato = "delete from clientecontato where Cliente_cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_contato);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        pst.close();
-
+        
         String deleta_cliente;
         deleta_cliente = "delete from cliente where cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_cliente);
@@ -208,22 +199,19 @@ public class ClienteDAO {
         pst = Conexao.getInstance().prepareStatement(sql);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        pst.close();
 
         String deleta_endereco;
         deleta_endereco = "delete from clienteedereco where Cliente_cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_endereco);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        pst.close();
 
         String deleta_contato;
         deleta_contato = "delete from clientecontato where Cliente_cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_contato);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        pst.close();
-
+        
         String deleta_cliente;
         deleta_cliente = "delete from cliente where cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_cliente);
