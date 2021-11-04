@@ -248,11 +248,8 @@ public class ClienteDAO {
 
     /* Método para Alterar Registros */
     public void alterarFisica(Cliente cliente, ClienteFisica cliFisica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
-        sql = "UPDATE cliente, clientecontato, clienteendereco, clientefisica"
-                + "SET cliente.nome_cliente = ?,"
-                + "clienteendereco.rua_endereco = ?, clienteendereco.numero_endereco = ?,"
-                + "clienteendereco.bairro_endereco = ? , clienteendereco.cidade_endereco = ? ,clienteendereco.estado_endereco = ? ,clienteendereco.cep_endereco = ? ,clientecontato.telefone_contato = ? ,clientecontato.celular_contato = ? ,clientecontato.email_contato = ? ,"
-                + "clientefisica.cpf= ? , clientefisica.rg = ? where cliente.cod_cliente = ;";
+        /* Update dados Cliente */
+        sql = "UPDATE cliente, clientecontato, clienteendereco, clientefisica SET cliente.nome_cliente=?,clienteendereco.rua_endereco=?,clienteendereco.numero_endereco=?,clienteendereco.bairro_endereco=?,clienteendereco.cidade_endereco=? ,clienteendereco.estado_endereco=? ,clienteendereco.cep_endereco=?,clientecontato.telefone_contato=?,clientecontato.celular_contato=?,clientecontato.email_contato=?,clientefisica.cpf=?,clientefisica.rg=? where cliente.cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(sql);
         pst.setString(1, cliente.getNome_cliente());
         pst.setString(2, cliEnd.getRua());
@@ -266,16 +263,13 @@ public class ClienteDAO {
         pst.setString(10, cliContato.getEmail());
         pst.setString(11, cliFisica.getCpf());
         pst.setString(12, cliFisica.getRg());
+        pst.setInt(13, cliente.getCod_cliente());
         pst.execute();
         pst.close();
     }
 
     public void alterarJuridica(Cliente cliente, ClienteJuridica cliJuridica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
-        sql = "UPDATE cliente, clientecontato, clienteendereco, clientejuridica"
-                + "SET cliente.nome_cliente = ?, "
-                + "clienteendereco.rua_endereco = ?, clienteendereco.numero_endereco = ?,"
-                + "clienteendereco.bairro_endereco = ? , clienteendereco.cidade_endereco =? ,clienteendereco.estado_endereco =? ,clienteendereco.cep_endereco =? ,clientecontato.telefone_contato =? ,clientecontato.celular_contato =? ,clientecontato.email_contato =? ,"
-                + "clientejuridica.cnpj=? , clientejuridica.inscricao_estadual = ? where cliente.cod_cliente = ;";
+        sql = "UPDATE cliente, clientecontato, clienteendereco, clientejuridica SET cliente.nome_cliente=?,clienteendereco.rua_endereco=?,clienteendereco.numero_endereco=?,clienteendereco.bairro_endereco=?,clienteendereco.cidade_endereco=? ,clienteendereco.estado_endereco=? ,clienteendereco.cep_endereco=?,clientecontato.telefone_contato=?,clientecontato.celular_contato=?,clientecontato.email_contato=?,clientejuridica.cnpj=?,clientejuridica.inscricao_estadual=? where cliente.cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(sql);
         pst.setString(1, cliente.getNome_cliente());
         pst.setString(2, cliEnd.getRua());
@@ -289,6 +283,7 @@ public class ClienteDAO {
         pst.setString(10, cliContato.getEmail());
         pst.setString(11, cliJuridica.getCnpj());
         pst.setString(12, cliJuridica.getInscricao_estadual());
+        pst.setInt(13, cliente.getCod_cliente());
         pst.execute();
         pst.close();
     }
