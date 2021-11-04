@@ -694,17 +694,30 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
         
         cliente = new Cliente();
-        
+        cliFisica = new ClienteFisica();
+        cliContato = new ClienteContato();
+        cliEndereco = new ClienteEndereco();
         try {
             cliente = clienteDAO.buscarFisica(Integer.parseInt(valor));
         } catch (SQLException ex) {
             Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        /* Cliente */
         txtNome.setText(cliente.getNome_cliente());        
-        System.out.println(cliente.getCliContato().getCelular_cliente());
+        /* Endereço */
         txtCelular.setText(cliente.getCliContato().getCelular_cliente());
-        
+        txtTelefone.setText(cliente.getCliContato().getTelefone_cliente());
+        txtEmail.setText(cliente.getCliContato().getEmail());
+        /* Contato */
+        txtBairro.setText(cliente.getCliEndereco().getBairro());
+        txtCEP.setText(cliente.getCliEndereco().getCep());    
+        txtEndereco.setText(cliente.getCliEndereco().getRua());
+        txtEstado.setSelectedItem(cliente.getCliEndereco().getEstado());
+        txtCidade.setText(cliente.getCliEndereco().getCidade());
+        txtNumeroCasa.setText(cliente.getCliEndereco().getRua());   
+        /* Fisica */
+        txtCPF.setText(cliente.getCliFisica().getCpf());
+        txtRG.setText(cliente.getCliFisica().getRg());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtCEPJuridicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCEPJuridicoActionPerformed

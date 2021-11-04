@@ -141,13 +141,14 @@ public class ClienteDAO {
             cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
             /* Endereço */
             cliEndereco = new ClienteEndereco();
-            cliEndereco.setBairro(rs.getString("bairro_endereco "));
+            cliEndereco.setBairro(rs.getString("bairro_endereco"));
             cliEndereco.setCep(rs.getString("cep_endereco"));
             cliEndereco.setCidade(rs.getString("cidade_endereco"));
             cliEndereco.setEstado(rs.getString("estado_endereco"));
             cliEndereco.setNumero(rs.getInt("numero_endereco"));
             cliEndereco.setRua(rs.getString("rua_endereco"));
             /* Fisica */
+            cliFisica = new ClienteFisica();
             cliFisica.setCpf(rs.getString("cpf"));
             cliFisica.setRg(rs.getString("rg"));
             /* Cliente */
@@ -179,7 +180,7 @@ public class ClienteDAO {
             cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
             /* Endereço */
             cliEndereco = new ClienteEndereco();
-            cliEndereco.setBairro(rs.getString("bairro_endereco "));
+            cliEndereco.setBairro(rs.getString("bairro_endereco"));
             cliEndereco.setCep(rs.getString("cep_endereco"));
             cliEndereco.setCidade(rs.getString("cidade_endereco"));
             cliEndereco.setEstado(rs.getString("estado_endereco"));
