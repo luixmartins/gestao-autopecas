@@ -714,7 +714,7 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         txtEndereco.setText(cliente.getCliEndereco().getRua());
         txtEstado.setSelectedItem(cliente.getCliEndereco().getEstado());
         txtCidade.setText(cliente.getCliEndereco().getCidade());
-        txtNumeroCasa.setText(cliente.getCliEndereco().getRua());   
+        txtNumeroCasa.setText(Integer.toString(cliente.getCliEndereco().getNumero()));   
         /* Fisica */
         txtCPF.setText(cliente.getCliFisica().getCpf());
         txtRG.setText(cliente.getCliFisica().getRg());
