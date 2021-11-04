@@ -2,23 +2,23 @@ package MODEL;
 
 public class ClienteContato {
 
-    private int telefone_cliente;
-    private int celular_cliente;
+    private String telefone_cliente;
+    private String celular_cliente;
     private String email;
 
-    public int getTelefone_cliente() {
+    public String getTelefone_cliente() {
         return telefone_cliente;
     }
 
-    public void setTelefone_cliente(int telefone_cliente) {
+    public void setTelefone_cliente(String telefone_cliente) {
         this.telefone_cliente = telefone_cliente;
     }
 
-    public int getCelular_cliente() {
+    public String getCelular_cliente() {
         return celular_cliente;
     }
 
-    public void setCelular_cliente(int celular_cliente) {
+    public void setCelular_cliente(String celular_cliente) {
         this.celular_cliente = celular_cliente;
     }
 

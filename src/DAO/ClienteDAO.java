@@ -19,6 +19,9 @@ public class ClienteDAO {
     /* Instanciamento e criação do String SQL*/
     PreparedStatement pst;
     String sql;
+    
+    ClienteEndereco cliEndereco;
+    ClienteContato cliContato;
 
     /* Método para Salvar Pessoa Fisica */
     public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
@@ -44,7 +47,7 @@ public class ClienteDAO {
         pst.setString(4, cliEnd.getBairro());
         pst.setString(5, cliEnd.getCidade());
         pst.setString(6, cliEnd.getEstado());
-        pst.setInt(7, cliEnd.getCep());
+        pst.setString(7, cliEnd.getCep());
         pst.setInt(8, id);
         pst.execute();
         /* Inserindo o Contato */
@@ -52,8 +55,8 @@ public class ClienteDAO {
         sqlContato = "insert into clientecontato values (?,?,?,?,?,?)";
         pst = Conexao.getInstance().prepareStatement(sqlContato);
         pst.setInt(1, 0);
-        pst.setInt(2, cliContato.getTelefone_cliente());
-        pst.setInt(3, cliContato.getCelular_cliente());
+        pst.setString(2, cliContato.getTelefone_cliente());
+        pst.setString(3, cliContato.getCelular_cliente());
         pst.setString(4, cliContato.getEmail());
         pst.setInt(5, id);
         pst.setInt(6, id);
@@ -93,7 +96,7 @@ public class ClienteDAO {
         pst.setString(4, cliEnd.getBairro());
         pst.setString(5, cliEnd.getCidade());
         pst.setString(6, cliEnd.getEstado());
-        pst.setInt(7, cliEnd.getCep());
+        pst.setString(7, cliEnd.getCep());
         pst.setInt(8, id);
         pst.execute();
         /* Inserindo o Endereço */
@@ -101,8 +104,8 @@ public class ClienteDAO {
         sqlContato = "insert into clientecontato values (?,?,?,?,?,?)";
         pst = Conexao.getInstance().prepareStatement(sqlContato);
         pst.setInt(1, 0);
-        pst.setInt(2, cliContato.getTelefone_cliente());
-        pst.setInt(3, cliContato.getCelular_cliente());
+        pst.setString(2, cliContato.getTelefone_cliente());
+        pst.setString(3, cliContato.getCelular_cliente());
         pst.setString(4, cliContato.getEmail());
         pst.setInt(5, id);
         pst.setInt(6, id);
@@ -119,31 +122,32 @@ public class ClienteDAO {
     }
 
     /* Método para Recuperar um Registro*/
-    public Cliente buscarFisica(String codigo) throws SQLException {
-        sql = "SELECT  cliente.cod_cliente,cliente.nome_cliente,  cliente.tipo_cliente,"
-                + "clienteendereco.rua_endereco,"
-                + "clienteendereco.numero_endereco,"
-                + "clienteendereco.bairro_endereco,"
-                + "clienteendereco.cidade_endereco,clienteendereco.estado_endereco,clienteendereco.cep_endereco,"
-                + "clientecontato.telefone_contato,clientecontato.celular_contato,clientecontato.email_contato,"
-                + "clientefisica.cpf,"
-                + "clientefisica.rg"
-                + "FROM cliente"
-                + "INNER JOIN clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
-                + "INNER JOIN clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
-                + "INNER JOIN clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente WHERE cliente.cod_cliente = " + codigo;
+    public Cliente buscarFisica(int codigo) throws SQLException {
+        sql = "select * from cliente" +
+" inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente" +
+" inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente" +
+" inner join clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente "
+                + "where cliente.cod_cliente = " + codigo;
         pst = Conexao.getInstance().prepareStatement(sql);
         ResultSet rs = pst.executeQuery();
         Cliente cli = null;
 
         while (rs.next()) {
-            cli = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getInt("tipo_cliente"), cli.getCliFisica(), cli.getCliJuridica(), cli.getCliEndereco(), cli.getCliContato());
+            cliContato = new ClienteContato();
+            cliContato.setCelular_cliente(rs.getString("celular_contato"));
+            cliContato.setEmail(rs.getString("email_contato"));
+            cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
+            
+            //Endereco
+            //Fisica 
+            
+            cli = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getInt("tipo_cliente"), cliContato);
         }
         pst.close();
         return cli;
     }
 
-    public Cliente buscarJuridica(String codigo) throws SQLException {
+    public Cliente buscarJuridica(int codigo) throws SQLException {
         sql = "SELECT  cliente.cod_cliente,cliente.nome_cliente,  cliente.tipo_cliente, "
                 + "clienteendereco.rua_endereco, "
                 + "clienteendereco.numero_endereco, "
@@ -175,7 +179,7 @@ public class ClienteDAO {
         pst.execute();
 
         String deleta_endereco;
-        deleta_endereco = "delete from clienteedereco where Cliente_cod_cliente=?";
+        deleta_endereco = "delete from clienteendereco where Cliente_cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_endereco);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
@@ -201,7 +205,7 @@ public class ClienteDAO {
         pst.execute();
 
         String deleta_endereco;
-        deleta_endereco = "delete from clienteedereco where Cliente_cod_cliente=?";
+        deleta_endereco = "delete from clienteendereco where Cliente_cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_endereco);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
@@ -234,9 +238,9 @@ public class ClienteDAO {
         pst.setString(4, cliEnd.getBairro());
         pst.setString(5, cliEnd.getCidade());
         pst.setString(6, cliEnd.getEstado());
-        pst.setInt(7, cliEnd.getCep());
-        pst.setInt(8, cliContato.getTelefone_cliente());
-        pst.setInt(9, cliContato.getCelular_cliente());
+        pst.setString(7, cliEnd.getCep());
+        pst.setString(8, cliContato.getTelefone_cliente());
+        pst.setString(9, cliContato.getCelular_cliente());
         pst.setString(10, cliContato.getEmail());
         pst.setString(11, cliFisica.getCpf());
         pst.setString(12, cliFisica.getRg());
@@ -257,9 +261,9 @@ public class ClienteDAO {
         pst.setString(4, cliEnd.getBairro());
         pst.setString(5, cliEnd.getCidade());
         pst.setString(6, cliEnd.getEstado());
-        pst.setInt(7, cliEnd.getCep());
-        pst.setInt(8, cliContato.getTelefone_cliente());
-        pst.setInt(9, cliContato.getCelular_cliente());
+        pst.setString(7, cliEnd.getCep());
+        pst.setString(8, cliContato.getTelefone_cliente());
+        pst.setString(9, cliContato.getCelular_cliente());
         pst.setString(10, cliContato.getEmail());
         pst.setString(11, cliJuridica.getCnpj());
         pst.setString(12, cliJuridica.getInscricao_estadual());

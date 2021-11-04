@@ -5,7 +5,16 @@
  */
 package VIEW;
 
-
+import DAO.ClienteDAO;
+import MODEL.Cliente;
+import MODEL.ClienteContato;
+import MODEL.ClienteEndereco;
+import MODEL.ClienteFisica;
+import MODEL.ClienteJuridica;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,12 +22,41 @@ package VIEW;
  */
 public class ClienteVIEW extends javax.swing.JInternalFrame {
 
+    Cliente cliente;
+    ClienteContato cliContato;
+    ClienteEndereco cliEndereco;
+    ClienteFisica cliFisica;
+    ClienteJuridica cliJuridica;
+    ClienteDAO clienteDAO;
+
     /**
      * Creates new form ClienteFisicaVIEW
      */
     public ClienteVIEW() {
         initComponents();
         this.setVisible(true);
+        //btnAlterar.setEnabled(false);
+        //btnBuscar.setEnabled(false);
+        //btnExcluir.setEnabled(false);
+        //btnSalvar.setEnabled(false);
+        //btnCancelarJuridica.setEnabled(false);
+
+        clienteDAO = new ClienteDAO();
+    }
+
+    public void limpaCamposFisica() {
+        txtBairro.setText("");
+        txtCEP.setText("");
+        txtCPF.setText("");
+        txtCelular.setText("");
+        txtCidade.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtEstado.setSelectedItem("Selecione");
+        txtNome.setText("");
+        txtNumeroCasa.setText("");
+        txtRG.setText("");
+        txtTelefone.setText("");
     }
 
     /**
@@ -61,6 +99,7 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         btnNovo = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        btnCancelarFisica = new javax.swing.JButton();
         pnl_Juridica = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         txtNomeJuridico = new javax.swing.JTextField();
@@ -91,6 +130,7 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         btnExcluirJuri = new javax.swing.JButton();
         btnNovoJuri = new javax.swing.JButton();
         btnAlterarJuri = new javax.swing.JButton();
+        btnCancelarJuridica = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -200,6 +240,13 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelarFisica.setText("Cancelar");
+        btnCancelarFisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarFisicaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_fisicaLayout = new javax.swing.GroupLayout(pnl_fisica);
         pnl_fisica.setLayout(pnl_fisicaLayout);
         pnl_fisicaLayout.setHorizontalGroup(
@@ -257,7 +304,9 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnl_fisicaLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnl_fisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCancelarFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -314,7 +363,9 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
                     .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAlterar))
-                .addGap(61, 61, 61))
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelarFisica)
+                .addGap(24, 24, 24))
         );
 
         pnl_abas.addTab("Pessoa Física", pnl_fisica);
@@ -425,6 +476,13 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelarJuridica.setText("Cancelar");
+        btnCancelarJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarJuridicaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_JuridicaLayout = new javax.swing.GroupLayout(pnl_Juridica);
         pnl_Juridica.setLayout(pnl_JuridicaLayout);
         pnl_JuridicaLayout.setHorizontalGroup(
@@ -463,16 +521,17 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
                             .addComponent(txtCEPJuridico)
                             .addComponent(txtInscricaoEstadual)
                             .addComponent(txtCelularJuridico, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                            .addGroup(pnl_JuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtEstadoJuridico, javax.swing.GroupLayout.Alignment.LEADING, 0, 108, Short.MAX_VALUE)
-                                .addComponent(txtCidadeJuridico, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addComponent(txtEstadoJuridico, 0, 110, Short.MAX_VALUE)
+                            .addComponent(txtCidadeJuridico)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_JuridicaLayout.createSequentialGroup()
                         .addComponent(txtBairroJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_JuridicaLayout.createSequentialGroup()
+            .addGroup(pnl_JuridicaLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(btnSalvarJuri, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnl_JuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCancelarJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalvarJuri, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscarJuri, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -529,7 +588,9 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
                     .addComponent(btnExcluirJuri, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNovoJuri, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAlterarJuri))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCancelarJuridica)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pnl_abas.addTab("Pessoa Jurídica", pnl_Juridica);
@@ -562,22 +623,88 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
 
+        if (txtBairro.getText().isEmpty() || txtCEP.getText().isEmpty()
+                || txtCPF.getText().isEmpty() || txtCelular.getText().isEmpty()
+                || txtCidade.getText().isEmpty() || txtEmail.getText().isEmpty()
+                || txtEndereco.getText().isEmpty() || txtEstado.getSelectedItem() == "Selecione"
+                || txtNome.getText().isEmpty() || txtNumeroCasa.getText().isEmpty()
+                || txtRG.getText().isEmpty() || txtTelefone.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+        } else {
+            cliente = new Cliente();
+            cliContato = new ClienteContato();
+            cliEndereco = new ClienteEndereco();
+            cliFisica = new ClienteFisica();
+
+            cliFisica.setCpf(txtCPF.getText());
+            cliFisica.setRg(txtRG.getText());
+
+            cliContato.setCelular_cliente(txtCelular.getText());
+            cliContato.setTelefone_cliente(txtTelefone.getText());
+            cliContato.setEmail(txtEmail.getText());
+
+            cliEndereco.setBairro(txtBairro.getText());
+            cliEndereco.setCep(txtCEP.getText());
+            cliEndereco.setCidade(txtCidade.getText());
+            cliEndereco.setEstado((String) txtEstado.getSelectedItem());
+            cliEndereco.setNumero(Integer.parseInt(txtNumeroCasa.getText()));
+            cliEndereco.setRua(txtEndereco.getText());
+
+            cliente.setNome_cliente(txtNome.getText());
+            cliente.setTipo_cliente(1);
+
+            try {
+                clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            limpaCamposFisica();
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
 
+        cliente = new Cliente();
+        cliente.setCod_cliente(Integer.parseInt(valor));
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir: ");
+
+        if (confirma == 0) {
+            try {
+                clienteDAO.excluirFisica(cliente);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-
+        btnSalvar.setEnabled(true);
+        btnCancelarFisica.setEnabled(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-
+        
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+        
+        cliente = new Cliente();
+        
+        try {
+            cliente = clienteDAO.buscarFisica(Integer.parseInt(valor));
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        txtNome.setText(cliente.getNome_cliente());        
+        System.out.println(cliente.getCliContato().getCelular_cliente());
+        txtCelular.setText(cliente.getCliContato().getCelular_cliente());
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtCEPJuridicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCEPJuridicoActionPerformed
@@ -605,12 +732,22 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExcluirJuriActionPerformed
 
     private void btnNovoJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoJuriActionPerformed
-        // TODO add your handling code here:
+        btnSalvar.setEnabled(true);
+        btnCancelarJuridica.setEnabled(true);
     }//GEN-LAST:event_btnNovoJuriActionPerformed
 
     private void btnAlterarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarJuriActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAlterarJuriActionPerformed
+
+    private void btnCancelarJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarJuridicaActionPerformed
+
+
+    }//GEN-LAST:event_btnCancelarJuridicaActionPerformed
+
+    private void btnCancelarFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarFisicaActionPerformed
+        limpaCamposFisica();
+    }//GEN-LAST:event_btnCancelarFisicaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -618,6 +755,8 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAlterarJuri;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscarJuri;
+    private javax.swing.JButton btnCancelarFisica;
+    private javax.swing.JButton btnCancelarJuridica;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnExcluirJuri;
     private javax.swing.JButton btnNovo;

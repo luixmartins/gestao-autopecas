@@ -32,16 +32,26 @@ public class Cliente {
         this.cliEndereco = new ClienteEndereco();
         this.cliContato = new ClienteContato();
     }
-
-    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteFisica cliFisica, ClienteJuridica cliJuridica, ClienteEndereco cliEndereco, ClienteContato cliContato) {
+    
+    //CONSTRUTOR FISICA
+    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteFisica cliFisica, ClienteEndereco cliEndereco, ClienteContato cliContato) {
         this.cod_cliente = cod_cliente;
         this.nome_cliente = nome_cliente;
         this.tipo_cliente = tipo_cliente;
         this.cliFisica = cliFisica;
-        this.cliJuridica = cliJuridica;
         this.cliEndereco = cliEndereco;
         this.cliContato = cliContato;
     }
+    
+    //CONSTRUTOR JURIDICA
+    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteJuridica cliJuridica, ClienteEndereco cliEndereco, ClienteContato cliContato) {
+        this.cod_cliente = cod_cliente;
+        this.nome_cliente = nome_cliente;
+        this.tipo_cliente = tipo_cliente;
+        this.cliJuridica = cliJuridica;
+        this.cliEndereco = cliEndereco;
+        this.cliContato = cliContato;
+    }  
 
     public int getCod_cliente() {
         return cod_cliente;
