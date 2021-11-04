@@ -19,9 +19,11 @@ public class ClienteDAO {
     /* Instanciamento e criação do String SQL*/
     PreparedStatement pst;
     String sql;
-    
+
     ClienteEndereco cliEndereco;
     ClienteContato cliContato;
+    ClienteJuridica cliJuridica;
+    ClienteFisica cliFisica;
 
     /* Método para Salvar Pessoa Fisica */
     public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
@@ -123,10 +125,10 @@ public class ClienteDAO {
 
     /* Método para Recuperar um Registro*/
     public Cliente buscarFisica(int codigo) throws SQLException {
-        sql = "select * from cliente" +
-" inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente" +
-" inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente" +
-" inner join clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente "
+        sql = "select * from cliente"
+                + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
+                + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
+                + " inner join clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente "
                 + "where cliente.cod_cliente = " + codigo;
         pst = Conexao.getInstance().prepareStatement(sql);
         ResultSet rs = pst.executeQuery();
@@ -137,35 +139,54 @@ public class ClienteDAO {
             cliContato.setCelular_cliente(rs.getString("celular_contato"));
             cliContato.setEmail(rs.getString("email_contato"));
             cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
-            
-            //Endereco
-            //Fisica 
-            
-            cli = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getInt("tipo_cliente"), cliContato);
+            /* Endereço */
+            cliEndereco = new ClienteEndereco();
+            cliEndereco.setBairro(rs.getString("bairro_endereco "));
+            cliEndereco.setCep(rs.getString("cep_endereco"));
+            cliEndereco.setCidade(rs.getString("cidade_endereco"));
+            cliEndereco.setEstado(rs.getString("estado_endereco"));
+            cliEndereco.setNumero(rs.getInt("numero_endereco"));
+            cliEndereco.setRua(rs.getString("rua_endereco"));
+            /* Fisica */
+            cliFisica.setCpf(rs.getString("cpf"));
+            cliFisica.setRg(rs.getString("rg"));
+            /* Cliente */
+            cli = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getInt("tipo_cliente"), cliFisica, cliEndereco, cliContato);
         }
         pst.close();
         return cli;
     }
 
     public Cliente buscarJuridica(int codigo) throws SQLException {
-        sql = "SELECT  cliente.cod_cliente,cliente.nome_cliente,  cliente.tipo_cliente, "
-                + "clienteendereco.rua_endereco, "
-                + "clienteendereco.numero_endereco, "
-                + "clienteendereco.bairro_endereco, "
-                + "clienteendereco.cidade_endereco,clienteendereco.estado_endereco,clienteendereco.cep_endereco,"
-                + "clientecontato.telefone_contato,clientecontato.celular_contato,clientecontato.email_contato,"
-                + "clientejuridica.cnpj, "
-                + "clientejuridica.inscricao_estadual"
-                + "FROM cliente"
-                + "INNER JOIN clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
-                + "INNER JOIN clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
-                + "INNER JOIN clientejuridica on clientejuridica.Cliente_cod_cliente = cliente.cod_cliente WHERE cliente.cod_cliente = " + codigo;
+        sql = "select * from cliente"
+                + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
+                + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
+                + " inner join clientejuridica on clientejuridica.Cliente_cod_cliente = cliente.cod_cliente "
+                + "where cliente.cod_cliente = " + codigo;
         pst = Conexao.getInstance().prepareStatement(sql);
         ResultSet rs = pst.executeQuery();
         Cliente cli = null;
 
         while (rs.next()) {
-            cli = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getInt("tipo_cliente"), cli.getCliFisica(), cli.getCliJuridica(), cli.getCliEndereco(), cli.getCliContato());
+            /* Pessoa Juridica*/
+            cliJuridica = new ClienteJuridica();
+            cliJuridica.setCnpj(rs.getString("cnpj"));
+            cliJuridica.setInscricao_estadual(rs.getString("inscricao_estadual"));
+            /* Contato */
+            cliContato = new ClienteContato();
+            cliContato.setCelular_cliente(rs.getString("celular_contato"));
+            cliContato.setEmail(rs.getString("email_contato"));
+            cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
+            /* Endereço */
+            cliEndereco = new ClienteEndereco();
+            cliEndereco.setBairro(rs.getString("bairro_endereco "));
+            cliEndereco.setCep(rs.getString("cep_endereco"));
+            cliEndereco.setCidade(rs.getString("cidade_endereco"));
+            cliEndereco.setEstado(rs.getString("estado_endereco"));
+            cliEndereco.setNumero(rs.getInt("numero_endereco"));
+            cliEndereco.setRua(rs.getString("rua_endereco"));
+            /* Cliente */
+            cli = new Cliente(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getInt("tipo_cliente"), cliJuridica, cliEndereco, cliContato);
         }
         pst.close();
         return cli;
@@ -189,7 +210,7 @@ public class ClienteDAO {
         pst = Conexao.getInstance().prepareStatement(deleta_contato);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        
+
         String deleta_cliente;
         deleta_cliente = "delete from cliente where cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_cliente);
@@ -215,7 +236,7 @@ public class ClienteDAO {
         pst = Conexao.getInstance().prepareStatement(deleta_contato);
         pst.setInt(1, cliente.getCod_cliente());
         pst.execute();
-        
+
         String deleta_cliente;
         deleta_cliente = "delete from cliente where cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_cliente);
