@@ -59,6 +59,21 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         txtTelefone.setText("");
     }
 
+    public void limpaCamposJuridica() {
+        txtBairroJuridico.setText("");
+        txtCEPJuridico.setText("");
+        txtCNPJ.setText("");
+        txtCelularJuridico.setText("");
+        txtCidadeJuridico.setText("");
+        txtEmailJuridico.setText("");
+        txtEnderecoJuridico.setText("");
+        txtEstadoJuridico.setSelectedItem("Selecione");
+        txtNomeJuridico.setText("");
+        txtNumeroJuridico.setText("");
+        txtInscricaoEstadual.setText("");
+        txtTelefoneJuridico.setText("");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -694,22 +709,21 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         cliFisica = new ClienteFisica();
 
         cliente.setNome_cliente(txtNome.getText());
-                
+
         cliFisica.setCpf(txtCPF.getText());
-        cliFisica.setRg(txtRG.getText()); 
-        
-        cliEndereco.setRua(txtEndereco.getText());        
+        cliFisica.setRg(txtRG.getText());
+
+        cliEndereco.setRua(txtEndereco.getText());
         cliEndereco.setNumero(Integer.parseInt(txtNumeroCasa.getText()));
         cliEndereco.setBairro(txtBairro.getText());
         cliEndereco.setCidade(txtCidade.getText());
-        cliEndereco.setEstado((String) txtEstado.getSelectedItem());        
+        cliEndereco.setEstado((String) txtEstado.getSelectedItem());
         cliEndereco.setCep(txtCEP.getText());
-        
+
         cliContato.setTelefone_cliente(txtTelefone.getText());
-        cliContato.setCelular_cliente(txtCelular.getText());        
+        cliContato.setCelular_cliente(txtCelular.getText());
         cliContato.setEmail(txtEmail.getText());
-            
-        
+
         cliente.setCod_cliente(Integer.parseInt(valor));
         try {
             clienteDAO.alterarFisica(cliente, cliFisica, cliEndereco, cliContato);
@@ -762,15 +776,92 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCelularJuridicoActionPerformed
 
     private void btnSalvarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarJuriActionPerformed
+        if (txtBairroJuridico.getText().isEmpty() || txtCEPJuridico.getText().isEmpty()
+                || txtCNPJ.getText().isEmpty() || txtCelularJuridico.getText().isEmpty()
+                || txtCidadeJuridico.getText().isEmpty() || txtEmailJuridico.getText().isEmpty()
+                || txtEnderecoJuridico.getText().isEmpty() || txtEstadoJuridico.getSelectedItem() == "Selecione"
+                || txtNomeJuridico.getText().isEmpty() || txtNumeroJuridico.getText().isEmpty()
+                || txtInscricaoEstadual.getText().isEmpty() || txtTelefoneJuridico.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+        } else {
+            cliente = new Cliente();
+            cliContato = new ClienteContato();
+            cliEndereco = new ClienteEndereco();
+            cliJuridica = new ClienteJuridica();
+
+            cliJuridica.setCnpj(txtCNPJ.getText());
+            cliJuridica.setInscricao_estadual(txtInscricaoEstadual.getText());
+
+            cliContato.setCelular_cliente(txtCelularJuridico.getText());
+            cliContato.setTelefone_cliente(txtTelefoneJuridico.getText());
+            cliContato.setEmail(txtEmailJuridico.getText());
+
+            cliEndereco.setBairro(txtBairroJuridico.getText());
+            cliEndereco.setCep(txtCEPJuridico.getText());
+            cliEndereco.setCidade(txtCidadeJuridico.getText());
+            cliEndereco.setEstado((String) txtEstadoJuridico.getSelectedItem());
+            cliEndereco.setNumero(Integer.parseInt(txtNumeroJuridico.getText()));
+            cliEndereco.setRua(txtEnderecoJuridico.getText());
+
+            cliente.setNome_cliente(txtNomeJuridico.getText());
+            cliente.setTipo_cliente(0);
+
+            try {
+                clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            limpaCamposJuridica();
+        }
 
     }//GEN-LAST:event_btnSalvarJuriActionPerformed
 
     private void btnBuscarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarJuriActionPerformed
-        // TODO add your handling code here:
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+        cliente = new Cliente();
+        cliJuridica = new ClienteJuridica();
+        cliContato = new ClienteContato();
+        cliEndereco = new ClienteEndereco();
+        try {
+            cliente = clienteDAO.buscarJuridica(Integer.parseInt(valor));
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /* Cliente */
+        txtNomeJuridico.setText(cliente.getNome_cliente());
+        /* Endereço */
+        txtCelularJuridico.setText(cliente.getCliContato().getCelular_cliente());
+        txtTelefoneJuridico.setText(cliente.getCliContato().getTelefone_cliente());
+        txtEmailJuridico.setText(cliente.getCliContato().getEmail());
+        /* Contato */
+        txtBairroJuridico.setText(cliente.getCliEndereco().getBairro());
+        txtCEPJuridico.setText(cliente.getCliEndereco().getCep());
+        txtEnderecoJuridico.setText(cliente.getCliEndereco().getRua());
+        txtEstadoJuridico.setSelectedItem(cliente.getCliEndereco().getEstado());
+        txtCidadeJuridico.setText(cliente.getCliEndereco().getCidade());
+        txtNumeroJuridico.setText(Integer.toString(cliente.getCliEndereco().getNumero()));
+        /* Fisica */
+        txtCNPJ.setText(cliente.getCliJuridica().getCnpj());
+        txtInscricaoEstadual.setText(cliente.getCliJuridica().getInscricao_estadual());        // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarJuriActionPerformed
 
     private void btnExcluirJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirJuriActionPerformed
-        // TODO add your handling code here:
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+
+        cliente = new Cliente();
+        cliente.setCod_cliente(Integer.parseInt(valor));
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir: ");
+
+        if (confirma == 0) {
+            try {
+                clienteDAO.excluirJuridica(cliente);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnExcluirJuriActionPerformed
 
     private void btnNovoJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoJuriActionPerformed
@@ -779,7 +870,36 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNovoJuriActionPerformed
 
     private void btnAlterarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarJuriActionPerformed
-        // TODO add your handling code here:
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+        cliente = new Cliente();
+        cliContato = new ClienteContato();
+        cliEndereco = new ClienteEndereco();
+        cliJuridica = new ClienteJuridica();
+
+        cliente.setNome_cliente(txtNomeJuridico.getText());
+
+        cliJuridica.setCnpj(txtCNPJ.getText());
+        cliJuridica.setInscricao_estadual(txtInscricaoEstadual.getText());
+
+        cliEndereco.setRua(txtEnderecoJuridico.getText());
+        cliEndereco.setNumero(Integer.parseInt(txtNumeroJuridico.getText()));
+        cliEndereco.setBairro(txtBairroJuridico.getText());
+        cliEndereco.setCidade(txtCidadeJuridico.getText());
+        cliEndereco.setEstado((String) txtEstadoJuridico.getSelectedItem());
+        cliEndereco.setCep(txtCEPJuridico.getText());
+
+        cliContato.setTelefone_cliente(txtTelefoneJuridico.getText());
+        cliContato.setCelular_cliente(txtCelularJuridico.getText());
+        cliContato.setEmail(txtEmailJuridico.getText());
+
+        cliente.setCod_cliente(Integer.parseInt(valor));
+        try {
+            clienteDAO.alterarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(null, "Alterado com sucesso !");
+        limpaCamposJuridica();        // TODO add your handling code here:
     }//GEN-LAST:event_btnAlterarJuriActionPerformed
 
     private void btnCancelarJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarJuridicaActionPerformed
