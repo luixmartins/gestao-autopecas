@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /* Classe ClienteDAO */
 public class ClienteDAO {
@@ -194,50 +197,7 @@ public class ClienteDAO {
     }
 
     /* Método para Excluir */
-    public void excluirFisica(Cliente cliente) throws SQLException {
-        sql = "delete from clientefisica where Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(sql);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-
-        String deleta_endereco;
-        deleta_endereco = "delete from clienteendereco where Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(deleta_endereco);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-
-        String deleta_contato;
-        deleta_contato = "delete from clientecontato where Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(deleta_contato);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-
-        String deleta_cliente;
-        deleta_cliente = "delete from cliente where cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(deleta_cliente);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-        pst.close();
-    }
-
-    public void excluirJuridica(Cliente cliente) throws SQLException {
-        sql = "delete from clientejuridica where Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(sql);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-
-        String deleta_endereco;
-        deleta_endereco = "delete from clienteendereco where Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(deleta_endereco);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-
-        String deleta_contato;
-        deleta_contato = "delete from clientecontato where Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(deleta_contato);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-
+    public void excluir(Cliente cliente) throws SQLException {
         String deleta_cliente;
         deleta_cliente = "delete from cliente where cod_cliente=?";
         pst = Conexao.getInstance().prepareStatement(deleta_cliente);
@@ -287,5 +247,32 @@ public class ClienteDAO {
         pst.execute();
         pst.close();
     }
-
+    
+    public List<Cliente> listarClientes(){
+        try {
+            List<Cliente> lista = new ArrayList<>();
+            
+            String sql = "select * from cliente;";
+            
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()){
+                Cliente cliente = new Cliente();
+                
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                
+                lista.add(cliente);
+            }
+            
+            System.out.println(lista);
+            return lista;
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro");
+        }
+        
+        return null;
+    }
 }

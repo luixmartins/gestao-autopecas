@@ -12,9 +12,11 @@ import MODEL.ClienteEndereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,22 +30,55 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     ClienteFisica cliFisica;
     ClienteJuridica cliJuridica;
     ClienteDAO clienteDAO;
-
+    
+    public void listar(){
+        ClienteDAO dao = new ClienteDAO();
+        List<Cliente> lista = dao.listarClientes();
+        
+        DefaultTableModel dados = (DefaultTableModel) tbl_busca.getModel();
+        
+        dados.setNumRows(0);
+        
+        for(Cliente c: lista){
+            dados.addRow(new Object[]{
+                c.getCod_cliente(),
+                c.getNome_cliente()
+            });
+        }
+    }
     /**
      * Creates new form ClienteFisicaVIEW
      */
     public ClienteVIEW() {
         initComponents();
         this.setVisible(true);
-        //btnAlterar.setEnabled(false);
-        //btnBuscar.setEnabled(false);
-        //btnExcluir.setEnabled(false);
-        //btnSalvar.setEnabled(false);
-        //btnCancelarJuridica.setEnabled(false);
+        
+        fechaFisica();
+        fechaJuridica();
+        fechaCamposFisica();
 
         clienteDAO = new ClienteDAO();
     }
-
+    
+    public void fechaFisica(){
+        btnAlterar.setEnabled(false);
+        //btnBuscar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnSalvar.setEnabled(false);
+        btnCancelarFisica.setEnabled(false);
+        
+        btnNovo.setEnabled(true);
+        btnBuscar.setEnabled(true);
+    }
+    public void fechaJuridica(){
+        btnAlterarJuri.setEnabled(false);
+        btnExcluirJuri.setEnabled(false);
+        btnSalvarJuri.setEnabled(false);
+        btnCancelarJuridica.setEnabled(false);
+        
+        btnNovoJuri.setEnabled(true);
+        btnBuscarJuri.setEnabled(true);
+    }
     public void limpaCamposFisica() {
         txtBairro.setText("");
         txtCEP.setText("");
@@ -57,6 +92,36 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         txtNumeroCasa.setText("");
         txtRG.setText("");
         txtTelefone.setText("");
+    }
+    
+    public void fechaCamposFisica(){
+        txtBairro.setEnabled(false);
+        txtCEP.setEnabled(false);
+        txtCelular.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtEstado.setEnabled(false);
+        txtNome.setEnabled(false);
+        txtNumeroCasa.setEnabled(false);
+        txtRG.setEnabled(false);
+        txtTelefone.setEnabled(false);
+        txtCPF.setEnabled(false);
+    }
+    
+    public void abreCamposFisica(){
+        txtBairro.setEnabled(true);
+        txtCEP.setEnabled(true);
+        txtCelular.setEnabled(true);
+        txtCidade.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtEndereco.setEnabled(true);
+        txtEstado.setEnabled(true);
+        txtNome.setEnabled(true);
+        txtNumeroCasa.setEnabled(true);
+        txtRG.setEnabled(true);
+        txtTelefone.setEnabled(true);
+        txtCPF.setEnabled(true);
     }
 
     public void limpaCamposJuridica() {
@@ -146,6 +211,12 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         btnNovoJuri = new javax.swing.JButton();
         btnAlterarJuri = new javax.swing.JButton();
         btnCancelarJuridica = new javax.swing.JButton();
+        pnl_consultas = new javax.swing.JPanel();
+        jLabel30 = new javax.swing.JLabel();
+        txt_buscanome = new javax.swing.JTextField();
+        btn_buscanome = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_busca = new javax.swing.JTable();
 
         setClosable(true);
 
@@ -605,10 +676,75 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
                     .addComponent(btnAlterarJuri))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelarJuridica)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pnl_abas.addTab("Pessoa Jurídica", pnl_Juridica);
+
+        pnl_consultas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pnl_consultasKeyPressed(evt);
+            }
+        });
+
+        jLabel30.setText("Nome");
+
+        btn_buscanome.setText("Buscar");
+        btn_buscanome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscanomeActionPerformed(evt);
+            }
+        });
+
+        tbl_busca.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código ", "Nome "
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbl_busca);
+
+        javax.swing.GroupLayout pnl_consultasLayout = new javax.swing.GroupLayout(pnl_consultas);
+        pnl_consultas.setLayout(pnl_consultasLayout);
+        pnl_consultasLayout.setHorizontalGroup(
+            pnl_consultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_consultasLayout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addComponent(jLabel30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_buscanome, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_buscanome, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_consultasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pnl_consultasLayout.setVerticalGroup(
+            pnl_consultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_consultasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnl_consultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel30)
+                    .addComponent(txt_buscanome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_buscanome))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        pnl_abas.addTab("Consulta Pessoas", pnl_consultas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -624,250 +760,9 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtRGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRGActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRGActionPerformed
+    private void btnCancelarJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarJuridicaActionPerformed
 
-    private void txtCEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCEPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCEPActionPerformed
-
-    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCelularActionPerformed
-
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-
-        if (txtBairro.getText().isEmpty() || txtCEP.getText().isEmpty()
-                || txtCPF.getText().isEmpty() || txtCelular.getText().isEmpty()
-                || txtCidade.getText().isEmpty() || txtEmail.getText().isEmpty()
-                || txtEndereco.getText().isEmpty() || txtEstado.getSelectedItem() == "Selecione"
-                || txtNome.getText().isEmpty() || txtNumeroCasa.getText().isEmpty()
-                || txtRG.getText().isEmpty() || txtTelefone.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-        } else {
-            cliente = new Cliente();
-            cliContato = new ClienteContato();
-            cliEndereco = new ClienteEndereco();
-            cliFisica = new ClienteFisica();
-
-            cliFisica.setCpf(txtCPF.getText());
-            cliFisica.setRg(txtRG.getText());
-
-            cliContato.setCelular_cliente(txtCelular.getText());
-            cliContato.setTelefone_cliente(txtTelefone.getText());
-            cliContato.setEmail(txtEmail.getText());
-
-            cliEndereco.setBairro(txtBairro.getText());
-            cliEndereco.setCep(txtCEP.getText());
-            cliEndereco.setCidade(txtCidade.getText());
-            cliEndereco.setEstado((String) txtEstado.getSelectedItem());
-            cliEndereco.setNumero(Integer.parseInt(txtNumeroCasa.getText()));
-            cliEndereco.setRua(txtEndereco.getText());
-
-            cliente.setNome_cliente(txtNome.getText());
-            cliente.setTipo_cliente(1);
-
-            try {
-                clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
-
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-            limpaCamposFisica();
-        }
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
-
-        cliente = new Cliente();
-        cliente.setCod_cliente(Integer.parseInt(valor));
-
-        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir: ");
-
-        if (confirma == 0) {
-            try {
-                clienteDAO.excluirFisica(cliente);
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_btnExcluirActionPerformed
-
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        btnSalvar.setEnabled(true);
-        btnCancelarFisica.setEnabled(true);
-    }//GEN-LAST:event_btnNovoActionPerformed
-
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
-        cliente = new Cliente();
-        cliContato = new ClienteContato();
-        cliEndereco = new ClienteEndereco();
-        cliFisica = new ClienteFisica();
-
-        cliente.setNome_cliente(txtNome.getText());
-
-        cliFisica.setCpf(txtCPF.getText());
-        cliFisica.setRg(txtRG.getText());
-
-        cliEndereco.setRua(txtEndereco.getText());
-        cliEndereco.setNumero(Integer.parseInt(txtNumeroCasa.getText()));
-        cliEndereco.setBairro(txtBairro.getText());
-        cliEndereco.setCidade(txtCidade.getText());
-        cliEndereco.setEstado((String) txtEstado.getSelectedItem());
-        cliEndereco.setCep(txtCEP.getText());
-
-        cliContato.setTelefone_cliente(txtTelefone.getText());
-        cliContato.setCelular_cliente(txtCelular.getText());
-        cliContato.setEmail(txtEmail.getText());
-
-        cliente.setCod_cliente(Integer.parseInt(valor));
-        try {
-            clienteDAO.alterarFisica(cliente, cliFisica, cliEndereco, cliContato);
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        JOptionPane.showMessageDialog(null, "Alterado com sucesso !");
-        limpaCamposFisica();
-    }//GEN-LAST:event_btnAlterarActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
-        cliente = new Cliente();
-        cliFisica = new ClienteFisica();
-        cliContato = new ClienteContato();
-        cliEndereco = new ClienteEndereco();
-        try {
-            cliente = clienteDAO.buscarFisica(Integer.parseInt(valor));
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        /* Cliente */
-        txtNome.setText(cliente.getNome_cliente());
-        /* Endereço */
-        txtCelular.setText(cliente.getCliContato().getCelular_cliente());
-        txtTelefone.setText(cliente.getCliContato().getTelefone_cliente());
-        txtEmail.setText(cliente.getCliContato().getEmail());
-        /* Contato */
-        txtBairro.setText(cliente.getCliEndereco().getBairro());
-        txtCEP.setText(cliente.getCliEndereco().getCep());
-        txtEndereco.setText(cliente.getCliEndereco().getRua());
-        txtEstado.setSelectedItem(cliente.getCliEndereco().getEstado());
-        txtCidade.setText(cliente.getCliEndereco().getCidade());
-        txtNumeroCasa.setText(Integer.toString(cliente.getCliEndereco().getNumero()));
-        /* Fisica */
-        txtCPF.setText(cliente.getCliFisica().getCpf());
-        txtRG.setText(cliente.getCliFisica().getRg());
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void txtCEPJuridicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCEPJuridicoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCEPJuridicoActionPerformed
-
-    private void txtInscricaoEstadualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInscricaoEstadualActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtInscricaoEstadualActionPerformed
-
-    private void txtCelularJuridicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularJuridicoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCelularJuridicoActionPerformed
-
-    private void btnSalvarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarJuriActionPerformed
-        if (txtBairroJuridico.getText().isEmpty() || txtCEPJuridico.getText().isEmpty()
-                || txtCNPJ.getText().isEmpty() || txtCelularJuridico.getText().isEmpty()
-                || txtCidadeJuridico.getText().isEmpty() || txtEmailJuridico.getText().isEmpty()
-                || txtEnderecoJuridico.getText().isEmpty() || txtEstadoJuridico.getSelectedItem() == "Selecione"
-                || txtNomeJuridico.getText().isEmpty() || txtNumeroJuridico.getText().isEmpty()
-                || txtInscricaoEstadual.getText().isEmpty() || txtTelefoneJuridico.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-        } else {
-            cliente = new Cliente();
-            cliContato = new ClienteContato();
-            cliEndereco = new ClienteEndereco();
-            cliJuridica = new ClienteJuridica();
-
-            cliJuridica.setCnpj(txtCNPJ.getText());
-            cliJuridica.setInscricao_estadual(txtInscricaoEstadual.getText());
-
-            cliContato.setCelular_cliente(txtCelularJuridico.getText());
-            cliContato.setTelefone_cliente(txtTelefoneJuridico.getText());
-            cliContato.setEmail(txtEmailJuridico.getText());
-
-            cliEndereco.setBairro(txtBairroJuridico.getText());
-            cliEndereco.setCep(txtCEPJuridico.getText());
-            cliEndereco.setCidade(txtCidadeJuridico.getText());
-            cliEndereco.setEstado((String) txtEstadoJuridico.getSelectedItem());
-            cliEndereco.setNumero(Integer.parseInt(txtNumeroJuridico.getText()));
-            cliEndereco.setRua(txtEnderecoJuridico.getText());
-
-            cliente.setNome_cliente(txtNomeJuridico.getText());
-            cliente.setTipo_cliente(0);
-
-            try {
-                clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
-
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-            limpaCamposJuridica();
-        }
-
-    }//GEN-LAST:event_btnSalvarJuriActionPerformed
-
-    private void btnBuscarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarJuriActionPerformed
-        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
-        cliente = new Cliente();
-        cliJuridica = new ClienteJuridica();
-        cliContato = new ClienteContato();
-        cliEndereco = new ClienteEndereco();
-        try {
-            cliente = clienteDAO.buscarJuridica(Integer.parseInt(valor));
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        /* Cliente */
-        txtNomeJuridico.setText(cliente.getNome_cliente());
-        /* Endereço */
-        txtCelularJuridico.setText(cliente.getCliContato().getCelular_cliente());
-        txtTelefoneJuridico.setText(cliente.getCliContato().getTelefone_cliente());
-        txtEmailJuridico.setText(cliente.getCliContato().getEmail());
-        /* Contato */
-        txtBairroJuridico.setText(cliente.getCliEndereco().getBairro());
-        txtCEPJuridico.setText(cliente.getCliEndereco().getCep());
-        txtEnderecoJuridico.setText(cliente.getCliEndereco().getRua());
-        txtEstadoJuridico.setSelectedItem(cliente.getCliEndereco().getEstado());
-        txtCidadeJuridico.setText(cliente.getCliEndereco().getCidade());
-        txtNumeroJuridico.setText(Integer.toString(cliente.getCliEndereco().getNumero()));
-        /* Fisica */
-        txtCNPJ.setText(cliente.getCliJuridica().getCnpj());
-        txtInscricaoEstadual.setText(cliente.getCliJuridica().getInscricao_estadual());        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarJuriActionPerformed
-
-    private void btnExcluirJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirJuriActionPerformed
-        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
-
-        cliente = new Cliente();
-        cliente.setCod_cliente(Integer.parseInt(valor));
-
-        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir: ");
-
-        if (confirma == 0) {
-            try {
-                clienteDAO.excluirJuridica(cliente);
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExcluirJuriActionPerformed
-
-    private void btnNovoJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoJuriActionPerformed
-        btnSalvar.setEnabled(true);
-        btnCancelarJuridica.setEnabled(true);
-    }//GEN-LAST:event_btnNovoJuriActionPerformed
+    }//GEN-LAST:event_btnCancelarJuridicaActionPerformed
 
     private void btnAlterarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarJuriActionPerformed
         String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
@@ -902,14 +797,289 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
         limpaCamposJuridica();        // TODO add your handling code here:
     }//GEN-LAST:event_btnAlterarJuriActionPerformed
 
-    private void btnCancelarJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarJuridicaActionPerformed
+    private void btnNovoJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoJuriActionPerformed
 
+        
+    }//GEN-LAST:event_btnNovoJuriActionPerformed
 
-    }//GEN-LAST:event_btnCancelarJuridicaActionPerformed
+    private void btnExcluirJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirJuriActionPerformed
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+
+        cliente = new Cliente();
+        cliente.setCod_cliente(Integer.parseInt(valor));
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir: ");
+
+        if (confirma == 0) {
+            try {
+                clienteDAO.excluir(cliente);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExcluirJuriActionPerformed
+
+    private void btnBuscarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarJuriActionPerformed
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+        cliente = new Cliente();
+        cliJuridica = new ClienteJuridica();
+        cliContato = new ClienteContato();
+        cliEndereco = new ClienteEndereco();
+        try {
+            cliente = clienteDAO.buscarJuridica(Integer.parseInt(valor));
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /* Cliente */
+        txtNomeJuridico.setText(cliente.getNome_cliente());
+        /* Endereço */
+        txtCelularJuridico.setText(cliente.getCliContato().getCelular_cliente());
+        txtTelefoneJuridico.setText(cliente.getCliContato().getTelefone_cliente());
+        txtEmailJuridico.setText(cliente.getCliContato().getEmail());
+        /* Contato */
+        txtBairroJuridico.setText(cliente.getCliEndereco().getBairro());
+        txtCEPJuridico.setText(cliente.getCliEndereco().getCep());
+        txtEnderecoJuridico.setText(cliente.getCliEndereco().getRua());
+        txtEstadoJuridico.setSelectedItem(cliente.getCliEndereco().getEstado());
+        txtCidadeJuridico.setText(cliente.getCliEndereco().getCidade());
+        txtNumeroJuridico.setText(Integer.toString(cliente.getCliEndereco().getNumero()));
+        /* Fisica */
+        txtCNPJ.setText(cliente.getCliJuridica().getCnpj());
+        txtInscricaoEstadual.setText(cliente.getCliJuridica().getInscricao_estadual());        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarJuriActionPerformed
+
+    private void btnSalvarJuriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarJuriActionPerformed
+        if (txtBairroJuridico.getText().isEmpty() || txtCEPJuridico.getText().isEmpty()
+            || txtCNPJ.getText().isEmpty() || txtCelularJuridico.getText().isEmpty()
+            || txtCidadeJuridico.getText().isEmpty() || txtEmailJuridico.getText().isEmpty()
+            || txtEnderecoJuridico.getText().isEmpty() || txtEstadoJuridico.getSelectedItem() == "Selecione"
+            || txtNomeJuridico.getText().isEmpty() || txtNumeroJuridico.getText().isEmpty()
+            || txtInscricaoEstadual.getText().isEmpty() || txtTelefoneJuridico.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+        } else {
+            cliente = new Cliente();
+            cliContato = new ClienteContato();
+            cliEndereco = new ClienteEndereco();
+            cliJuridica = new ClienteJuridica();
+
+            cliJuridica.setCnpj(txtCNPJ.getText());
+            cliJuridica.setInscricao_estadual(txtInscricaoEstadual.getText());
+
+            cliContato.setCelular_cliente(txtCelularJuridico.getText());
+            cliContato.setTelefone_cliente(txtTelefoneJuridico.getText());
+            cliContato.setEmail(txtEmailJuridico.getText());
+
+            cliEndereco.setBairro(txtBairroJuridico.getText());
+            cliEndereco.setCep(txtCEPJuridico.getText());
+            cliEndereco.setCidade(txtCidadeJuridico.getText());
+            cliEndereco.setEstado((String) txtEstadoJuridico.getSelectedItem());
+            cliEndereco.setNumero(Integer.parseInt(txtNumeroJuridico.getText()));
+            cliEndereco.setRua(txtEnderecoJuridico.getText());
+
+            cliente.setNome_cliente(txtNomeJuridico.getText());
+            cliente.setTipo_cliente(0);
+
+            try {
+                clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            limpaCamposJuridica();
+        }
+    }//GEN-LAST:event_btnSalvarJuriActionPerformed
+
+    private void txtCelularJuridicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularJuridicoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCelularJuridicoActionPerformed
+
+    private void txtInscricaoEstadualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInscricaoEstadualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtInscricaoEstadualActionPerformed
+
+    private void txtCEPJuridicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCEPJuridicoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCEPJuridicoActionPerformed
 
     private void btnCancelarFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarFisicaActionPerformed
         limpaCamposFisica();
+        fechaFisica();
+        fechaCamposFisica();
     }//GEN-LAST:event_btnCancelarFisicaActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+        cliente = new Cliente();
+        cliFisica = new ClienteFisica();
+        cliContato = new ClienteContato();
+        cliEndereco = new ClienteEndereco();
+        try {
+            cliente = clienteDAO.buscarFisica(Integer.parseInt(valor));
+        } catch (SQLException ex) {
+            
+            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(cliente != null){
+          /* Cliente */
+            txtNome.setText(cliente.getNome_cliente());
+            /* Endereço */
+            txtCelular.setText(cliente.getCliContato().getCelular_cliente());
+            txtTelefone.setText(cliente.getCliContato().getTelefone_cliente());
+            txtEmail.setText(cliente.getCliContato().getEmail());
+            /* Contato */
+            txtBairro.setText(cliente.getCliEndereco().getBairro());
+            txtCEP.setText(cliente.getCliEndereco().getCep());
+            txtEndereco.setText(cliente.getCliEndereco().getRua());
+            txtEstado.setSelectedItem(cliente.getCliEndereco().getEstado());
+            txtCidade.setText(cliente.getCliEndereco().getCidade());
+            txtNumeroCasa.setText(Integer.toString(cliente.getCliEndereco().getNumero()));
+            /* Fisica */
+            txtCPF.setText(cliente.getCliFisica().getCpf());
+            txtRG.setText(cliente.getCliFisica().getRg());
+
+            btnBuscar.setEnabled(false);
+            btnNovo.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+            btnCancelarFisica.setEnabled(true);
+            abreCamposFisica();  
+        } else {
+            JOptionPane.showMessageDialog(null, "Código não encontrado.");
+        }
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+        cliente = new Cliente();
+        cliContato = new ClienteContato();
+        cliEndereco = new ClienteEndereco();
+        cliFisica = new ClienteFisica();
+
+        cliente.setNome_cliente(txtNome.getText());
+
+        cliFisica.setCpf(txtCPF.getText());
+        cliFisica.setRg(txtRG.getText());
+
+        cliEndereco.setRua(txtEndereco.getText());
+        cliEndereco.setNumero(Integer.parseInt(txtNumeroCasa.getText()));
+        cliEndereco.setBairro(txtBairro.getText());
+        cliEndereco.setCidade(txtCidade.getText());
+        cliEndereco.setEstado((String) txtEstado.getSelectedItem());
+        cliEndereco.setCep(txtCEP.getText());
+
+        cliContato.setTelefone_cliente(txtTelefone.getText());
+        cliContato.setCelular_cliente(txtCelular.getText());
+        cliContato.setEmail(txtEmail.getText());
+
+        cliente.setCod_cliente(Integer.parseInt(valor));
+        try {
+            clienteDAO.alterarFisica(cliente, cliFisica, cliEndereco, cliContato);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+        limpaCamposFisica();
+        fechaFisica();
+        fechaCamposFisica();
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        btnNovo.setEnabled(false);
+        btnBuscar.setEnabled(false);
+    
+        btnSalvar.setEnabled(true);
+        btnCancelarFisica.setEnabled(true);
+        abreCamposFisica();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        String valor = JOptionPane.showInputDialog(null, "Digite o código do cliente: ");
+
+        cliente = new Cliente();
+        cliente.setCod_cliente(Integer.parseInt(valor));
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir: ");
+
+        if (confirma == 0) {
+            try {
+                clienteDAO.excluir(cliente);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            JOptionPane.showMessageDialog(null,"Excluído com sucesso!");
+            limpaCamposFisica();
+            fechaFisica();
+            fechaCamposFisica();
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+
+        if (txtBairro.getText().isEmpty() || txtCEP.getText().isEmpty()
+            || txtCPF.getText().isEmpty() || txtCelular.getText().isEmpty()
+            || txtCidade.getText().isEmpty() || txtEmail.getText().isEmpty()
+            || txtEndereco.getText().isEmpty() || txtEstado.getSelectedItem() == "Selecione"
+            || txtNome.getText().isEmpty() || txtNumeroCasa.getText().isEmpty()
+            || txtRG.getText().isEmpty() || txtTelefone.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+        } else {
+            cliente = new Cliente();
+            cliContato = new ClienteContato();
+            cliEndereco = new ClienteEndereco();
+            cliFisica = new ClienteFisica();
+
+            cliFisica.setCpf(txtCPF.getText());
+            cliFisica.setRg(txtRG.getText());
+
+            cliContato.setCelular_cliente(txtCelular.getText());
+            cliContato.setTelefone_cliente(txtTelefone.getText());
+            cliContato.setEmail(txtEmail.getText());
+
+            cliEndereco.setBairro(txtBairro.getText());
+            cliEndereco.setCep(txtCEP.getText());
+            cliEndereco.setCidade(txtCidade.getText());
+            cliEndereco.setEstado((String) txtEstado.getSelectedItem());
+            cliEndereco.setNumero(Integer.parseInt(txtNumeroCasa.getText()));
+            cliEndereco.setRua(txtEndereco.getText());
+
+            cliente.setNome_cliente(txtNome.getText());
+            cliente.setTipo_cliente(1);
+
+            try {
+                clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            limpaCamposFisica();
+            fechaFisica();
+            fechaCamposFisica();
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void txtRGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRGActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRGActionPerformed
+
+    private void txtCEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCEPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCEPActionPerformed
+
+    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCelularActionPerformed
+
+    private void btn_buscanomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscanomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_buscanomeActionPerformed
+
+    private void pnl_consultasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pnl_consultasKeyPressed
+        listar();
+    }//GEN-LAST:event_pnl_consultasKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -925,6 +1095,7 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNovoJuri;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnSalvarJuri;
+    private javax.swing.JButton btn_buscanome;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -944,14 +1115,18 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnl_Juridica;
     private javax.swing.JTabbedPane pnl_abas;
+    private javax.swing.JPanel pnl_consultas;
     private javax.swing.JPanel pnl_fisica;
+    private javax.swing.JTable tbl_busca;
     private javax.swing.JTextField txtBairro;
     private javax.swing.JTextField txtBairroJuridico;
     private javax.swing.JFormattedTextField txtCEP;
@@ -976,5 +1151,6 @@ public class ClienteVIEW extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtRG;
     private javax.swing.JFormattedTextField txtTelefone;
     private javax.swing.JFormattedTextField txtTelefoneJuridico;
+    private javax.swing.JTextField txt_buscanome;
     // End of variables declaration//GEN-END:variables
 }
