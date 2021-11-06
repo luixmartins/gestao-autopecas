@@ -96,14 +96,8 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        /* Instanciando tela Cliente View*/
-        ClienteVIEW cliView = new ClienteVIEW();
-        /* Adicionando ao Painel Principal 
-        pnl_principal.removeAll();
-        pnl_principal.add(cliView);
-        pnl_principal.updateUI();
-        */
-        clienteTest view = new clienteTest();
+        /* Instanciando tela Cliente View*/       
+        ClienteVIEW view = new ClienteVIEW();
         view.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
