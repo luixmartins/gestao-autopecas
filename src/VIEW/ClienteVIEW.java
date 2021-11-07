@@ -11,6 +11,12 @@ import MODEL.ClienteContato;
 import MODEL.ClienteEndereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
+import com.sun.glass.events.KeyEvent;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +48,8 @@ public class ClienteVIEW extends javax.swing.JFrame {
 
         btnAlterar.setVisible(false);
 
-        btnBuscar.setEnabled(false);
-
+        //btnBuscar.setEnabled(false);
+        txtBusca.setEnabled(false);
         fechaBotoes();
         fechaCampos();
     }
@@ -57,6 +63,8 @@ public class ClienteVIEW extends javax.swing.JFrame {
             dados.addRow(new Object[]{
                 c.getCod_cliente(),
                 c.getNome_cliente(),
+                c.getCliFisica().getCpf(),
+                c.getCliFisica().getRg(),
                 c.getCliContato().getCelular_cliente(),
                 c.getCliContato().getTelefone_cliente(),
                 c.getCliContato().getEmail(),
@@ -79,6 +87,8 @@ public class ClienteVIEW extends javax.swing.JFrame {
             dados.addRow(new Object[]{
                 c.getCod_cliente(),
                 c.getNome_cliente(),
+                c.getCliJuridica().getCnpj(),
+                c.getCliJuridica().getInscricao_estadual(),
                 c.getCliContato().getCelular_cliente(),
                 c.getCliContato().getTelefone_cliente(),
                 c.getCliContato().getEmail(),
@@ -235,7 +245,6 @@ public class ClienteVIEW extends javax.swing.JFrame {
         tabelaClientes = new javax.swing.JTable();
         rbnBuscaFisica = new javax.swing.JRadioButton();
         rbnBuscaJuridica = new javax.swing.JRadioButton();
-        btnBuscar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -400,6 +409,11 @@ public class ClienteVIEW extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCepKeyPressed(evt);
+            }
+        });
 
         btnAlterar.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnAlterar.setText("Alterar");
@@ -445,7 +459,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 6, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -599,18 +613,23 @@ public class ClienteVIEW extends javax.swing.JFrame {
                 txtBuscaActionPerformed(evt);
             }
         });
+        txtBusca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscaKeyPressed(evt);
+            }
+        });
 
-        tabelaClientes.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        tabelaClientes.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nome / Razão social", "Celular", "Telefone fixo", "Email", "Endereço", "Numero", "Bairro", "Cidade", "Estado", "CEP"
+                "Código", "Nome / Razão", "CPF / CNPJ", "RG / IE", "Celular", "Telefone fixo", "Email", "Endereço", "Numero", "Bairro", "Cidade", "Estado", "CEP"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -640,35 +659,21 @@ public class ClienteVIEW extends javax.swing.JFrame {
             }
         });
 
-        btnBuscar.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                        .addComponent(rbnBuscaFisica)
-                        .addGap(18, 18, 18)
-                        .addComponent(rbnBuscaJuridica)
-                        .addGap(59, 59, 59))))
+                .addComponent(jLabel21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
+                .addComponent(rbnBuscaFisica)
+                .addGap(18, 18, 18)
+                .addComponent(rbnBuscaJuridica)
+                .addGap(59, 59, 59))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -678,11 +683,9 @@ public class ClienteVIEW extends javax.swing.JFrame {
                     .addComponent(jLabel21)
                     .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbnBuscaFisica)
-                    .addComponent(rbnBuscaJuridica)
-                    .addComponent(btnBuscar))
+                    .addComponent(rbnBuscaJuridica))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta de clientes", jPanel3);
@@ -718,7 +721,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnNovo)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -726,11 +729,12 @@ public class ClienteVIEW extends javax.swing.JFrame {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         abreCampos();
-
+        txtBusca.setEnabled(false);
+        //btnBuscar.setEnabled(false);
         btnNovo.setEnabled(false);
         btnExcluir.setEnabled(false);
         btnAlterar.setVisible(false);
-        btnCancelar.setEnabled(true);        
+        btnCancelar.setEnabled(true);
         btnSalvar.setVisible(true);
         btnSalvar.setEnabled(true);
     }//GEN-LAST:event_btnNovoActionPerformed
@@ -740,6 +744,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         fechaBotoes();
         fechaCampos();
 
+        btnAlterar.setEnabled(false);
         btnNovo.setEnabled(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -887,22 +892,19 @@ public class ClienteVIEW extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jPanel2MouseClicked
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        if (rbnBuscaFisica.isSelected() == true) {
-            listarClientesFisica();
-        } else if (rbnBuscaJuridica.isSelected() == true) {
-            listarClientesJuridica();
-        }
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     private void rbnBuscaFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnBuscaFisicaActionPerformed
         rbnBuscaJuridica.setSelected(false);
-        btnBuscar.setEnabled(true);
+        //btnBuscar.setEnabled(true);
+        txtBusca.setEnabled(true);
+        listarClientesFisica();
     }//GEN-LAST:event_rbnBuscaFisicaActionPerformed
 
     private void rbnBuscaJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnBuscaJuridicaActionPerformed
         rbnBuscaFisica.setSelected(false);
-        btnBuscar.setEnabled(true);
+        //btnBuscar.setEnabled(true);
+        txtBusca.setEnabled(true);
+
+        listarClientesJuridica();
     }//GEN-LAST:event_rbnBuscaJuridicaActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -932,7 +934,11 @@ public class ClienteVIEW extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JOptionPane.showMessageDialog(null, "Alterado com sucesso !");
+        JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+        btnAlterar.setVisible(false);
+        btnSalvar.setVisible(true);
+        btnSalvar.setEnabled(false);
+        btnNovo.setEnabled(true);
         limpaCampos();
         fechaCampos();
         fechaBotoes();
@@ -943,7 +949,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         cliente = new Cliente();
         cliente.setCod_cliente(Integer.parseInt(txtCod.getText()));
 
-        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtNome.getText());
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtNome.getText() + "?");
 
         if (confirma == 0) {
             try {
@@ -957,9 +963,11 @@ public class ClienteVIEW extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
             limpaCampos();
             fechaBotoes();
-            fechaCampos();            
+            fechaCampos();
             btnAlterar.setVisible(false);
-            btnNovo.setVisible(true);
+            btnSalvar.setVisible(true);
+            btnNovo.setEnabled(true);
+
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -968,19 +976,41 @@ public class ClienteVIEW extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(0);
         txtCod.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString());
         txtNome.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1).toString());
-        txtCelular.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
-        txtTelefone.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
-        txtEmail.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4).toString());
-        txtRua.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 5).toString());
-        txtNumero.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 6).toString());
-        txtBairro.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 7).toString());
-        txtCidade.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 8).toString());
-        jcbEstado.setSelectedItem(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 9).toString());
-        txtCep.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 10).toString());
+        txtCelular.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4).toString());
+        txtTelefone.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 5).toString());
+        txtEmail.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 6).toString());
+        txtRua.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 7).toString());
+        txtNumero.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 8).toString());
+        txtBairro.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 9).toString());
+        txtCidade.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 10).toString());
+        jcbEstado.setSelectedItem(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 11).toString());
+        txtCep.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 12).toString());
+
+        if (rbnBuscaFisica.isSelected()) {
+            txtCpf.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
+            txtRg.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
+
+            txtCnpj.setText("");
+            txtIe.setText("");
+        } else {
+            if (rbnBuscaJuridica.isSelected()) {
+                txtCnpj.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
+                txtIe.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
+
+                txtCpf.setText("");
+                txtRg.setText("");
+            }
+        }
+
         abreCampos();
         btnSalvar.setVisible(false);
+        btnNovo.setEnabled(false);
+
         btnAlterar.setVisible(true);
+        btnAlterar.setEnabled(true);
         btnExcluir.setEnabled(true);
+        btnCancelar.setEnabled(true);
+
         rbnPF.setEnabled(false);
         rbnPJ.setEnabled(false);
         txtCpf.setEnabled(false);
@@ -989,10 +1019,74 @@ public class ClienteVIEW extends javax.swing.JFrame {
         txtIe.setEnabled(false);
     }//GEN-LAST:event_tabelaClientesMouseClicked
 
+    private void txtBuscaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaKeyPressed
+        if (rbnBuscaFisica.isSelected()) {
+            String nome = "%" + txtBusca.getText() + "%";
+
+            clienteDAO = new ClienteDAO();
+
+            List<Cliente> lista = clienteDAO.buscaClientesFisica(nome);
+            DefaultTableModel dados = (DefaultTableModel) tabelaClientes.getModel();
+
+            dados.setNumRows(0);
+
+            for (Cliente c : lista) {
+                dados.addRow(new Object[]{
+                    c.getCod_cliente(),
+                    c.getNome_cliente(),
+                    c.getCliFisica().getCpf(),
+                    c.getCliFisica().getRg(),
+                    c.getCliContato().getCelular_cliente(),
+                    c.getCliContato().getTelefone_cliente(),
+                    c.getCliContato().getEmail(),
+                    c.getCliEndereco().getRua(),
+                    c.getCliEndereco().getNumero(),
+                    c.getCliEndereco().getBairro(),
+                    c.getCliEndereco().getCidade(),
+                    c.getCliEndereco().getEstado(),
+                    c.getCliEndereco().getCep()
+                });
+            }
+
+        } else {
+            if (rbnBuscaJuridica.isSelected()) {
+                String nome = "%" + txtBusca.getText() + "%";
+
+                clienteDAO = new ClienteDAO();
+
+                List<Cliente> lista2 = clienteDAO.buscaClienteJuridica(nome);
+                DefaultTableModel dados = (DefaultTableModel) tabelaClientes.getModel();
+
+                dados.setNumRows(0);
+
+                for (Cliente c : lista2) {
+                    dados.addRow(new Object[]{
+                        c.getCod_cliente(),
+                        c.getNome_cliente(),
+                        c.getCliJuridica().getCnpj(),
+                        c.getCliJuridica().getInscricao_estadual(),
+                        c.getCliContato().getCelular_cliente(),
+                        c.getCliContato().getTelefone_cliente(),
+                        c.getCliContato().getEmail(),
+                        c.getCliEndereco().getRua(),
+                        c.getCliEndereco().getNumero(),
+                        c.getCliEndereco().getBairro(),
+                        c.getCliEndereco().getCidade(),
+                        c.getCliEndereco().getEstado(),
+                        c.getCliEndereco().getCep()
+                    });
+                }
+            }
+        }
+    }//GEN-LAST:event_txtBuscaKeyPressed
+
+    private void txtCepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCepKeyPressed
+
+    }//GEN-LAST:event_txtCepKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;

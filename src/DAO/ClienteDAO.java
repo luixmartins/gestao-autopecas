@@ -7,6 +7,7 @@ import MODEL.ClienteContato;
 import MODEL.ClienteEndereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
+import MODEL.WebServiceCep;
 /* Importações do SQL */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -128,34 +129,45 @@ public class ClienteDAO {
 
     /* Método para Excluir */
     public void excluir(Cliente cliente) throws SQLException {
-        String deleta_cliente;
-        deleta_cliente = "delete from cliente where cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(deleta_cliente);
-        pst.setInt(1, cliente.getCod_cliente());
-        pst.execute();
-        pst.close();
+        try {
+            String deleta_cliente;
+            deleta_cliente = "delete from cliente where cod_cliente=?";
+            pst = Conexao.getInstance().prepareStatement(deleta_cliente);
+            pst.setInt(1, cliente.getCod_cliente());
+            pst.execute();
+            pst.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
     }
 
     /* Método para Alterar Registros */
     public void alterar(Cliente cliente, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
         /* Update dados Cliente */
-        sql = "UPDATE cliente,clientecontato,clienteendereco SET cliente.nome_cliente=?,clienteendereco.rua_endereco=?,clienteendereco.numero_endereco=?,clienteendereco.bairro_endereco=?,clienteendereco.cidade_endereco=?,clienteendereco.estado_endereco=?,clienteendereco.cep_endereco=?,clientecontato.telefone_contato=?,clientecontato.celular_contato=?,clientecontato.email_contato=? where cliente.cod_cliente=? and clienteendereco.Cliente_cod_cliente=? and clientecontato.Cliente_cod_cliente=?";
-        pst = Conexao.getInstance().prepareStatement(sql);
-        pst.setString(1, cliente.getNome_cliente());
-        pst.setString(2, cliEnd.getRua());
-        pst.setInt(3, cliEnd.getNumero());
-        pst.setString(4, cliEnd.getBairro());
-        pst.setString(5, cliEnd.getCidade());
-        pst.setString(6, cliEnd.getEstado());
-        pst.setString(7, cliEnd.getCep());
-        pst.setString(8, cliContato.getTelefone_cliente());
-        pst.setString(9, cliContato.getCelular_cliente());
-        pst.setString(10, cliContato.getEmail());
-        pst.setInt(11, cliente.getCod_cliente());
-        pst.setInt(12, cliente.getCod_cliente());
-        pst.setInt(13, cliente.getCod_cliente());
-        pst.execute();
-        pst.close();
+
+        try {
+            sql = "UPDATE cliente,clientecontato,clienteendereco SET cliente.nome_cliente=?,clienteendereco.rua_endereco=?,clienteendereco.numero_endereco=?,clienteendereco.bairro_endereco=?,clienteendereco.cidade_endereco=?,clienteendereco.estado_endereco=?,clienteendereco.cep_endereco=?,clientecontato.telefone_contato=?,clientecontato.celular_contato=?,clientecontato.email_contato=? where cliente.cod_cliente=? and clienteendereco.Cliente_cod_cliente=? and clientecontato.Cliente_cod_cliente=?";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            pst.setString(1, cliente.getNome_cliente());
+            pst.setString(2, cliEnd.getRua());
+            pst.setInt(3, cliEnd.getNumero());
+            pst.setString(4, cliEnd.getBairro());
+            pst.setString(5, cliEnd.getCidade());
+            pst.setString(6, cliEnd.getEstado());
+            pst.setString(7, cliEnd.getCep());
+            pst.setString(8, cliContato.getTelefone_cliente());
+            pst.setString(9, cliContato.getCelular_cliente());
+            pst.setString(10, cliContato.getEmail());
+            pst.setInt(11, cliente.getCod_cliente());
+            pst.setInt(12, cliente.getCod_cliente());
+            pst.setInt(13, cliente.getCod_cliente());
+            pst.execute();
+            pst.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
     }
 
     /* Lista para Buscar Cliente Fisica */
@@ -176,6 +188,7 @@ public class ClienteDAO {
                 Cliente cliente = new Cliente();
                 ClienteContato cliContato = new ClienteContato();
                 ClienteEndereco cliEndereco = new ClienteEndereco();
+                ClienteFisica cliFisica = new ClienteFisica();
                 /* Setando Atributos Cliente */
                 cliente.setCod_cliente(rs.getInt("cod_cliente"));
                 cliente.setNome_cliente(rs.getString("nome_cliente"));
@@ -194,6 +207,11 @@ public class ClienteDAO {
                 cliEndereco.setCidade(rs.getString("cidade_endereco"));
                 cliEndereco.setEstado(rs.getString("estado_endereco"));
                 cliEndereco.setCep(rs.getString("cep_endereco"));
+
+                cliente.setCliFisica(cliFisica);
+
+                cliFisica.setCpf(rs.getString("cpf"));
+                cliFisica.setRg(rs.getString("rg"));
                 /* Adicionando dados na Lista */
                 lista.add(cliente);
             }
@@ -202,7 +220,7 @@ public class ClienteDAO {
             return lista;
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro");
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
 
         return null;
@@ -226,6 +244,7 @@ public class ClienteDAO {
                 Cliente cliente = new Cliente();
                 ClienteContato cliContato = new ClienteContato();
                 ClienteEndereco cliEndereco = new ClienteEndereco();
+                ClienteJuridica cliJuridica = new ClienteJuridica();
                 /* Setando Atributos Cliente */
                 cliente.setCod_cliente(rs.getInt("cod_cliente"));
                 cliente.setNome_cliente(rs.getString("nome_cliente"));
@@ -244,6 +263,11 @@ public class ClienteDAO {
                 cliEndereco.setCidade(rs.getString("cidade_endereco"));
                 cliEndereco.setEstado(rs.getString("estado_endereco"));
                 cliEndereco.setCep(rs.getString("cep_endereco"));
+
+                cliente.setCliJuridica(cliJuridica);
+
+                cliJuridica.setCnpj(rs.getString("cnpj"));
+                cliJuridica.setInscricao_estadual(rs.getString("inscricao_estadual"));
                 /* Adicionando dados na Lista */
                 lista.add(cliente);
             }
@@ -252,10 +276,151 @@ public class ClienteDAO {
             return lista;
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro");
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
 
         return null;
     }
 
+    //METODOS DE BUSCA POR DIGITAÇÃO
+    public List<Cliente> buscaClientesFisica(String nome) {
+        try {
+            List<Cliente> lista = new ArrayList<>();
+
+            String sql = "select * from cliente"
+                    + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
+                    + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
+                    + " inner join clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente where nome_cliente like \"" + nome + "\"";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            //pst.setString(0, nome);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Cliente cliente = new Cliente();
+                ClienteContato cliContato = new ClienteContato();
+                ClienteEndereco cliEndereco = new ClienteEndereco();
+                ClienteFisica cliFisica = new ClienteFisica();
+
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando CliContato*/
+                cliente.setCliContato(cliContato);
+                /* Setando Atributos CliContato */
+                cliContato.setCelular_cliente(rs.getString("celular_contato"));
+                cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
+                cliContato.setEmail(rs.getString("email_contato"));
+                /* Setando CliEndereço */
+                cliente.setCliEndereco(cliEndereco);
+                /* Setando Atributos CliEndereco */
+                cliEndereco.setRua(rs.getString("rua_endereco"));
+                cliEndereco.setNumero(rs.getInt("numero_endereco"));
+                cliEndereco.setBairro(rs.getString("bairro_endereco"));
+                cliEndereco.setCidade(rs.getString("cidade_endereco"));
+                cliEndereco.setEstado(rs.getString("estado_endereco"));
+                cliEndereco.setCep(rs.getString("cep_endereco"));
+
+                cliente.setCliFisica(cliFisica);
+
+                cliFisica.setCpf(rs.getString("cpf"));
+                cliFisica.setRg(rs.getString("rg"));
+
+                /* Adicionando dados na Lista */
+                lista.add(cliente);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+    /* Lista para Buscar Cliente Juridica */
+    public List<Cliente> buscaClienteJuridica(String nome) {
+        try {
+            List<Cliente> lista = new ArrayList<>();
+
+            String sql = "select * from cliente"
+                    + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
+                    + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
+                    + " inner join clientejuridica on clientejuridica.Cliente_cod_cliente = cliente.cod_cliente where nome_cliente like \"" + nome + "\"";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Cliente cliente = new Cliente();
+                ClienteContato cliContato = new ClienteContato();
+                ClienteEndereco cliEndereco = new ClienteEndereco();
+                ClienteJuridica cliJuridica = new ClienteJuridica();
+
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando CliContato*/
+                cliente.setCliContato(cliContato);
+                /* Setando Atributos CliContato */
+                cliContato.setCelular_cliente(rs.getString("celular_contato"));
+                cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
+                cliContato.setEmail(rs.getString("email_contato"));
+                /* Setando CliEndereço */
+                cliente.setCliEndereco(cliEndereco);
+                /* Setando Atributos CliEndereco */
+                cliEndereco.setRua(rs.getString("rua_endereco"));
+                cliEndereco.setNumero(rs.getInt("numero_endereco"));
+                cliEndereco.setBairro(rs.getString("bairro_endereco"));
+                cliEndereco.setCidade(rs.getString("cidade_endereco"));
+                cliEndereco.setEstado(rs.getString("estado_endereco"));
+                cliEndereco.setCep(rs.getString("cep_endereco"));
+
+                cliente.setCliJuridica(cliJuridica);
+
+                cliJuridica.setCnpj(rs.getString("cnpj"));
+                cliJuridica.setInscricao_estadual(rs.getString("inscricao_estadual"));
+                /* Adicionando dados na Lista */
+                lista.add(cliente);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+    //BUSCA DE CEP 
+    public ClienteEndereco buscaCep(String cep) {
+        try {
+            WebServiceCep webServiceCep = WebServiceCep.searchCep(cep);
+
+            ClienteEndereco cliEndereco = new ClienteEndereco();
+
+            if (webServiceCep.wasSuccessful()) {
+                cliEndereco.setRua((webServiceCep.getLogradouroFull()));
+                cliEndereco.setCidade((webServiceCep.getCidade()));
+                cliEndereco.setEstado(webServiceCep.getUf());
+                cliEndereco.setBairro(webServiceCep.getBairro());
+
+                return cliEndereco;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao encontrar endereço! Insira manualmente.");
+                
+                return null;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Falha no sistema! Contate o desenvolvedor.");
+        }
+        return null;
+    }
 }
