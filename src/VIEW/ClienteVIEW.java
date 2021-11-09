@@ -247,7 +247,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         rbnBuscaJuridica = new javax.swing.JRadioButton();
         btnNovo = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
