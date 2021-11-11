@@ -31,22 +31,10 @@ public class ClienteDAO {
 
     /* Método para Salvar Pessoa Fisica */
     public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
-        sql = "insert into cliente values (?,?,?)";
-        pst = Conexao.getInstance().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        pst.setInt(1, 0);
-        pst.setString(2, cliente.getNome_cliente());
-        pst.setInt(3, cliente.getTipo_cliente());
-        pst.execute();
-        /* Pegando o ultimo ID inserido */
-        ResultSet rs = pst.getGeneratedKeys();
-        int id = 0;
-        if (rs.next()) {
-            id = rs.getInt(1);
-        }
         /* Inserindo o Endereço */
         String Endereco;
-        Endereco = "insert into clienteendereco values (?,?,?,?,?,?,?,?)";
-        pst = Conexao.getInstance().prepareStatement(Endereco);
+        Endereco = "insert into endereco values (?,?,?,?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(Endereco, Statement.RETURN_GENERATED_KEYS);
         pst.setInt(1, 0);
         pst.setString(2, cliEnd.getRua());
         pst.setInt(3, cliEnd.getNumero());
@@ -54,48 +42,64 @@ public class ClienteDAO {
         pst.setString(5, cliEnd.getCidade());
         pst.setString(6, cliEnd.getEstado());
         pst.setString(7, cliEnd.getCep());
-        pst.setInt(8, id);
         pst.execute();
+        /* Pegando o ultimo ID inserido */
+        ResultSet rs = pst.getGeneratedKeys();
+        int idEndereco = 0;
+        if (rs.next()) {
+            idEndereco = rs.getInt(1);
+        }
+
         /* Inserindo o Contato */
         String sqlContato;
-        sqlContato = "insert into clientecontato values (?,?,?,?,?,?)";
-        pst = Conexao.getInstance().prepareStatement(sqlContato);
+        sqlContato = "insert into contato values (?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(sqlContato, Statement.RETURN_GENERATED_KEYS);
         pst.setInt(1, 0);
         pst.setString(2, cliContato.getTelefone_cliente());
         pst.setString(3, cliContato.getCelular_cliente());
         pst.setString(4, cliContato.getEmail());
-        pst.setInt(5, id);
-        pst.setInt(6, id);
         pst.execute();
+        /* Pegando o ultimo ID inserido */
+        ResultSet rs2 = pst.getGeneratedKeys();
+        int idContato = 0;
+        if (rs2.next()) {
+            idContato = rs2.getInt(1);
+        }
+
+        /* Inserindo Cliente */
+        sql = "insert into cliente values (?,?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        pst.setInt(1, 0);
+        pst.setString(2, cliente.getNome_cliente());
+        pst.setInt(3, cliente.getTipo_cliente());
+        pst.setInt(4, idContato);
+        pst.setInt(5, idEndereco);
+        pst.execute();
+        /* Pegando o ultimo ID inserido */
+        ResultSet rs3 = pst.getGeneratedKeys();
+        int idCliente = 0;
+        if (rs3.next()) {
+            idCliente = rs3.getInt(1);
+        }
+
         /* Inserindo Pessoa Fisica */
         String sqlFisica;
         sqlFisica = "insert into clientefisica values (?,?,?)";
         pst = Conexao.getInstance().prepareStatement(sqlFisica);
         pst.setString(1, cliFisica.getCpf());
         pst.setString(2, cliFisica.getRg());
-        pst.setInt(3, id);
+        pst.setInt(3, idCliente);
         pst.execute();
+
         pst.close();
     }
 
     /* Método para Salvar Pessoa Juridica */
     public void salvarJuridica(Cliente cliente, ClienteJuridica cliJuridica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
-        sql = "insert into cliente values (?,?,?)";
-        pst = Conexao.getInstance().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        pst.setInt(1, 0);
-        pst.setString(2, cliente.getNome_cliente());
-        pst.setInt(3, cliente.getTipo_cliente());
-        pst.execute();
-        /* Pegando o ultimo ID inserido */
-        ResultSet rs = pst.getGeneratedKeys();
-        int id = 0;
-        if (rs.next()) {
-            id = rs.getInt(1);
-        }
         /* Inserindo o Endereço */
         String Endereco;
-        Endereco = "insert into clienteendereco values (?,?,?,?,?,?,?,?)";
-        pst = Conexao.getInstance().prepareStatement(Endereco);
+        Endereco = "insert into endereco values (?,?,?,?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(Endereco, Statement.RETURN_GENERATED_KEYS);
         pst.setInt(1, 0);
         pst.setString(2, cliEnd.getRua());
         pst.setInt(3, cliEnd.getNumero());
@@ -103,37 +107,82 @@ public class ClienteDAO {
         pst.setString(5, cliEnd.getCidade());
         pst.setString(6, cliEnd.getEstado());
         pst.setString(7, cliEnd.getCep());
-        pst.setInt(8, id);
         pst.execute();
-        /* Inserindo o Endereço */
+        /* Pegando o ultimo ID inserido */
+        ResultSet rs = pst.getGeneratedKeys();
+        int idEndereco = 0;
+        if (rs.next()) {
+            idEndereco = rs.getInt(1);
+        }
+
+        /* Inserindo o Contato */
         String sqlContato;
-        sqlContato = "insert into clientecontato values (?,?,?,?,?,?)";
-        pst = Conexao.getInstance().prepareStatement(sqlContato);
+        sqlContato = "insert into contato values (?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(sqlContato, Statement.RETURN_GENERATED_KEYS);
         pst.setInt(1, 0);
         pst.setString(2, cliContato.getTelefone_cliente());
         pst.setString(3, cliContato.getCelular_cliente());
         pst.setString(4, cliContato.getEmail());
-        pst.setInt(5, id);
-        pst.setInt(6, id);
         pst.execute();
+        /* Pegando o ultimo ID inserido */
+        ResultSet rs2 = pst.getGeneratedKeys();
+        int idContato = 0;
+        if (rs2.next()) {
+            idContato = rs2.getInt(1);
+        }
+
+        /* Inserindo Cliente */
+        sql = "insert into cliente values (?,?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        pst.setInt(1, 0);
+        pst.setString(2, cliente.getNome_cliente());
+        pst.setInt(3, cliente.getTipo_cliente());
+        pst.setInt(4, idContato);
+        pst.setInt(5, idEndereco);
+        pst.execute();
+        /* Pegando o ultimo ID inserido */
+        ResultSet rs3 = pst.getGeneratedKeys();
+        int idCliente = 0;
+        if (rs3.next()) {
+            idCliente = rs3.getInt(1);
+        }
         /* Inserindo Pessoa Fisica */
         String sqlJuridica;
         sqlJuridica = "insert into clientejuridica values (?,?,?)";
         pst = Conexao.getInstance().prepareStatement(sqlJuridica);
         pst.setString(1, cliJuridica.getCnpj());
         pst.setString(2, cliJuridica.getInscricao_estadual());
-        pst.setInt(3, id);
+        pst.setInt(3, idCliente);
         pst.execute();
+
         pst.close();
     }
 
     /* Método para Excluir */
     public void excluir(Cliente cliente) throws SQLException {
         try {
-            String deleta_cliente;
-            deleta_cliente = "delete from cliente where cod_cliente=?";
+            String deleta_cliente, deleta_contato, buscaDados, delete_endereco, deleta_fisica;
+            buscaDados = "SELECT * FROM cliente where  cod_cliente = " + cliente.getCod_cliente();
+            pst = Conexao.getInstance().prepareStatement(buscaDados);
+            ResultSet rs = pst.executeQuery(buscaDados);
+            int codEndereco = 0;
+            int codContato = 0;
+
+            while (rs.next()) {
+                codContato = rs.getInt("clientecontato_cod_contato");
+                codEndereco = rs.getInt("endereco_cod_endereco");
+            }
+
+            deleta_cliente = "delete from cliente where cod_cliente=" + cliente.getCod_cliente();;
             pst = Conexao.getInstance().prepareStatement(deleta_cliente);
-            pst.setInt(1, cliente.getCod_cliente());
+            pst.execute();
+            deleta_contato = "delete from contato where cod_contato = ?";
+            pst = Conexao.getInstance().prepareStatement(deleta_contato);
+            pst.setInt(1, codContato);
+            pst.execute();
+            delete_endereco = "delete from endereco where cod_endereco =?";
+            pst = Conexao.getInstance().prepareStatement(delete_endereco);
+            pst.setInt(1, codEndereco);
             pst.execute();
             pst.close();
         } catch (Exception e) {
@@ -147,7 +196,17 @@ public class ClienteDAO {
         /* Update dados Cliente */
 
         try {
-            sql = "UPDATE cliente,clientecontato,clienteendereco SET cliente.nome_cliente=?,clienteendereco.rua_endereco=?,clienteendereco.numero_endereco=?,clienteendereco.bairro_endereco=?,clienteendereco.cidade_endereco=?,clienteendereco.estado_endereco=?,clienteendereco.cep_endereco=?,clientecontato.telefone_contato=?,clientecontato.celular_contato=?,clientecontato.email_contato=? where cliente.cod_cliente=? and clienteendereco.Cliente_cod_cliente=? and clientecontato.Cliente_cod_cliente=?";
+            String buscaDados;
+            buscaDados = "SELECT * FROM cliente where  cod_cliente = " + cliente.getCod_cliente();
+            pst = Conexao.getInstance().prepareStatement(buscaDados);
+            ResultSet rs = pst.executeQuery(buscaDados);
+            int codEndereco = 0;
+            int codContato = 0;
+            while (rs.next()) {
+                codContato = rs.getInt("clientecontato_cod_contato");
+                codEndereco = rs.getInt("endereco_cod_endereco");
+            }
+            sql = "UPDATE cliente,contato,endereco SET cliente.nome_cliente=?,endereco.rua_endereco=?,endereco.numero_endereco=?,endereco.bairro_endereco=?,endereco.cidade_endereco=?,endereco.estado_endereco=?,endereco.cep_endereco=?,contato.telefone_contato=?,contato.celular_contato=?,contato.email_contato=? where cliente.cod_cliente=? and endereco.cod_endereco=? and contato.cod_contato = ?";
             pst = Conexao.getInstance().prepareStatement(sql);
             pst.setString(1, cliente.getNome_cliente());
             pst.setString(2, cliEnd.getRua());
@@ -160,8 +219,8 @@ public class ClienteDAO {
             pst.setString(9, cliContato.getCelular_cliente());
             pst.setString(10, cliContato.getEmail());
             pst.setInt(11, cliente.getCod_cliente());
-            pst.setInt(12, cliente.getCod_cliente());
-            pst.setInt(13, cliente.getCod_cliente());
+            pst.setInt(12, codEndereco);
+            pst.setInt(13, codContato);
             pst.execute();
             pst.close();
         } catch (Exception e) {
@@ -175,10 +234,7 @@ public class ClienteDAO {
         try {
             List<Cliente> lista = new ArrayList<>();
 
-            String sql = "select * from cliente"
-                    + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
-                    + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
-                    + " inner join clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente where cliente.tipo_cliente = 0";
+            String sql = "select * from clientefisica inner join cliente on cliente.cod_cliente = clientefisica.cliente_cod_cliente inner join contato on contato.cod_contato = cliente.clientecontato_cod_contato inner join endereco on endereco.cod_endereco = cliente.endereco_cod_endereco";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -231,10 +287,7 @@ public class ClienteDAO {
         try {
             List<Cliente> lista = new ArrayList<>();
 
-            String sql = "select * from cliente"
-                    + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
-                    + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
-                    + " inner join clientejuridica on clientejuridica.Cliente_cod_cliente = cliente.cod_cliente where cliente.tipo_cliente = 1 ";
+            String sql = "select * from clientejuridica inner join cliente on cliente.cod_cliente = clientejuridica.cliente_cod_cliente inner join contato on contato.cod_contato = cliente.clientecontato_cod_contato inner join endereco on endereco.cod_endereco = cliente.endereco_cod_endereco";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -415,7 +468,7 @@ public class ClienteDAO {
                 return cliEndereco;
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao encontrar endereço! Insira manualmente.");
-                
+
                 return null;
             }
         } catch (Exception e) {

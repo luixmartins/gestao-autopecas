@@ -47,8 +47,6 @@ public class ClienteVIEW extends javax.swing.JFrame {
         txtCod.setEnabled(false);
 
         btnAlterar.setVisible(false);
-
-        //btnBuscar.setEnabled(false);
         txtBusca.setEnabled(false);
         fechaBotoes();
         fechaCampos();
