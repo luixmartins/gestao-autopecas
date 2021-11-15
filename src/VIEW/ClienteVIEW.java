@@ -7,8 +7,8 @@ package VIEW;
 
 import DAO.ClienteDAO;
 import MODEL.Cliente;
-import MODEL.ClienteContato;
-import MODEL.ClienteEndereco;
+import MODEL.Contato;
+import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
 import com.sun.glass.events.KeyEvent;
@@ -32,8 +32,8 @@ import javax.swing.table.DefaultTableModel;
 public class ClienteVIEW extends javax.swing.JFrame {
 
     Cliente cliente;
-    ClienteContato cliContato;
-    ClienteEndereco cliEndereco;
+    Contato cliContato;
+    Endereco cliEndereco;
     ClienteFisica cliFisica;
     ClienteJuridica cliJuridica;
     ClienteDAO clienteDAO;
@@ -762,13 +762,13 @@ public class ClienteVIEW extends javax.swing.JFrame {
                 cliente.setNome_cliente(listaCampos.get(0));
                 cliente.setTipo_cliente(0);
 
-                cliContato = new ClienteContato();
+                cliContato = new Contato();
 
                 cliContato.setCelular_cliente(listaCampos.get(5));
                 cliContato.setTelefone_cliente(listaCampos.get(6));
                 cliContato.setEmail(listaCampos.get(7));
 
-                cliEndereco = new ClienteEndereco();
+                cliEndereco = new Endereco();
 
                 cliEndereco.setBairro(listaCampos.get(2));
                 cliEndereco.setCep(listaCampos.get(4));
@@ -809,13 +809,13 @@ public class ClienteVIEW extends javax.swing.JFrame {
                 cliente.setNome_cliente(listaCampos.get(0));
                 cliente.setTipo_cliente(1);
 
-                cliContato = new ClienteContato();
+                cliContato = new Contato();
 
                 cliContato.setCelular_cliente(listaCampos.get(5));
                 cliContato.setTelefone_cliente(listaCampos.get(6));
                 cliContato.setEmail(listaCampos.get(7));
 
-                cliEndereco = new ClienteEndereco();
+                cliEndereco = new Endereco();
 
                 cliEndereco.setBairro(listaCampos.get(2));
                 cliEndereco.setCep(listaCampos.get(4));
@@ -912,7 +912,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         cliente.setCod_cliente(Integer.parseInt(txtCod.getText()));
         cliente.setNome_cliente(listaCampos.get(0));
 
-        cliEndereco = new ClienteEndereco();
+        cliEndereco = new Endereco();
 
         cliEndereco.setBairro(listaCampos.get(2));
         cliEndereco.setCep(listaCampos.get(4));
@@ -921,7 +921,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
         cliEndereco.setRua(listaCampos.get(8));
 
-        cliContato = new ClienteContato();
+        cliContato = new Contato();
 
         cliContato.setCelular_cliente(listaCampos.get(5));
         cliContato.setTelefone_cliente(listaCampos.get(6));

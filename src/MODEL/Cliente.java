@@ -11,16 +11,16 @@ public class Cliente {
     /* Associando Cliente Juridica*/
     private ClienteJuridica cliJuridica;
     /* Associando Endereço */
-    private ClienteEndereco cliEndereco;
+    private Endereco cliEndereco;
     /* Associando Contato*/
-    private ClienteContato cliContato;
+    private Contato cliContato;
 
     /* Construtores */
     public Cliente() {
         this.cliFisica = new ClienteFisica();
         this.cliJuridica = new ClienteJuridica();
-        this.cliEndereco = new ClienteEndereco();
-        this.cliContato = new ClienteContato();
+        this.cliEndereco = new Endereco();
+        this.cliContato = new Contato();
     }
 
     public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente) {
@@ -29,12 +29,12 @@ public class Cliente {
         this.tipo_cliente = tipo_cliente;
         this.cliFisica = new ClienteFisica();
         this.cliJuridica = new ClienteJuridica();
-        this.cliEndereco = new ClienteEndereco();
-        this.cliContato = new ClienteContato();
+        this.cliEndereco = new Endereco();
+        this.cliContato = new Contato();
     }
     
     //CONSTRUTOR FISICA
-    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteFisica cliFisica, ClienteEndereco cliEndereco, ClienteContato cliContato) {
+    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteFisica cliFisica, Endereco cliEndereco, Contato cliContato) {
         this.cod_cliente = cod_cliente;
         this.nome_cliente = nome_cliente;
         this.tipo_cliente = tipo_cliente;
@@ -44,7 +44,7 @@ public class Cliente {
     }
     
     //CONSTRUTOR JURIDICA
-    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteJuridica cliJuridica, ClienteEndereco cliEndereco, ClienteContato cliContato) {
+    public Cliente(int cod_cliente, String nome_cliente, int tipo_cliente, ClienteJuridica cliJuridica, Endereco cliEndereco, Contato cliContato) {
         this.cod_cliente = cod_cliente;
         this.nome_cliente = nome_cliente;
         this.tipo_cliente = tipo_cliente;
@@ -93,19 +93,19 @@ public class Cliente {
         this.cliJuridica = cliJuridica;
     }
 
-    public ClienteEndereco getCliEndereco() {
+    public Endereco getCliEndereco() {
         return cliEndereco;
     }
 
-    public void setCliEndereco(ClienteEndereco cliEndereco) {
+    public void setCliEndereco(Endereco cliEndereco) {
         this.cliEndereco = cliEndereco;
     }
 
-    public ClienteContato getCliContato() {
+    public Contato getCliContato() {
         return cliContato;
     }
 
-    public void setCliContato(ClienteContato cliContato) {
+    public void setCliContato(Contato cliContato) {
         this.cliContato = cliContato;
     }
 

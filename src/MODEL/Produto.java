@@ -15,7 +15,7 @@ public class Produto{
     private String descricao;
     private int quantidade;
     private int quantidadeMinima;
-    private int codigo_barras;
+    private String codigo_barras;
     private String valor_custo;
     private String valor_venda;
 
@@ -28,7 +28,7 @@ public class Produto{
         this.categoria = new CategoriaProduto();
     }
 
-    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, int codigo_barras, String valor_custo, String valor_venda) {
+    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, String codigo_barras, String valor_custo, String valor_venda) {
         this.cod_produto = cod_produto;
         this.descricao = descricao;
         this.quantidade = quantidade;
@@ -41,7 +41,7 @@ public class Produto{
 
     }
 
-    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, int codigo_barras, String valor_custo, String valor_venda, MarcaProduto marca, CategoriaProduto categoria) {
+    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, String codigo_barras, String valor_custo, String valor_venda, MarcaProduto marca, CategoriaProduto categoria) {
         this.cod_produto = cod_produto;
         this.descricao = descricao;
         this.quantidade = quantidade;
@@ -87,11 +87,11 @@ public class Produto{
         this.quantidadeMinima = quantidadeMinima;
     }
 
-    public int getCodigo_barras() {
+    public String getCodigo_barras() {
         return codigo_barras;
     }
 
-    public void setCodigo_barras(int codigo_barras) {
+    public void setCodigo_barras(String codigo_barras) {
         this.codigo_barras = codigo_barras;
     }
 

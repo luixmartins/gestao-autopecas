@@ -3,8 +3,8 @@ package DAO;
 
 /* Importações*/
 import MODEL.Cliente;
-import MODEL.ClienteContato;
-import MODEL.ClienteEndereco;
+import MODEL.Contato;
+import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
 import MODEL.WebServiceCep;
@@ -24,13 +24,13 @@ public class ClienteDAO {
     PreparedStatement pst;
     String sql;
 
-    ClienteEndereco cliEndereco;
-    ClienteContato cliContato;
+    Endereco cliEndereco;
+    Contato cliContato;
     ClienteJuridica cliJuridica;
     ClienteFisica cliFisica;
 
     /* Método para Salvar Pessoa Fisica */
-    public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
+    public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, Endereco cliEnd, Contato cliContato) throws SQLException {
         /* Inserindo o Endereço */
         String Endereco;
         Endereco = "insert into endereco values (?,?,?,?,?,?,?)";
@@ -95,7 +95,7 @@ public class ClienteDAO {
     }
 
     /* Método para Salvar Pessoa Juridica */
-    public void salvarJuridica(Cliente cliente, ClienteJuridica cliJuridica, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
+    public void salvarJuridica(Cliente cliente, ClienteJuridica cliJuridica, Endereco cliEnd, Contato cliContato) throws SQLException {
         /* Inserindo o Endereço */
         String Endereco;
         Endereco = "insert into endereco values (?,?,?,?,?,?,?)";
@@ -176,14 +176,6 @@ public class ClienteDAO {
             deleta_cliente = "delete from cliente where cod_cliente=" + cliente.getCod_cliente();;
             pst = Conexao.getInstance().prepareStatement(deleta_cliente);
             pst.execute();
-            deleta_contato = "delete from contato where cod_contato = ?";
-            pst = Conexao.getInstance().prepareStatement(deleta_contato);
-            pst.setInt(1, codContato);
-            pst.execute();
-            delete_endereco = "delete from endereco where cod_endereco =?";
-            pst = Conexao.getInstance().prepareStatement(delete_endereco);
-            pst.setInt(1, codEndereco);
-            pst.execute();
             pst.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
@@ -192,7 +184,7 @@ public class ClienteDAO {
     }
 
     /* Método para Alterar Registros */
-    public void alterar(Cliente cliente, ClienteEndereco cliEnd, ClienteContato cliContato) throws SQLException {
+    public void alterar(Cliente cliente, Endereco cliEnd, Contato cliContato) throws SQLException {
         /* Update dados Cliente */
 
         try {
@@ -242,8 +234,8 @@ public class ClienteDAO {
             while (rs.next()) {
                 /* Instanciando */
                 Cliente cliente = new Cliente();
-                ClienteContato cliContato = new ClienteContato();
-                ClienteEndereco cliEndereco = new ClienteEndereco();
+                Contato cliContato = new Contato();
+                Endereco cliEndereco = new Endereco();
                 ClienteFisica cliFisica = new ClienteFisica();
                 /* Setando Atributos Cliente */
                 cliente.setCod_cliente(rs.getInt("cod_cliente"));
@@ -295,8 +287,8 @@ public class ClienteDAO {
             while (rs.next()) {
                 /* Instanciando */
                 Cliente cliente = new Cliente();
-                ClienteContato cliContato = new ClienteContato();
-                ClienteEndereco cliEndereco = new ClienteEndereco();
+                Contato cliContato = new Contato();
+                Endereco cliEndereco = new Endereco();
                 ClienteJuridica cliJuridica = new ClienteJuridica();
                 /* Setando Atributos Cliente */
                 cliente.setCod_cliente(rs.getInt("cod_cliente"));
@@ -352,8 +344,8 @@ public class ClienteDAO {
             while (rs.next()) {
                 /* Instanciando */
                 Cliente cliente = new Cliente();
-                ClienteContato cliContato = new ClienteContato();
-                ClienteEndereco cliEndereco = new ClienteEndereco();
+                Contato cliContato = new Contato();
+                Endereco cliEndereco = new Endereco();
                 ClienteFisica cliFisica = new ClienteFisica();
 
                 /* Setando Atributos Cliente */
@@ -411,8 +403,8 @@ public class ClienteDAO {
             while (rs.next()) {
                 /* Instanciando */
                 Cliente cliente = new Cliente();
-                ClienteContato cliContato = new ClienteContato();
-                ClienteEndereco cliEndereco = new ClienteEndereco();
+                Contato cliContato = new Contato();
+                Endereco cliEndereco = new Endereco();
                 ClienteJuridica cliJuridica = new ClienteJuridica();
 
                 /* Setando Atributos Cliente */
@@ -453,11 +445,11 @@ public class ClienteDAO {
     }
 
     //BUSCA DE CEP 
-    public ClienteEndereco buscaCep(String cep) {
+    public Endereco buscaCep(String cep) {
         try {
             WebServiceCep webServiceCep = WebServiceCep.searchCep(cep);
 
-            ClienteEndereco cliEndereco = new ClienteEndereco();
+            Endereco cliEndereco = new Endereco();
 
             if (webServiceCep.wasSuccessful()) {
                 cliEndereco.setRua((webServiceCep.getLogradouroFull()));

@@ -1,6 +1,6 @@
 package MODEL;
 
-public class ClienteContato {
+public class Contato {
 
     private String telefone_cliente;
     private String celular_cliente;

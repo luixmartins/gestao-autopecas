@@ -1,6 +1,6 @@
 package MODEL;
 
-public class ClienteEndereco {
+public class Endereco {
 
     private String rua;
     private int numero;
