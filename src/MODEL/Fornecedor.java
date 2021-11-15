@@ -19,15 +19,11 @@ public class Fornecedor {
     private Endereco endFor;
     private Contato contatoFor;
     private Produto produto;
-    private MarcaProduto marca;
-    private CategoriaProduto categoria;
 
     public Fornecedor() {
         this.endFor = new Endereco();
         this.contatoFor = new Contato();
         this.produto = new Produto();
-        this.marca = new MarcaProduto();
-        this.categoria = new CategoriaProduto();
     }
 
     public Fornecedor(int cod_fornecedor, String nome, String cnpj, String inscricao_estadual) {
@@ -38,8 +34,6 @@ public class Fornecedor {
         this.endFor = new Endereco();
         this.contatoFor = new Contato();
         this.produto = new Produto();
-        this.marca = new MarcaProduto();
-        this.categoria = new CategoriaProduto();
     }
 
     public Fornecedor(int cod_fornecedor, String nome, String cnpj, String inscricao_estadual, Endereco endFor, Contato contatoFor) {
@@ -51,14 +45,12 @@ public class Fornecedor {
         this.contatoFor = contatoFor;
     }
 
-    public Fornecedor(int cod_fornecedor, String nome, String cnpj, String inscricao_estadual, Produto produto, MarcaProduto marca, CategoriaProduto categoria) {
+    public Fornecedor(int cod_fornecedor, String nome, String cnpj, String inscricao_estadual, Produto produto) {
         this.cod_fornecedor = cod_fornecedor;
         this.nome = nome;
         this.cnpj = cnpj;
         this.inscricao_estadual = inscricao_estadual;
         this.produto = produto;
-        this.marca = marca;
-        this.categoria = categoria;
     }
 
     public int getCod_fornecedor() {
@@ -117,21 +109,6 @@ public class Fornecedor {
         this.produto = produto;
     }
 
-    public MarcaProduto getMarca() {
-        return marca;
-    }
-
-    public void setMarca(MarcaProduto marca) {
-        this.marca = marca;
-    }
-
-    public CategoriaProduto getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(CategoriaProduto categoria) {
-        this.categoria = categoria;
-    }
     
     
     
