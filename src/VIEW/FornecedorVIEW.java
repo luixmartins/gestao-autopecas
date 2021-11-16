@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author luizh
  */
-public class ClienteVIEW extends javax.swing.JFrame {
+public class FornecedorVIEW extends javax.swing.JFrame {
 
     Cliente cliente;
     Contato cliContato;
@@ -38,7 +38,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
     ClienteJuridica cliJuridica;
     ClienteDAO clienteDAO;
 
-    public ClienteVIEW() {
+    public FornecedorVIEW() {
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -786,7 +786,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
                     clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
 
                 } catch (SQLException ex) {
-                    Logger.getLogger(ClienteVIEW.class
+                    Logger.getLogger(FornecedorVIEW.class
                             .getName()).log(Level.SEVERE, null, ex);
                 }
 
@@ -833,7 +833,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
                     clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
 
                 } catch (SQLException ex) {
-                    Logger.getLogger(ClienteVIEW.class
+                    Logger.getLogger(FornecedorVIEW.class
                             .getName()).log(Level.SEVERE, null, ex);
                 }
 
@@ -930,7 +930,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         try {
             clienteDAO.alterar(cliente, cliEndereco, cliContato);
         } catch (SQLException ex) {
-            Logger.getLogger(ClienteVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FornecedorVIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
         JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
         btnAlterar.setVisible(false);
@@ -954,7 +954,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
                 clienteDAO.excluir(cliente);
 
             } catch (SQLException ex) {
-                Logger.getLogger(ClienteVIEW.class
+                Logger.getLogger(FornecedorVIEW.class
                         .getName()).log(Level.SEVERE, null, ex);
             }
 
