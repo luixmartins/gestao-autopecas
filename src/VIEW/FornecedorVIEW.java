@@ -41,6 +41,8 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtBuscaFornecedores.setEnabled(false);
         fechaBotoes();
         fechaCampos();
+         txtBuscaFornecedores.setEnabled(true);
+        listarFornecedores();
     }
 
     public void listarFornecedores() {
@@ -54,7 +56,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 f.getNome(),
                 f.getCnpj(),
                 f.getInscricao_estadual(),
-             
                 f.getContatoFor().getCelular_cliente(),
                 f.getContatoFor().getTelefone_cliente(),
                 f.getContatoFor().getEmail(),
@@ -63,8 +64,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 f.getEndFor().getBairro(),
                 f.getEndFor().getCidade(),
                 f.getEndFor().getEstado(),
-                f.getEndFor().getCep(),
-            });
+                f.getEndFor().getCep(),});
         }
     }
 
@@ -86,9 +86,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtNumeroFornecedores.setEnabled(false);
         txtRuaFornecedores.setEnabled(false);
         txtTelefoneFornecedores.setEnabled(false);
-        rbnPJFornecedores.setEnabled(false);
         jcbEstadoFornecedores.setEnabled(false);
-        rbnPJFornecedores.setSelected(false);
     }
 
     public void abreCampos() {
@@ -101,7 +99,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtNumeroFornecedores.setEnabled(true);
         txtRuaFornecedores.setEnabled(true);
         txtTelefoneFornecedores.setEnabled(true);
-        rbnPJFornecedores.setEnabled(true);
         jcbEstadoFornecedores.setEnabled(true);
     }
 
@@ -137,7 +134,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             listaCampos.add(txtNumeroFornecedores.getText());
             listaCampos.add(txtBairroFornecedores.getText());
             listaCampos.add(txtCidadeFornecedores.getText());
-            
+
             listaCampos.add(txtCepFornecedores.getText());
             listaCampos.add(txtCelularFornecedores.getText());
             listaCampos.add(txtTelefoneFornecedores.getText());
@@ -177,7 +174,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtCodFornecedores = new javax.swing.JTextField();
         txtNomeFornecedores = new javax.swing.JTextField();
-        rbnPJFornecedores = new javax.swing.JRadioButton();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -197,7 +193,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtBuscaFornecedores = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaFornecedores = new javax.swing.JTable();
-        rbnBuscaJuridicaFornecedores = new javax.swing.JRadioButton();
         btnNovoFornecedores = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -276,14 +271,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtNomeFornecedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNomeFornecedoresActionPerformed(evt);
-            }
-        });
-
-        rbnPJFornecedores.setBackground(new java.awt.Color(255, 255, 255));
-        rbnPJFornecedores.setText("Pessoa Jurídica");
-        rbnPJFornecedores.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbnPJFornecedoresActionPerformed(evt);
             }
         });
 
@@ -428,8 +415,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtIeFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCnpjFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(rbnPJFornecedores))
+                                    .addComponent(txtCnpjFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(94, 94, 94)
                         .addComponent(jLabel19)
                         .addGap(64, 64, 64))
@@ -459,9 +445,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                             .addComponent(txtNomeFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(rbnPJFornecedores)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(51, 51, 51)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel17)
                             .addComponent(txtCnpjFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -558,14 +542,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabelaFornecedores);
 
-        rbnBuscaJuridicaFornecedores.setBackground(new java.awt.Color(255, 255, 255));
-        rbnBuscaJuridicaFornecedores.setText("Fornecedores");
-        rbnBuscaJuridicaFornecedores.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbnBuscaJuridicaFornecedoresActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -575,9 +551,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBuscaFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 480, Short.MAX_VALUE)
-                .addComponent(rbnBuscaJuridicaFornecedores)
-                .addGap(59, 59, 59))
+                .addGap(59, 630, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel3Layout.setVerticalGroup(
@@ -586,10 +560,9 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
-                    .addComponent(txtBuscaFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbnBuscaJuridicaFornecedores))
+                    .addComponent(txtBuscaFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta de Fornecedores", jPanel3);
@@ -634,6 +607,8 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     private void btnNovoFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoFornecedoresActionPerformed
         abreCampos();
         txtBuscaFornecedores.setEnabled(false);
+        txtCnpjFornecedores.setEnabled(true);
+        txtIeFornecedores.setEnabled(true);
         //btnBuscar.setEnabled(false);
         btnNovoFornecedores.setEnabled(false);
         btnExcluirFornecedores.setEnabled(false);
@@ -655,56 +630,47 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     private void btnSalvarFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarFornecedoresActionPerformed
         List<String> listaCampos = getCampos();
 
-        if (rbnPJFornecedores.isSelected()) {
-            if (txtCnpjFornecedores.getText().matches(".*\\d.*") == false
-                    || txtIeFornecedores.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
-            } else {
-                fornecedor = new Fornecedor();
+        if (txtCnpjFornecedores.getText().matches(".*\\d.*") == false  || txtIeFornecedores.getText().matches(".*\\d.*") == false) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
+        } else {
+            fornecedor = new Fornecedor();
 
-                fornecedor.setNome(listaCampos.get(0));
-                fornecedor.setCnpj(txtCnpjFornecedores.getText());
-                fornecedor.setInscricao_estadual(txtIeFornecedores.getText());
+            fornecedor.setNome(listaCampos.get(0));
+            fornecedor.setCnpj(txtCnpjFornecedores.getText());
+            fornecedor.setInscricao_estadual(txtIeFornecedores.getText());
 
-                Contato = new Contato();
+            Contato = new Contato();
 
-                Contato.setCelular_cliente(listaCampos.get(5));
-                Contato.setTelefone_cliente(listaCampos.get(6));
-                Contato.setEmail(listaCampos.get(7));
+            Contato.setCelular_cliente(listaCampos.get(5));
+            Contato.setTelefone_cliente(listaCampos.get(6));
+            Contato.setEmail(listaCampos.get(7));
 
-                Endereco = new Endereco();
+            Endereco = new Endereco();
 
-                Endereco.setBairro(listaCampos.get(2));
-                Endereco.setCep(listaCampos.get(4));
-                Endereco.setCidade(listaCampos.get(3));
-                Endereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
-                Endereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                Endereco.setRua(listaCampos.get(8));
+            Endereco.setBairro(listaCampos.get(2));
+            Endereco.setCep(listaCampos.get(4));
+            Endereco.setCidade(listaCampos.get(3));
+            Endereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
+            Endereco.setNumero(Integer.parseInt(listaCampos.get(1)));
+            Endereco.setRua(listaCampos.get(8));
 
-                try {
-                    fornecedorDAO.salvarFornecedor(fornecedor, Endereco, Contato);
+            try {
+                fornecedorDAO.salvarFornecedor(fornecedor, Endereco, Contato);
 
-                } catch (SQLException ex) {
-                    Logger.getLogger(FornecedorVIEW.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoFornecedores.setEnabled(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(FornecedorVIEW.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
-        }
+
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+
+            limpaCampos();
+            fechaCampos();
+            fechaBotoes();
+
+            btnNovoFornecedores.setEnabled(true);
+        }    
     }//GEN-LAST:event_btnSalvarFornecedoresActionPerformed
-
-    private void rbnPJFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnPJFornecedoresActionPerformed
-
-        txtCnpjFornecedores.setEnabled(true);
-        txtIeFornecedores.setEnabled(true);
-    }//GEN-LAST:event_rbnPJFornecedoresActionPerformed
 
     private void txtBuscaFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscaFornecedoresActionPerformed
         // TODO add your handling code here:
@@ -721,13 +687,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
 
     }//GEN-LAST:event_jPanel2MouseClicked
-
-    private void rbnBuscaJuridicaFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnBuscaJuridicaFornecedoresActionPerformed
-
-        //btnBuscar.setEnabled(true);
-        txtBuscaFornecedores.setEnabled(true);
-        listarFornecedores();
-    }//GEN-LAST:event_rbnBuscaJuridicaFornecedoresActionPerformed
 
     private void btnAlterarFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarFornecedoresActionPerformed
         List<String> listaCampos = getCampos();
@@ -754,8 +713,11 @@ public class FornecedorVIEW extends javax.swing.JFrame {
 
         try {
             fornecedorDAO.alterarFornecedor(fornecedor, Endereco, Contato);
-        } catch (SQLException ex) {
-            Logger.getLogger(FornecedorVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        
+
+} catch (SQLException ex) {
+            Logger.getLogger(FornecedorVIEW.class
+.getName()).log(Level.SEVERE, null, ex);
         }
         JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
         btnAlterarFornecedores.setVisible(false);
@@ -778,9 +740,12 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             try {
                 fornecedorDAO.excluirFornecedor(fornecedor);
 
-            } catch (SQLException ex) {
+            
+
+} catch (SQLException ex) {
                 Logger.getLogger(FornecedorVIEW.class
-                        .getName()).log(Level.SEVERE, null, ex);
+
+.getName()).log(Level.SEVERE, null, ex);
             }
 
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
@@ -820,7 +785,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         btnExcluirFornecedores.setEnabled(true);
         btnCancelarFornecedores.setEnabled(true);
 
-        rbnPJFornecedores.setEnabled(false);
         txtCnpjFornecedores.setEnabled(true);
         txtIeFornecedores.setEnabled(true);
     }//GEN-LAST:event_tabelaFornecedoresMouseClicked
@@ -901,8 +865,6 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox<String> jcbEstadoFornecedores;
-    private javax.swing.JRadioButton rbnBuscaJuridicaFornecedores;
-    private javax.swing.JRadioButton rbnPJFornecedores;
     private javax.swing.JTable tabelaFornecedores;
     private javax.swing.JTextField txtBairroFornecedores;
     private javax.swing.JTextField txtBuscaFornecedores;
