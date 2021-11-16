@@ -127,11 +127,11 @@ public class FornecedorDAO {
     
     /* Consultar Fornecedor */
     
-    public List<Fornecedor> listarClientesFisica() {
+    public List<Fornecedor> listarFornecedores() {
         try {
             List<Fornecedor> lista = new ArrayList<>();
 
-            String sql = "select * from clientefisica inner join cliente on cliente.cod_cliente = clientefisica.cliente_cod_cliente inner join contato on contato.cod_contato = cliente.clientecontato_cod_contato inner join endereco on endereco.cod_endereco = cliente.endereco_cod_endereco";
+            String sql = "select * from fornecedor inner join contato on contato.cod_contato = fornecedor.contato_cod_contato inner join endereco on endereco.cod_endereco = fornecedor.endereco_cod_endereco";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -147,7 +147,7 @@ public class FornecedorDAO {
                 fornecedor.setCnpj(rs.getString("cnpj"));
                 fornecedor.setInscricao_estadual(rs.getString("inscricao_estadual"));                
                 /* Setando Endereço */
-                fornecedor.setEndFor(endFor);
+                fornecedor.setEndFor(endereco);
                 /* Setando Atributos CliEndereco */
                 endereco.setRua(rs.getString("rua_endereco"));
                 endereco.setNumero(rs.getInt("numero_endereco"));
@@ -156,11 +156,62 @@ public class FornecedorDAO {
                 endereco.setEstado(rs.getString("estado_endereco"));
                 endereco.setCep(rs.getString("cep_endereco"));
                 /* Setando CliContato*/
-                fornecedor.setContatoFor(contatoFor);
+                fornecedor.setContatoFor(contato);
                 /* Setando Atributos Contato */
                 contato.setCelular_cliente(rs.getString("celular_contato"));
                 contato.setTelefone_cliente(rs.getString("telefone_contato"));
                 contato.setEmail(rs.getString("email_contato"));
+                
+                /* Adicionando dados na Lista */                
+                lista.add(fornecedor);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+    
+    
+    public List<Fornecedor> listarFornecedores(String nome) {
+        try {
+            List<Fornecedor> lista = new ArrayList<>();
+
+            String sql = "select * from fornecedor inner join contato on contato.cod_contato = fornecedor.contato_cod_contato inner join endereco on endereco.cod_endereco = fornecedor.endereco_cod_endereco where razao_social like \"" + nome + "\"";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Fornecedor fornecedor = new Fornecedor();
+                Contato contato = new Contato();
+                Endereco endereco = new Endereco();
+                /* Setando Atributos Cliente */
+                fornecedor.setCod_fornecedor(rs.getInt("idFornecedor"));
+                fornecedor.setNome(rs.getString("razao_social"));
+                fornecedor.setCnpj(rs.getString("cnpj"));
+                fornecedor.setInscricao_estadual(rs.getString("inscricao_estadual"));                
+                /* Setando Endereço */
+                fornecedor.setEndFor(endereco);
+                /* Setando Atributos CliEndereco */
+                endereco.setRua(rs.getString("rua_endereco"));
+                endereco.setNumero(rs.getInt("numero_endereco"));
+                endereco.setBairro(rs.getString("bairro_endereco"));
+                endereco.setCidade(rs.getString("cidade_endereco"));
+                endereco.setEstado(rs.getString("estado_endereco"));
+                endereco.setCep(rs.getString("cep_endereco"));
+                /* Setando CliContato*/
+                fornecedor.setContatoFor(contato);
+                /* Setando Atributos Contato */
+                contato.setCelular_cliente(rs.getString("celular_contato"));
+                contato.setTelefone_cliente(rs.getString("telefone_contato"));
+                contato.setEmail(rs.getString("email_contato"));
+                
                 /* Adicionando dados na Lista */                
                 lista.add(fornecedor);
             }

@@ -5,18 +5,11 @@
  */
 package VIEW;
 
-import DAO.ClienteDAO;
-import MODEL.Cliente;
+import DAO.FornecedorDAO;
 import MODEL.Contato;
 import MODEL.Endereco;
-import MODEL.ClienteFisica;
-import MODEL.ClienteJuridica;
+import MODEL.Fornecedor;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +24,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FornecedorVIEW extends javax.swing.JFrame {
 
-    Cliente cliente;
-    Contato cliContato;
-    Endereco cliEndereco;
-    ClienteFisica cliFisica;
-    ClienteJuridica cliJuridica;
-    ClienteDAO clienteDAO;
+    Fornecedor fornecedor;
+    Contato Contato;
+    Endereco Endereco;
+    FornecedorDAO fornecedorDAO;
 
     public FornecedorVIEW() {
         initComponents();
         this.setLocationRelativeTo(null);
 
-        clienteDAO = new ClienteDAO();
+        fornecedorDAO = new FornecedorDAO();
 
         txtCodFornecedores.setEnabled(false);
 
@@ -52,50 +43,27 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         fechaCampos();
     }
 
-    public void listarClientesFisica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista = clienteDAO.listarClientesFisica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaClientesFornecedores.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliFisica().getCpf(),
-                c.getCliFisica().getRg(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
-        }
-    }
-
-    public void listarClientesJuridica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista2 = clienteDAO.ListarClienteJuridica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaClientesFornecedores.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista2) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliJuridica().getCnpj(),
-                c.getCliJuridica().getInscricao_estadual(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
+    public void listarFornecedores() {
+        fornecedorDAO = new FornecedorDAO();
+        List<Fornecedor> lista = fornecedorDAO.listarFornecedores();
+        DefaultTableModel dadosTable = (DefaultTableModel) tabelaFornecedores.getModel();
+        dadosTable.setNumRows(0);
+        for (Fornecedor f : lista) {
+            dadosTable.addRow(new Object[]{
+                f.getCod_fornecedor(),
+                f.getNome(),
+                f.getCnpj(),
+                f.getInscricao_estadual(),
+             
+                f.getContatoFor().getCelular_cliente(),
+                f.getContatoFor().getTelefone_cliente(),
+                f.getContatoFor().getEmail(),
+                f.getEndFor().getRua(),
+                f.getEndFor().getNumero(),
+                f.getEndFor().getBairro(),
+                f.getEndFor().getCidade(),
+                f.getEndFor().getEstado(),
+                f.getEndFor().getCep(),
             });
         }
     }
@@ -169,7 +137,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             listaCampos.add(txtNumeroFornecedores.getText());
             listaCampos.add(txtBairroFornecedores.getText());
             listaCampos.add(txtCidadeFornecedores.getText());
-
+            
             listaCampos.add(txtCepFornecedores.getText());
             listaCampos.add(txtCelularFornecedores.getText());
             listaCampos.add(txtTelefoneFornecedores.getText());
@@ -228,7 +196,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         txtBuscaFornecedores = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaClientesFornecedores = new javax.swing.JTable();
+        tabelaFornecedores = new javax.swing.JTable();
         rbnBuscaJuridicaFornecedores = new javax.swing.JRadioButton();
         btnNovoFornecedores = new javax.swing.JButton();
 
@@ -435,28 +403,24 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel14)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtEmailFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(jLabel14)
+                                            .addComponent(jLabel13)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtEmailFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtTelefoneFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel13)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(txtTelefoneFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel12)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(txtCelularFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGap(104, 104, 104))
-                                        .addComponent(rbnPJFornecedores)))
-                                .addGap(80, 80, 80))
+                                            .addComponent(jLabel12)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtCelularFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(104, 104, 104)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel17)
@@ -464,9 +428,9 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtIeFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCnpjFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(29, 29, 29)))
-                        .addGap(14, 14, 14)
+                                    .addComponent(txtCnpjFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(rbnPJFornecedores))
+                        .addGap(94, 94, 94)
                         .addComponent(jLabel19)
                         .addGap(64, 64, 64))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -493,22 +457,21 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNomeFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addComponent(jLabel3)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(21, 21, 21)
                         .addComponent(rbnPJFornecedores)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel17)
                             .addComponent(txtCnpjFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
-                            .addComponent(txtIeFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(txtIeFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(11, 11, 11)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtRuaFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -548,7 +511,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Dados clientes", jPanel2);
+        jTabbedPane1.addTab("Dados Fornecedor", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -571,13 +534,13 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             }
         });
 
-        tabelaClientesFornecedores.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        tabelaClientesFornecedores.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaFornecedores.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaFornecedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nome / Razão", "CNPJ", "IE", "Celular", "Telefone fixo", "Email", "Endereço", "Numero", "Bairro", "Cidade", "Estado", "CEP"
+                "Código", "Razão Social", "CNPJ", "IE", "Celular", "Telefone fixo", "Email", "Endereço", "Numero", "Bairro", "Cidade", "Estado", "CEP"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -588,15 +551,15 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabelaClientesFornecedores.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaFornecedores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaClientesFornecedoresMouseClicked(evt);
+                tabelaFornecedoresMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaClientesFornecedores);
+        jScrollPane1.setViewportView(tabelaFornecedores);
 
         rbnBuscaJuridicaFornecedores.setBackground(new java.awt.Color(255, 255, 255));
-        rbnBuscaJuridicaFornecedores.setText("Pessoa Jurídica");
+        rbnBuscaJuridicaFornecedores.setText("Fornecedores");
         rbnBuscaJuridicaFornecedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbnBuscaJuridicaFornecedoresActionPerformed(evt);
@@ -612,7 +575,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBuscaFornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 472, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 480, Short.MAX_VALUE)
                 .addComponent(rbnBuscaJuridicaFornecedores)
                 .addGap(59, 59, 59))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -629,7 +592,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Consulta de clientes", jPanel3);
+        jTabbedPane1.addTab("Consulta de Fornecedores", jPanel3);
 
         btnNovoFornecedores.setBackground(new java.awt.Color(255, 255, 255));
         btnNovoFornecedores.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -691,87 +654,35 @@ public class FornecedorVIEW extends javax.swing.JFrame {
 
     private void btnSalvarFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarFornecedoresActionPerformed
         List<String> listaCampos = getCampos();
-        if (rbnPF.isSelected() == false && rbnPJFornecedores.isSelected() == false) {
-            JOptionPane.showMessageDialog(null, "Defina o tipo de pessoa.");
-        }
-        if (rbnPF.isSelected()) {
-            //System.out.println("Entrei fora" + txtCpf.getText() + txtRg.getText());
-            if (txtCpf.getText().matches(".*\\d.*") == false
-                    || txtRg.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CPF/RG");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(0);
-
-                cliContato = new Contato();
-
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
-
-                cliEndereco = new Endereco();
-
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                cliFisica = new ClienteFisica();
-
-
-                try {
-                    clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(FornecedorVIEW.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoFornecedores.setEnabled(true);
-            }
-        }
         if (rbnPJFornecedores.isSelected()) {
             if (txtCnpjFornecedores.getText().matches(".*\\d.*") == false
                     || txtIeFornecedores.getText().matches(".*\\d.*") == false) {
                 JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
             } else {
-                cliente = new Cliente();
+                fornecedor = new Fornecedor();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(1);
+                fornecedor.setNome(listaCampos.get(0));
+                fornecedor.setCnpj(txtCnpjFornecedores.getText());
+                fornecedor.setInscricao_estadual(txtIeFornecedores.getText());
 
-                cliContato = new Contato();
+                Contato = new Contato();
 
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
+                Contato.setCelular_cliente(listaCampos.get(5));
+                Contato.setTelefone_cliente(listaCampos.get(6));
+                Contato.setEmail(listaCampos.get(7));
 
-                cliEndereco = new Endereco();
+                Endereco = new Endereco();
 
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                cliJuridica = new ClienteJuridica();
-
-                cliJuridica.setCnpj(txtCnpjFornecedores.getText());
-                cliJuridica.setInscricao_estadual(txtIeFornecedores.getText());
+                Endereco.setBairro(listaCampos.get(2));
+                Endereco.setCep(listaCampos.get(4));
+                Endereco.setCidade(listaCampos.get(3));
+                Endereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
+                Endereco.setNumero(Integer.parseInt(listaCampos.get(1)));
+                Endereco.setRua(listaCampos.get(8));
 
                 try {
-                    clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
+                    fornecedorDAO.salvarFornecedor(fornecedor, Endereco, Contato);
 
                 } catch (SQLException ex) {
                     Logger.getLogger(FornecedorVIEW.class
@@ -812,37 +723,37 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void rbnBuscaJuridicaFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnBuscaJuridicaFornecedoresActionPerformed
-       
+
         //btnBuscar.setEnabled(true);
         txtBuscaFornecedores.setEnabled(true);
-
-        listarClientesJuridica();
+        listarFornecedores();
     }//GEN-LAST:event_rbnBuscaJuridicaFornecedoresActionPerformed
 
     private void btnAlterarFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarFornecedoresActionPerformed
         List<String> listaCampos = getCampos();
-        cliente = new Cliente();
+        fornecedor = new Fornecedor();
 
-        cliente.setCod_cliente(Integer.parseInt(txtCodFornecedores.getText()));
-        cliente.setNome_cliente(listaCampos.get(0));
+        fornecedor.setCod_fornecedor(Integer.parseInt(txtCodFornecedores.getText()));
+        fornecedor.setNome(listaCampos.get(0));
+        fornecedor.setCnpj(txtCnpjFornecedores.getText());
+        fornecedor.setInscricao_estadual(txtIeFornecedores.getText());
+        Endereco = new Endereco();
 
-        cliEndereco = new Endereco();
+        Endereco.setBairro(listaCampos.get(2));
+        Endereco.setCep(listaCampos.get(4));
+        Endereco.setCidade(listaCampos.get(3));
+        Endereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
+        Endereco.setNumero(Integer.parseInt(listaCampos.get(1)));
+        Endereco.setRua(listaCampos.get(8));
 
-        cliEndereco.setBairro(listaCampos.get(2));
-        cliEndereco.setCep(listaCampos.get(4));
-        cliEndereco.setCidade(listaCampos.get(3));
-        cliEndereco.setEstado((String) jcbEstadoFornecedores.getSelectedItem());
-        cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-        cliEndereco.setRua(listaCampos.get(8));
+        Contato = new Contato();
 
-        cliContato = new Contato();
-
-        cliContato.setCelular_cliente(listaCampos.get(5));
-        cliContato.setTelefone_cliente(listaCampos.get(6));
-        cliContato.setEmail(listaCampos.get(7));
+        Contato.setCelular_cliente(listaCampos.get(5));
+        Contato.setTelefone_cliente(listaCampos.get(6));
+        Contato.setEmail(listaCampos.get(7));
 
         try {
-            clienteDAO.alterar(cliente, cliEndereco, cliContato);
+            fornecedorDAO.alterarFornecedor(fornecedor, Endereco, Contato);
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorVIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -858,14 +769,14 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarFornecedoresActionPerformed
 
     private void btnExcluirFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirFornecedoresActionPerformed
-        cliente = new Cliente();
-        cliente.setCod_cliente(Integer.parseInt(txtCodFornecedores.getText()));
+        fornecedor = new Fornecedor();
+        fornecedor.setCod_fornecedor(Integer.parseInt(txtCodFornecedores.getText()));
 
         int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtNomeFornecedores.getText() + "?");
 
         if (confirma == 0) {
             try {
-                clienteDAO.excluir(cliente);
+                fornecedorDAO.excluirFornecedor(fornecedor);
 
             } catch (SQLException ex) {
                 Logger.getLogger(FornecedorVIEW.class
@@ -883,20 +794,22 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExcluirFornecedoresActionPerformed
 
-    private void tabelaClientesFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesFornecedoresMouseClicked
+    private void tabelaFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedoresMouseClicked
         /* Pegando os Dados */
         jTabbedPane1.setSelectedIndex(0);
-        txtCodFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 0).toString());
-        txtNomeFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 1).toString());
-        txtCelularFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 4).toString());
-        txtTelefoneFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 5).toString());
-        txtEmailFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 6).toString());
-        txtRuaFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 7).toString());
-        txtNumeroFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 8).toString());
-        txtBairroFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 9).toString());
-        txtCidadeFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 10).toString());
-        jcbEstadoFornecedores.setSelectedItem(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 11).toString());
-        txtCepFornecedores.setText(tabelaClientesFornecedores.getValueAt(tabelaClientesFornecedores.getSelectedRow(), 12).toString());
+        txtCodFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 0).toString());
+        txtNomeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 1).toString());
+        txtCnpjFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 2).toString());
+        txtIeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 3).toString());
+        txtCelularFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 4).toString());
+        txtTelefoneFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 5).toString());
+        txtEmailFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 6).toString());
+        txtRuaFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 7).toString());
+        txtNumeroFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 8).toString());
+        txtBairroFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 9).toString());
+        txtCidadeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 10).toString());
+        jcbEstadoFornecedores.setSelectedItem(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 11).toString());
+        txtCepFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 12).toString());
 
         abreCampos();
         btnSalvarFornecedores.setVisible(false);
@@ -907,42 +820,41 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         btnExcluirFornecedores.setEnabled(true);
         btnCancelarFornecedores.setEnabled(true);
 
-
         rbnPJFornecedores.setEnabled(false);
-        txtCnpjFornecedores.setEnabled(false);
-        txtIeFornecedores.setEnabled(false);
-    }//GEN-LAST:event_tabelaClientesFornecedoresMouseClicked
+        txtCnpjFornecedores.setEnabled(true);
+        txtIeFornecedores.setEnabled(true);
+    }//GEN-LAST:event_tabelaFornecedoresMouseClicked
 
     private void txtBuscaFornecedoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaFornecedoresKeyPressed
 
-            if (rbnBuscaJuridicaFornecedores.isSelected()) {
-                String nome = "%" + txtBuscaFornecedores.getText() + "%";
+       
+            String nome = "%" + txtBuscaFornecedores.getText() + "%";
 
-                clienteDAO = new ClienteDAO();
+            fornecedorDAO = new FornecedorDAO();
 
-                List<Cliente> lista2 = clienteDAO.buscaClienteJuridica(nome);
-                DefaultTableModel dados = (DefaultTableModel) tabelaClientesFornecedores.getModel();
+            List<Fornecedor> lista2 = fornecedorDAO.listarFornecedores(nome);
+            DefaultTableModel dados = (DefaultTableModel) tabelaFornecedores.getModel();
 
-                dados.setNumRows(0);
+            dados.setNumRows(0);
 
-                for (Cliente c : lista2) {
-                    dados.addRow(new Object[]{
-                        c.getCod_cliente(),
-                        c.getNome_cliente(),
-                        c.getCliJuridica().getCnpj(),
-                        c.getCliJuridica().getInscricao_estadual(),
-                        c.getCliContato().getCelular_cliente(),
-                        c.getCliContato().getTelefone_cliente(),
-                        c.getCliContato().getEmail(),
-                        c.getCliEndereco().getRua(),
-                        c.getCliEndereco().getNumero(),
-                        c.getCliEndereco().getBairro(),
-                        c.getCliEndereco().getCidade(),
-                        c.getCliEndereco().getEstado(),
-                        c.getCliEndereco().getCep()
-                    });
-                }
+            for (Fornecedor f : lista2) {
+                dados.addRow(new Object[]{
+                    f.getCod_fornecedor(),
+                    f.getNome(),
+                    f.getCnpj(),
+                    f.getInscricao_estadual(),
+                    f.getContatoFor().getCelular_cliente(),
+                    f.getContatoFor().getTelefone_cliente(),
+                    f.getContatoFor().getEmail(),
+                    f.getEndFor().getRua(),
+                    f.getEndFor().getNumero(),
+                    f.getEndFor().getBairro(),
+                    f.getEndFor().getCidade(),
+                    f.getEndFor().getEstado(),
+                    f.getEndFor().getCep()
+                });
             }
+        
     }//GEN-LAST:event_txtBuscaFornecedoresKeyPressed
 
     private void txtCepFornecedoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCepFornecedoresKeyPressed
@@ -991,7 +903,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcbEstadoFornecedores;
     private javax.swing.JRadioButton rbnBuscaJuridicaFornecedores;
     private javax.swing.JRadioButton rbnPJFornecedores;
-    private javax.swing.JTable tabelaClientesFornecedores;
+    private javax.swing.JTable tabelaFornecedores;
     private javax.swing.JTextField txtBairroFornecedores;
     private javax.swing.JTextField txtBuscaFornecedores;
     private javax.swing.JFormattedTextField txtCelularFornecedores;
