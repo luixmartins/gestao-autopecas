@@ -1,21 +1,15 @@
+package DAO;
 
-import DAO.Conexao;
 import MODEL.MarcaProduto;
-/* Importações do Java */
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-/* Importações do SQL */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class MarcaDAO {
-
-    /* Instanciamento e criação do String SQL*/
+public class MarcaProduto_DAO {
+/* Instanciamento e criação do String SQL*/
     PreparedStatement pst;
     String sql;
 
