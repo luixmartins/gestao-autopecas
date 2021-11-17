@@ -36,7 +36,12 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mni_cliente = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mni_Cliente = new javax.swing.JMenuItem();
+        mni_Fornecedor = new javax.swing.JMenuItem();
+        mni_Categoria = new javax.swing.JMenuItem();
+        mni_Marca = new javax.swing.JMenuItem();
+        mni_Produto = new javax.swing.JMenuItem();
+        mni_Entrada = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
         mni_sair = new javax.swing.JMenuItem();
 
@@ -74,13 +79,53 @@ public class Principal extends javax.swing.JFrame {
 
         mni_cliente.setText("Arquivo");
 
-        jMenuItem1.setText("Cliente");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        mni_Cliente.setText("Cliente");
+        mni_Cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                mni_ClienteActionPerformed(evt);
             }
         });
-        mni_cliente.add(jMenuItem1);
+        mni_cliente.add(mni_Cliente);
+
+        mni_Fornecedor.setText("Fornecedor");
+        mni_Fornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_FornecedorActionPerformed(evt);
+            }
+        });
+        mni_cliente.add(mni_Fornecedor);
+
+        mni_Categoria.setText("Categoria");
+        mni_Categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_CategoriaActionPerformed(evt);
+            }
+        });
+        mni_cliente.add(mni_Categoria);
+
+        mni_Marca.setText("Marca");
+        mni_Marca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_MarcaActionPerformed(evt);
+            }
+        });
+        mni_cliente.add(mni_Marca);
+
+        mni_Produto.setText("Produto");
+        mni_Produto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_ProdutoActionPerformed(evt);
+            }
+        });
+        mni_cliente.add(mni_Produto);
+
+        mni_Entrada.setText("Entrada");
+        mni_Entrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_EntradaActionPerformed(evt);
+            }
+        });
+        mni_cliente.add(mni_Entrada);
 
         jMenuBar1.add(mni_cliente);
 
@@ -112,23 +157,52 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        /* Instanciando tela Cliente View*/       
+    private void mni_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ClienteActionPerformed
+        /* Instanciando tela Cliente View*/
         ClienteVIEW view = new ClienteVIEW();
         view.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_mni_ClienteActionPerformed
 
     private void mni_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_sairActionPerformed
         this.dispose();
     }//GEN-LAST:event_mni_sairActionPerformed
 
+    private void mni_FornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_FornecedorActionPerformed
+        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        fornecedorview.setVisible(true);
+    }//GEN-LAST:event_mni_FornecedorActionPerformed
+
+    private void mni_CategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_CategoriaActionPerformed
+        CategoriaVIEW categoriaview = new CategoriaVIEW();
+        categoriaview.setVisible(true);
+    }//GEN-LAST:event_mni_CategoriaActionPerformed
+
+    private void mni_MarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_MarcaActionPerformed
+        MarcaVIEW marcaview = new MarcaVIEW();
+        marcaview.setVisible(true);
+    }//GEN-LAST:event_mni_MarcaActionPerformed
+
+    private void mni_ProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ProdutoActionPerformed
+        // ProdutoVIEW produtoview = new ProdutoVIEW();
+        // produtoview.setVisible(True);
+    }//GEN-LAST:event_mni_ProdutoActionPerformed
+
+    private void mni_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_EntradaActionPerformed
+       // EntradaVIEW entradaview = new EntradaVIEW();
+       // entradaview.setVisible(True);
+    }//GEN-LAST:event_mni_EntradaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem mni_Categoria;
+    private javax.swing.JMenuItem mni_Cliente;
+    private javax.swing.JMenuItem mni_Entrada;
+    private javax.swing.JMenuItem mni_Fornecedor;
+    private javax.swing.JMenuItem mni_Marca;
+    private javax.swing.JMenuItem mni_Produto;
     private javax.swing.JMenu mni_cliente;
     private javax.swing.JMenuItem mni_sair;
     private javax.swing.JMenu mnu_sair;
