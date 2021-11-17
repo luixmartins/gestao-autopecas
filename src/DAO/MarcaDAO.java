@@ -62,7 +62,29 @@ public class MarcaDAO {
                 marca.setNome_marca(rs.getString("nome_narca"));
                 lista.add(marca);
             }
-
+            return lista;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+        return null;
+    }
+    
+     public List<MarcaProduto> listarMarcas(String nome) {
+        try {
+            List<MarcaProduto> lista = new ArrayList<>();
+            String SQLBuscaMarca;
+            SQLBuscaMarca = "select * from marca where nome_marca like \"" + nome + "\"";
+            pst = Conexao.getInstance().prepareStatement(SQLBuscaMarca);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                /* Instanciando Categoria */
+                MarcaProduto marca = new MarcaProduto();
+                /* Setando Atributos Categoria */
+                marca.setCodigo_marca(rs.getInt("cod_marca"));
+                marca.setNome_marca(rs.getString("nome_narca"));
+                lista.add(marca);
+            }
+            return lista;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
@@ -77,7 +99,7 @@ public class MarcaDAO {
             alteraMarca = "UPDATE marca set nome_marca =? where marca.cod_marca=?";
             pst = Conexao.getInstance().prepareStatement(alteraMarca);
             pst.setString(1, marca.getNome_marca());
-            pst.setInt(1, marca.getCodigo_marca());
+            pst.setInt(2, marca.getCodigo_marca());
             pst.execute();
             pst.close();
         } catch (Exception e) {
