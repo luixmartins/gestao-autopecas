@@ -5,18 +5,9 @@
  */
 package VIEW;
 
-import DAO.ClienteDAO;
-import MODEL.Cliente;
-import MODEL.Contato;
-import MODEL.Endereco;
-import MODEL.ClienteFisica;
-import MODEL.ClienteJuridica;
+import DAO.CategoriaDAO;
+import MODEL.CategoriaProduto;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,72 +22,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CategoriaVIEW extends javax.swing.JFrame {
 
-    Cliente cliente;
-    Contato cliContato;
-    Endereco cliEndereco;
-    ClienteFisica cliFisica;
-    ClienteJuridica cliJuridica;
-    ClienteDAO clienteDAO;
+    CategoriaProduto categoria;
+    CategoriaDAO categoriaDAO;
 
     public CategoriaVIEW() {
         initComponents();
         this.setLocationRelativeTo(null);
-
-        clienteDAO = new ClienteDAO();
-
+        categoriaDAO = new CategoriaDAO();
         txtCodCategoria.setEnabled(false);
-
         btnAlterarCategoria.setVisible(false);
-        txtBuscaCategoria.setEnabled(false);
         fechaBotoes();
         fechaCampos();
+        txtBuscaCategoria.setEnabled(true);
+        listarCategoria();
     }
 
-    public void listarClientesFisica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista = clienteDAO.listarClientesFisica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaCategoria.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliFisica().getCpf(),
-                c.getCliFisica().getRg(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
-        }
-    }
-
-    public void listarClientesJuridica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista2 = clienteDAO.ListarClienteJuridica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaCategoria.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista2) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliJuridica().getCnpj(),
-                c.getCliJuridica().getInscricao_estadual(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
+    public void listarCategoria() {
+        categoriaDAO = new CategoriaDAO();
+        List<CategoriaProduto> lista = categoriaDAO.listarCategorias();
+        DefaultTableModel dadosTable = (DefaultTableModel) tabelaCategoria.getModel();
+        dadosTable.setNumRows(0);
+        for (CategoriaProduto C : lista) {
+            dadosTable.addRow(new Object[]{
+                C.getCodigo_categoria(),
+                C.getNome_categoria(),});
         }
     }
 
@@ -110,7 +59,7 @@ public class CategoriaVIEW extends javax.swing.JFrame {
         txtNomeCategoria.setEnabled(false);
     }
 
-    public void abreCampos() {       
+    public void abreCampos() {
         txtNomeCategoria.setEnabled(true);
     }
 
@@ -121,16 +70,12 @@ public class CategoriaVIEW extends javax.swing.JFrame {
 
     public List<String> getCampos() {
         List<String> listaCampos = new ArrayList<>();
-
         if (txtNomeCategoria.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-
         } else {
             listaCampos.add(txtNomeCategoria.getText());
-
             return listaCampos;
         }
-
         return null;
     }
 
@@ -448,35 +393,24 @@ public class CategoriaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaCategoriaMouseClicked
 
     private void txtBuscaCategoriaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaCategoriaKeyPressed
-        if (rbnBuscaCategoria.isSelected()) {
-            String nome = "%" + txtBuscaCategoria.getText() + "%";
 
-            clienteDAO = new ClienteDAO();
+        String nome = "%" + txtBuscaCategoria.getText() + "%";
 
-            List<Cliente> lista = clienteDAO.buscaClientesFisica(nome);
-            DefaultTableModel dados = (DefaultTableModel) tabelaCategoria.getModel();
+        categoriaDAO = new CategoriaDAO();
 
-            dados.setNumRows(0);
+        List<CategoriaProduto> lista = categoriaDAO.listarCategorias(nome);
+        DefaultTableModel dadosTabela = (DefaultTableModel) tabelaCategoria.getModel();
 
-            for (Cliente c : lista) {
-                dados.addRow(new Object[]{
-                    c.getCod_cliente(),
-                    c.getNome_cliente(),
-                    c.getCliFisica().getCpf(),
-                    c.getCliFisica().getRg(),
-                    c.getCliContato().getCelular_cliente(),
-                    c.getCliContato().getTelefone_cliente(),
-                    c.getCliContato().getEmail(),
-                    c.getCliEndereco().getRua(),
-                    c.getCliEndereco().getNumero(),
-                    c.getCliEndereco().getBairro(),
-                    c.getCliEndereco().getCidade(),
-                    c.getCliEndereco().getEstado(),
-                    c.getCliEndereco().getCep()
-                });
-            }
+        dadosTabela.setNumRows(0);
 
+        for (CategoriaProduto c : lista) {
+            dadosTabela.addRow(new Object[]{
+                c.getCodigo_categoria(),
+                c.getNome_categoria(),
+            });
         }
+
+
     }//GEN-LAST:event_txtBuscaCategoriaKeyPressed
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
@@ -485,29 +419,17 @@ public class CategoriaVIEW extends javax.swing.JFrame {
 
     private void btnAlterarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarCategoriaActionPerformed
         List<String> listaCampos = getCampos();
-        cliente = new Cliente();
+        categoria = new CategoriaProduto();
 
-        cliente.setCod_cliente(Integer.parseInt(txtCodCategoria.getText()));
-        cliente.setNome_cliente(listaCampos.get(0));
-
-        cliEndereco = new Endereco();
-
-        cliEndereco.setBairro(listaCampos.get(2));
-        cliEndereco.setCep(listaCampos.get(4));
-        cliEndereco.setCidade(listaCampos.get(3));
-        cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-        cliEndereco.setRua(listaCampos.get(8));
-
-        cliContato = new Contato();
-
-        cliContato.setCelular_cliente(listaCampos.get(5));
-        cliContato.setTelefone_cliente(listaCampos.get(6));
-        cliContato.setEmail(listaCampos.get(7));
+        categoria.setCodigo_categoria(Integer.parseInt(txtCodCategoria.getText()));
+        categoria.setNome_categoria(txtNomeCategoria.getText());
 
         try {
-            clienteDAO.alterar(cliente, cliEndereco, cliContato);
+            categoriaDAO.AlterarCategoria(categoria);
+
         } catch (SQLException ex) {
-            Logger.getLogger(CategoriaVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CategoriaVIEW.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
         btnAlterarCategoria.setVisible(false);
@@ -520,18 +442,18 @@ public class CategoriaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarCategoriaActionPerformed
 
     private void btnExcluirCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirCategoriaActionPerformed
-        cliente = new Cliente();
-        cliente.setCod_cliente(Integer.parseInt(txtCodCategoria.getText()));
+        categoria = new CategoriaProduto();
+        categoria.setCodigo_categoria(Integer.parseInt(txtCodCategoria.getText()));
 
         int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtNomeCategoria.getText() + "?");
 
         if (confirma == 0) {
             try {
-                clienteDAO.excluir(cliente);
+                categoriaDAO.ExcluirCategoria(categoria);
 
             } catch (SQLException ex) {
                 Logger.getLogger(CategoriaVIEW.class
-                    .getName()).log(Level.SEVERE, null, ex);
+                        .getName()).log(Level.SEVERE, null, ex);
             }
 
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
@@ -556,108 +478,35 @@ public class CategoriaVIEW extends javax.swing.JFrame {
 
     private void btnSalvarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarCategoriaActionPerformed
         List<String> listaCampos = getCampos();
-        if (rbnPF.isSelected() == false && rbnPJ.isSelected() == false) {
-            JOptionPane.showMessageDialog(null, "Defina o tipo de pessoa.");
-        }
-        if (rbnPF.isSelected()) {
-            //System.out.println("Entrei fora" + txtCpf.getText() + txtRg.getText());
-            if (txtCpf.getText().matches(".*\\d.*") == false
-                || txtRg.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CPF/RG");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(0);
+        if (txtNomeCategoria.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos");
+        } else {
+            categoria = new CategoriaProduto();
 
-                cliContato = new Contato();
+            categoria.setNome_categoria(listaCampos.get(0));
 
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
+            try {
+                categoriaDAO.SalvarCategoria(categoria);
 
-                cliEndereco = new Endereco();
-
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbEstado.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                cliFisica = new ClienteFisica();
-
-                cliFisica.setCpf(txtCpf.getText());
-                cliFisica.setRg(txtRg.getText());
-
-                try {
-                    clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoriaVIEW.class
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaVIEW.class
                         .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoCategoria.setEnabled(true);
             }
+
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+
+            limpaCampos();
+            fechaCampos();
+            fechaBotoes();
+
+            btnNovoCategoria.setEnabled(true);
         }
-        if (rbnPJ.isSelected()) {
-            if (txtCnpj.getText().matches(".*\\d.*") == false
-                || txtIe.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(1);
-
-                cliContato = new Contato();
-
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
-
-                cliEndereco = new Endereco();
-
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbEstado.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                cliJuridica = new ClienteJuridica();
-
-                cliJuridica.setCnpj(txtCnpj.getText());
-                cliJuridica.setInscricao_estadual(txtIe.getText());
-
-                try {
-                    clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(CategoriaVIEW.class
-                        .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoCategoria.setEnabled(true);
-            }
-        }
     }//GEN-LAST:event_btnSalvarCategoriaActionPerformed
 
     private void txtNomeCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeCategoriaActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtNomeCategoriaActionPerformed
 
 

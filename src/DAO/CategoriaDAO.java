@@ -34,7 +34,7 @@ public class CategoriaDAO {
     }
 
     /* Método de Excluir */
-    public void ExcluirCategoria(int codigo_categoria) throws SQLException {
+    public void ExcluirCategoria(CategoriaProduto categoria) throws SQLException {
         try {
             String deleta_categoria;
             deleta_categoria = "delete from categoria where cod_categoria = " + categoria.getCodigo_categoria();
@@ -62,7 +62,29 @@ public class CategoriaDAO {
                 categoria.setNome_categoria(rs.getString("nome_categoria"));
                 lista.add(categoria);
             }
-
+            return lista;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+        return null;
+    }
+    
+    public List<CategoriaProduto> listarCategorias(String nome) {
+        try {
+            List<CategoriaProduto> lista = new ArrayList<>();
+            String SQLBuscaCategoria;
+            SQLBuscaCategoria = "select * from categoria where nome_categoria like \"" + nome + "\"";
+            pst = Conexao.getInstance().prepareStatement(SQLBuscaCategoria);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                /* Instanciando Categoria */
+                CategoriaProduto categoria = new CategoriaProduto();
+                /* Setando Atributos Categoria */
+                categoria.setCodigo_categoria(rs.getInt("cod_categoria"));
+                categoria.setNome_categoria(rs.getString("nome_categoria"));
+                lista.add(categoria);
+            }
+            return lista;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
@@ -74,10 +96,10 @@ public class CategoriaDAO {
 
         try {
             String alteraCategoria;
-            alteraCategoria = "UPDATE categoria set nome_categoria =? where categoria.cod_categoria=?";
+            alteraCategoria = "UPDATE categoria set nome_categoria = ?  where cod_categoria=?";
             pst = Conexao.getInstance().prepareStatement(alteraCategoria);
             pst.setString(1, categoria.getNome_categoria());
-            pst.setInt(1, categoria.getCodigo_categoria());
+            pst.setInt(2, categoria.getCodigo_categoria());
             pst.execute();
             pst.close();
         } catch (Exception e) {
