@@ -5,18 +5,9 @@
  */
 package VIEW;
 
-import DAO.ClienteDAO;
-import MODEL.Cliente;
-import MODEL.Contato;
-import MODEL.Endereco;
-import MODEL.ClienteFisica;
-import MODEL.ClienteJuridica;
+import DAO.MarcaProduto_DAO;
+import MODEL.MarcaProduto;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,72 +22,35 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MarcaVIEW extends javax.swing.JFrame {
 
-    Cliente cliente;
-    Contato cliContato;
-    Endereco cliEndereco;
-    ClienteFisica cliFisica;
-    ClienteJuridica cliJuridica;
-    ClienteDAO clienteDAO;
+    
+    MarcaProduto marca;
+    MarcaProduto_DAO marcaDAO;
 
     public MarcaVIEW() {
         initComponents();
         this.setLocationRelativeTo(null);
 
-        clienteDAO = new ClienteDAO();
+        marcaDAO = new MarcaProduto_DAO();
 
         txtCodMarca.setEnabled(false);
 
         btnAlterarMarca.setVisible(false);
-        txtBuscaMarca.setEnabled(false);
+        txtBuscaMarca.setEnabled(true);
         fechaBotoes();
         fechaCampos();
+        listarMarcas();
+
     }
 
-    public void listarClientesFisica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista = clienteDAO.listarClientesFisica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaMarca.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliFisica().getCpf(),
-                c.getCliFisica().getRg(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
-        }
-    }
-
-    public void listarClientesJuridica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista2 = clienteDAO.ListarClienteJuridica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaMarca.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista2) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliJuridica().getCnpj(),
-                c.getCliJuridica().getInscricao_estadual(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
+    public void listarMarcas() {
+        marcaDAO = new MarcaProduto_DAO();
+        List<MarcaProduto> lista = marcaDAO.listarMarcas();
+        DefaultTableModel dado = (DefaultTableModel) tabelaMarca.getModel();
+        dado.setNumRows(0);
+        for (MarcaProduto c : lista) {
+            dado.addRow(new Object[]{
+                c.getCodigo_marca(),
+                c.getNome_marca(),});
         }
     }
 
@@ -110,7 +64,7 @@ public class MarcaVIEW extends javax.swing.JFrame {
         txtNomeMarca.setEnabled(false);
     }
 
-    public void abreCampos() {       
+    public void abreCampos() {
         txtNomeMarca.setEnabled(true);
     }
 
@@ -156,7 +110,6 @@ public class MarcaVIEW extends javax.swing.JFrame {
         txtBuscaMarca = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaMarca = new javax.swing.JTable();
-        rbnBuscaMarca = new javax.swing.JRadioButton();
         btnNovoMarca = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -353,14 +306,6 @@ public class MarcaVIEW extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabelaMarca);
 
-        rbnBuscaMarca.setBackground(new java.awt.Color(255, 255, 255));
-        rbnBuscaMarca.setText("Marca");
-        rbnBuscaMarca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbnBuscaMarcaActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -370,9 +315,7 @@ public class MarcaVIEW extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBuscaMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)
-                .addComponent(rbnBuscaMarca)
-                .addGap(189, 189, 189))
+                .addGap(189, 656, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel3Layout.setVerticalGroup(
@@ -381,10 +324,9 @@ public class MarcaVIEW extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
-                    .addComponent(txtBuscaMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbnBuscaMarca))
+                    .addComponent(txtBuscaMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta de marcas", jPanel3);
@@ -450,13 +392,6 @@ public class MarcaVIEW extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jPanel3MouseClicked
 
-    private void rbnBuscaMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnBuscaMarcaActionPerformed
-        
-        //btnBuscar.setEnabled(true);
-        txtBuscaMarca.setEnabled(true);
-        listarClientesFisica();
-    }//GEN-LAST:event_rbnBuscaMarcaActionPerformed
-
     private void tabelaMarcaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMarcaMouseClicked
         /* Pegando os Dados */
         jTabbedPane1.setSelectedIndex(0);
@@ -475,35 +410,23 @@ public class MarcaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaMarcaMouseClicked
 
     private void txtBuscaMarcaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaMarcaKeyPressed
-        if (rbnBuscaMarca.isSelected()) {
-            String nome = "%" + txtBuscaMarca.getText() + "%";
 
-            clienteDAO = new ClienteDAO();
+        String nome = "%" + txtBuscaMarca.getText() + "%";
 
-            List<Cliente> lista = clienteDAO.buscaClientesFisica(nome);
-            DefaultTableModel dados = (DefaultTableModel) tabelaMarca.getModel();
+        marcaDAO = new MarcaProduto_DAO();
 
-            dados.setNumRows(0);
+        List<MarcaProduto> lista = marcaDAO.listarMarcas(nome);
+        DefaultTableModel dados = (DefaultTableModel) tabelaMarca.getModel();
 
-            for (Cliente c : lista) {
-                dados.addRow(new Object[]{
-                    c.getCod_cliente(),
-                    c.getNome_cliente(),
-                    c.getCliFisica().getCpf(),
-                    c.getCliFisica().getRg(),
-                    c.getCliContato().getCelular_cliente(),
-                    c.getCliContato().getTelefone_cliente(),
-                    c.getCliContato().getEmail(),
-                    c.getCliEndereco().getRua(),
-                    c.getCliEndereco().getNumero(),
-                    c.getCliEndereco().getBairro(),
-                    c.getCliEndereco().getCidade(),
-                    c.getCliEndereco().getEstado(),
-                    c.getCliEndereco().getCep()
-                });
-            }
+        dados.setNumRows(0);
 
+        for (MarcaProduto c : lista) {
+            dados.addRow(new Object[]{
+                c.getCodigo_marca(),
+                c.getNome_marca(),});
         }
+
+
     }//GEN-LAST:event_txtBuscaMarcaKeyPressed
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
@@ -512,27 +435,13 @@ public class MarcaVIEW extends javax.swing.JFrame {
 
     private void btnAlterarMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarMarcaActionPerformed
         List<String> listaCampos = getCampos();
-        cliente = new Cliente();
+        marca = new MarcaProduto();
 
-        cliente.setCod_cliente(Integer.parseInt(txtCodMarca.getText()));
-        cliente.setNome_cliente(listaCampos.get(0));
-
-        cliEndereco = new Endereco();
-
-        cliEndereco.setBairro(listaCampos.get(2));
-        cliEndereco.setCep(listaCampos.get(4));
-        cliEndereco.setCidade(listaCampos.get(3));
-        cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-        cliEndereco.setRua(listaCampos.get(8));
-
-        cliContato = new Contato();
-
-        cliContato.setCelular_cliente(listaCampos.get(5));
-        cliContato.setTelefone_cliente(listaCampos.get(6));
-        cliContato.setEmail(listaCampos.get(7));
+        marca.setCodigo_marca(Integer.parseInt(txtCodMarca.getText()));
+        marca.setNome_marca(listaCampos.get(0));
 
         try {
-            clienteDAO.alterar(cliente, cliEndereco, cliContato);
+            marcaDAO.AlterarMarca(marca);
         } catch (SQLException ex) {
             Logger.getLogger(MarcaVIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -547,18 +456,18 @@ public class MarcaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarMarcaActionPerformed
 
     private void btnExcluirMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMarcaActionPerformed
-        cliente = new Cliente();
-        cliente.setCod_cliente(Integer.parseInt(txtCodMarca.getText()));
+        marca = new MarcaProduto();
+        marca.setCodigo_marca(Integer.parseInt(txtCodMarca.getText()));
 
         int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtNomeMarca.getText() + "?");
 
         if (confirma == 0) {
             try {
-                clienteDAO.excluir(cliente);
+                marcaDAO.ExcluirMarca(marca);
 
             } catch (SQLException ex) {
                 Logger.getLogger(MarcaVIEW.class
-                    .getName()).log(Level.SEVERE, null, ex);
+                        .getName()).log(Level.SEVERE, null, ex);
             }
 
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
@@ -583,104 +492,34 @@ public class MarcaVIEW extends javax.swing.JFrame {
 
     private void btnSalvarMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarMarcaActionPerformed
         List<String> listaCampos = getCampos();
-        if (rbnPF.isSelected() == false && rbnPJ.isSelected() == false) {
-            JOptionPane.showMessageDialog(null, "Defina o tipo de pessoa.");
-        }
-        if (rbnPF.isSelected()) {
-            //System.out.println("Entrei fora" + txtCpf.getText() + txtRg.getText());
-            if (txtCpf.getText().matches(".*\\d.*") == false
-                || txtRg.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CPF/RG");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(0);
+        if (txtNomeMarca.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos");
+        } else {
+            marca = new MarcaProduto();
 
-                cliContato = new Contato();
+            marca.setNome_marca(listaCampos.get(0));
 
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
+            try {
+                marcaDAO.SalvarMarca(marca);
 
-                cliEndereco = new Endereco();
-
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbEstado.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                cliFisica = new ClienteFisica();
-
-                cliFisica.setCpf(txtCpf.getText());
-                cliFisica.setRg(txtRg.getText());
-
-                try {
-                    clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(MarcaVIEW.class
+            } catch (SQLException ex) {
+                Logger.getLogger(MarcaVIEW.class
                         .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoMarca.setEnabled(true);
             }
+
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+
+            limpaCampos();
+            fechaCampos();
+            fechaBotoes();
+            txtBuscaMarca.setEnabled(true);
+
+            btnNovoMarca.setEnabled(true);
         }
-        if (rbnPJ.isSelected()) {
-            if (txtCnpj.getText().matches(".*\\d.*") == false
-                || txtIe.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(1);
+    
 
-                cliContato = new Contato();
-
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
-
-                cliEndereco = new Endereco();
-
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbEstado.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                cliJuridica = new ClienteJuridica();
-
-                cliJuridica.setCnpj(txtCnpj.getText());
-                cliJuridica.setInscricao_estadual(txtIe.getText());
-
-                try {
-                    clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(MarcaVIEW.class
-                        .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoMarca.setEnabled(true);
-            }
-        }
     }//GEN-LAST:event_btnSalvarMarcaActionPerformed
 
     private void txtNomeMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeMarcaActionPerformed
@@ -709,7 +548,6 @@ public class MarcaVIEW extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JRadioButton rbnBuscaMarca;
     private javax.swing.JTable tabelaMarca;
     private javax.swing.JTextField txtBuscaMarca;
     private javax.swing.JTextField txtCodMarca;

@@ -28,7 +28,7 @@ public class MarcaProduto_DAO {
     }
 
     /* Método de Excluir */
-    public void ExcluirMarca(int codigo_marca) throws SQLException {
+    public void ExcluirMarca(MarcaProduto marca) throws SQLException {
         try {
             String deleta_marca;
             deleta_marca = "delete from marca where cod_marca = " + marca.getCodigo_marca();
@@ -45,7 +45,7 @@ public class MarcaProduto_DAO {
         try {
             List<MarcaProduto> lista = new ArrayList<>();
             String SQLBuscaMarca;
-            SQLBuscaMarca = "select * from categoria";
+            SQLBuscaMarca = "select * from marca";
             pst = Conexao.getInstance().prepareStatement(SQLBuscaMarca);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -53,7 +53,7 @@ public class MarcaProduto_DAO {
                 MarcaProduto marca = new MarcaProduto();
                 /* Setando Atributos Categoria */
                 marca.setCodigo_marca(rs.getInt("cod_marca"));
-                marca.setNome_marca(rs.getString("nome_narca"));
+                marca.setNome_marca(rs.getString("nome_marca"));
                 lista.add(marca);
             }
             return lista;
@@ -75,7 +75,7 @@ public class MarcaProduto_DAO {
                 MarcaProduto marca = new MarcaProduto();
                 /* Setando Atributos Categoria */
                 marca.setCodigo_marca(rs.getInt("cod_marca"));
-                marca.setNome_marca(rs.getString("nome_narca"));
+                marca.setNome_marca(rs.getString("nome_marca"));
                 lista.add(marca);
             }
             return lista;
