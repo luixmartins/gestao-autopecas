@@ -501,6 +501,7 @@ public class CategoriaVIEW extends javax.swing.JFrame {
             fechaBotoes();
 
             btnNovoCategoria.setEnabled(true);
+            txtBuscaCategoria.setEnabled(true);
         }
 
     }//GEN-LAST:event_btnSalvarCategoriaActionPerformed
