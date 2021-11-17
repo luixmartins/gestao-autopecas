@@ -370,7 +370,7 @@ public class MarcaVIEW extends javax.swing.JFrame {
 
     private void btnNovoMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoMarcaActionPerformed
         abreCampos();
-        txtBuscaMarca.setEnabled(false);
+        txtBuscaMarca.setEnabled(true);
         //btnBuscar.setEnabled(false);
         btnNovoMarca.setEnabled(false);
         btnExcluirMarca.setEnabled(false);

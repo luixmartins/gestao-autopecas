@@ -38,7 +38,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtCodFornecedores.setEnabled(false);
 
         btnAlterarFornecedores.setVisible(false);
-        txtBuscaFornecedores.setEnabled(false);
+        txtBuscaFornecedores.setEnabled(true);
         fechaBotoes();
         fechaCampos();
          txtBuscaFornecedores.setEnabled(true);
@@ -606,7 +606,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
 
     private void btnNovoFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoFornecedoresActionPerformed
         abreCampos();
-        txtBuscaFornecedores.setEnabled(false);
+        txtBuscaFornecedores.setEnabled(true);
         txtCnpjFornecedores.setEnabled(true);
         txtIeFornecedores.setEnabled(true);
         //btnBuscar.setEnabled(false);

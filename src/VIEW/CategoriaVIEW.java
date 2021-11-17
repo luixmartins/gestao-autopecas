@@ -353,7 +353,7 @@ public class CategoriaVIEW extends javax.swing.JFrame {
 
     private void btnNovoCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoCategoriaActionPerformed
         abreCampos();
-        txtBuscaCategoria.setEnabled(false);
+        txtBuscaCategoria.setEnabled(true);
         //btnBuscar.setEnabled(false);
         btnNovoCategoria.setEnabled(false);
         btnExcluirCategoria.setEnabled(false);
