@@ -6,8 +6,6 @@ import MODEL.CategoriaProduto;
 import MODEL.Fornecedor;
 import MODEL.MarcaProduto;
 import MODEL.Produto;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 /* Importações do SQL */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +31,7 @@ public class ProdutoDAO {
     public void SalvarProduto(Produto produto, MarcaProduto marca, CategoriaProduto categoria) throws SQLException {
         String buscaMarca, buscaCategoria, buscaFornecedor, salvaProduto, salvarProdutoHasFornecedor;
         /* Busca Marca */
-        buscaMarca = "SELECT * FROM  marca where  nome_marca  = " + marca.getNome_marca();
+        buscaMarca = "SELECT * FROM  marca where  nome_marca  = '" + marca.getNome_marca() + "' ";
         pst = Conexao.getInstance().prepareStatement(buscaMarca);
         ResultSet rs = pst.executeQuery(buscaMarca);
         int codMarca = 0;
@@ -42,21 +40,12 @@ public class ProdutoDAO {
         }
         pst.execute();
         /* Buscando Categoria */
-        buscaCategoria = "SELECT * FROM  categoria where  nome_categoria  = " + categoria.getNome_categoria();
+        buscaCategoria = "SELECT * FROM  categoria where  nome_categoria  = '" + categoria.getNome_categoria() + "' ";
         pst = Conexao.getInstance().prepareStatement(buscaCategoria);
         ResultSet rs2 = pst.executeQuery(buscaCategoria);
         int codCategoria = 0;
         while (rs2.next()) {
             codCategoria = rs2.getInt("cod_categoria");
-        }
-        pst.execute();
-        /* Buscando Fornecedor */
-        buscaFornecedor = "SELECT * FROM  fornecedor where  razao_social  = " + fornecedor.getNome();
-        pst = Conexao.getInstance().prepareStatement(buscaFornecedor);
-        ResultSet rs4 = pst.executeQuery(buscaFornecedor);
-        int codFornecedor = 0;
-        while (rs4.next()) {
-            codFornecedor = rs4.getInt("cod_categoria");
         }
         pst.execute();
         /* Salvando Produto */
@@ -72,25 +61,14 @@ public class ProdutoDAO {
         pst.setString(8, produto.getValor_custo());
         pst.setString(9, produto.getValor_venda());
         pst.execute();
-        /* Pegando o ultimo ID inserido */
-        ResultSet rs3 = pst.getGeneratedKeys();
-        int idProduto = 0;
-        if (rs3.next()) {
-            idProduto = rs3.getInt(1);
-        }
-        salvarProdutoHasFornecedor = "INSERT INTO produto_has_fornecedor VALUES(?,?,?)";
-        pst.setInt(1, 0);
-        pst.setInt(2, idProduto);
-        pst.setInt(3, codFornecedor);
-        pst.execute();
         pst.close();
     }
 
     /* Excluir Produto */
-    public void ExcluirProduto(int codigo_produto) throws SQLException {
+    public void ExcluirProduto(Produto produto) throws SQLException {
         try {
             String deleta_produto;
-            deleta_produto = "delete from fornecedor where idFornecedor = " + produto.getCod_produto();
+            deleta_produto = "delete from produto where cod_Produto = " + produto.getCod_produto();
             pst = Conexao.getInstance().prepareStatement(deleta_produto);
             pst.execute();
             pst.close();
@@ -104,14 +82,13 @@ public class ProdutoDAO {
         try {
             List<Produto> lista = new ArrayList<>();
             String sqlBuscaProduto;
-            sqlBuscaProduto = "select * from produto_has_fornecedor inner join produto on produto.cod_Produto = produto_has_fornecedor.Produto_cod_Produto inner join fornecedor on fornecedor.idFornecedor = produto_has_fornecedor.cod_ProdFornecedor inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria";
+            sqlBuscaProduto = "select * from produto  inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria";
             pst = Conexao.getInstance().prepareStatement(sqlBuscaProduto);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 /* Instanciando Classes */
                 Produto produto = new Produto();
                 MarcaProduto marca = new MarcaProduto();
-                Fornecedor fornecedor = new Fornecedor();
                 CategoriaProduto categoria = new CategoriaProduto();
                 /* Setando Atributos Produto */
                 produto.setCod_produto(rs.getInt("cod_Produto"));
@@ -139,12 +116,49 @@ public class ProdutoDAO {
         }
         return null;
     }
+public List<Produto> listaProduto(String nome) {
+        try {
+            List<Produto> lista = new ArrayList<>();
+            String sqlBuscaProduto2;
+            sqlBuscaProduto2 = "select * from produto  inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria where produto.cod_Produto like \"" + nome + "\"";
+            pst = Conexao.getInstance().prepareStatement(sqlBuscaProduto2);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                /* Instanciando Classes */
+                Produto produto = new Produto();
+                MarcaProduto marca = new MarcaProduto();
+                CategoriaProduto categoria = new CategoriaProduto();
+                /* Setando Atributos Produto */
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                /* Setando Marca */
+                produto.setMarca(marca);
+                marca.setNome_marca(rs.getString("nome_marca"));
+                /* Setando Categoria */
+                produto.setCategoria(categoria);
+                categoria.setNome_categoria(rs.getString("nome_categoria"));
+                /* Continuação Produto */
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setQuantidadeMinima(rs.getInt("quantidade_minima"));
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setValor_custo(rs.getString("valor_custo"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                /* Adicionando dados na Lista */
+                lista.add(produto);
+            }
 
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+        return null;
+    }
     /* Alterar Produto */
     public void alterarProduto(Produto produto, MarcaProduto marca, CategoriaProduto categoria) throws SQLException {
-        String buscaMarca, buscaCategoria, buscaFornecedor, updateProduto, Produto_Has_Fornecedor, buscaProduto_Has_Fornecedor;
+        String buscaMarca, buscaCategoria, updateProduto;
         /* Busca Marca */
-        buscaMarca = "SELECT * FROM  marca where  nome_marca  = " + marca.getNome_marca();
+        buscaMarca = "SELECT * FROM  marca where nome_marca  = '" + marca.getNome_marca() + "' ";
         pst = Conexao.getInstance().prepareStatement(buscaMarca);
         ResultSet rs = pst.executeQuery(buscaMarca);
         int codMarca = 0;
@@ -153,21 +167,12 @@ public class ProdutoDAO {
         }
         pst.execute();
         /* Buscando Categoria */
-        buscaCategoria = "SELECT * FROM  categoria where  nome_categoria  = " + categoria.getNome_categoria();
+        buscaCategoria = "SELECT * FROM  categoria where nome_categoria  = '" + categoria.getNome_categoria() + "' ";
         pst = Conexao.getInstance().prepareStatement(buscaCategoria);
         ResultSet rs2 = pst.executeQuery(buscaCategoria);
         int codCategoria = 0;
         while (rs2.next()) {
             codCategoria = rs2.getInt("cod_categoria");
-        }
-        pst.execute();
-        /* Buscando Fornecedor */
-        buscaFornecedor = "SELECT * FROM  fornecedor where  razao_social  = " + fornecedor.getNome();
-        pst = Conexao.getInstance().prepareStatement(buscaFornecedor);
-        ResultSet rs3 = pst.executeQuery(buscaFornecedor);
-        int codFornecedor = 0;
-        while (rs3.next()) {
-            codFornecedor = rs3.getInt("cod_categoria");
         }
         pst.execute();
         /* Update Produto */
@@ -183,23 +188,7 @@ public class ProdutoDAO {
         pst.setString(8, produto.getValor_venda());
         pst.setInt(9, produto.getCod_produto());
         pst.execute();
-        /* Buscando Código PK da Table Produto Has Fornecedor */
-         buscaFornecedor = "SELECT * FROM  produto_has_fornecedor  where  Produto_cod_Produto  = " + produto.getCod_produto();
-        pst = Conexao.getInstance().prepareStatement(buscaFornecedor);
-        ResultSet rs4 = pst.executeQuery(buscaFornecedor);
-        int codProdFornecedor = 0;
-        while (rs4.next()) {
-            codProdFornecedor = rs4.getInt("cod_ProdFornecedor");
-        }
-        pst.execute();
-        buscaProduto_Has_Fornecedor = "";
-        /* Update Produto Has Fornecedor  */
-        Produto_Has_Fornecedor = "UPDATE produto_has_fornecedor SET Produto_cod_Produto = ?, Fornecedor_idFornecedor = ? where cod_ProdFornecedor = ? ";
-        pst = Conexao.getInstance().prepareStatement(Produto_Has_Fornecedor);
-        pst.setInt(1, produto.getCod_produto());
-        pst.setInt(2, codFornecedor);
-        pst.setInt(3, codProdFornecedor);
-        pst.execute();
         pst.close();
     }
+
 }

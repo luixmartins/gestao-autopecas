@@ -5,18 +5,19 @@
  */
 package VIEW;
 
+import DAO.CategoriaDAO;
 import DAO.ClienteDAO;
+import DAO.MarcaProduto_DAO;
+import DAO.ProdutoDAO;
+import MODEL.CategoriaProduto;
 import MODEL.Cliente;
 import MODEL.Contato;
 import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
+import MODEL.MarcaProduto;
+import MODEL.Produto;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,72 +32,83 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ProdutoVIEW extends javax.swing.JFrame {
 
-    Cliente cliente;
-    Contato cliContato;
-    Endereco cliEndereco;
-    ClienteFisica cliFisica;
-    ClienteJuridica cliJuridica;
-    ClienteDAO clienteDAO;
+    Produto produto;
+    CategoriaProduto categoria;
+    MarcaProduto marca;
+
+    ProdutoDAO produtoDAO;
+    MarcaProduto_DAO marcaDAO;
+    CategoriaDAO categoriaDAO;
 
     public ProdutoVIEW() {
         initComponents();
         this.setLocationRelativeTo(null);
-
-        clienteDAO = new ClienteDAO();
-
+        produtoDAO = new ProdutoDAO();
+        marcaDAO = new MarcaProduto_DAO();
+        categoriaDAO = new CategoriaDAO();
         txtCodProdutos.setEnabled(false);
-
         btnAlterarProdutos.setVisible(false);
-        txtBuscaProdutos.setEnabled(false);
+        txtBuscaProdutos.setEnabled(true);
         fechaBotoes();
         fechaCampos();
+        listarProdutos();
+        listarCategoria();
+        listarMarca();
     }
 
-    public void listarClientesFisica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista = clienteDAO.listarClientesFisica();
-        DefaultTableModel dados = (DefaultTableModel) tabelaConsultaProdutos.getModel();
-        dados.setNumRows(0);
-        for (Cliente c : lista) {
-            dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliFisica().getCpf(),
-                c.getCliFisica().getRg(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
+    public void listaProdutosNome() {
+
+        String nome = "%" + txtCodProdutos.getText() + "%";
+
+        produtoDAO = new ProdutoDAO();
+        List<Produto> lista2 = produtoDAO.listaProduto(nome);
+        DefaultTableModel dados2 = (DefaultTableModel) tabelaConsultaProdutos.getModel();
+        dados2.setNumRows(0);
+        for (Produto c : lista2) {
+            dados2.addRow(new Object[]{
+                c.getCod_produto(),
+                c.getDescricao(),
+                c.getQuantidade(),
+                c.getQuantidadeMinima(),
+                c.getCodigo_barras(),
+                c.getValor_custo(),
+                c.getValor_venda(),
+                c.getCategoria().getNome_categoria(),
+                c.getMarca().getNome_marca(),});
         }
     }
 
-    public void listarClientesJuridica() {
-        clienteDAO = new ClienteDAO();
-        List<Cliente> lista2 = clienteDAO.ListarClienteJuridica();
+    public void listarProdutos() {
+        produtoDAO = new ProdutoDAO();
+        List<Produto> lista = produtoDAO.listaProduto();
         DefaultTableModel dados = (DefaultTableModel) tabelaConsultaProdutos.getModel();
         dados.setNumRows(0);
-        for (Cliente c : lista2) {
+        for (Produto c : lista) {
             dados.addRow(new Object[]{
-                c.getCod_cliente(),
-                c.getNome_cliente(),
-                c.getCliJuridica().getCnpj(),
-                c.getCliJuridica().getInscricao_estadual(),
-                c.getCliContato().getCelular_cliente(),
-                c.getCliContato().getTelefone_cliente(),
-                c.getCliContato().getEmail(),
-                c.getCliEndereco().getRua(),
-                c.getCliEndereco().getNumero(),
-                c.getCliEndereco().getBairro(),
-                c.getCliEndereco().getCidade(),
-                c.getCliEndereco().getEstado(),
-                c.getCliEndereco().getCep()
-            });
+                c.getCod_produto(),
+                c.getDescricao(),
+                c.getQuantidade(),
+                c.getQuantidadeMinima(),
+                c.getCodigo_barras(),
+                c.getValor_custo(),
+                c.getValor_venda(),
+                c.getCategoria().getNome_categoria(),
+                c.getMarca().getNome_marca(),});
+        }
+    }
+
+    public void listarCategoria() {
+        categoriaDAO = new CategoriaDAO();
+        for (CategoriaProduto c : categoriaDAO.listarCategorias()) {
+            jcbCategoria.addItem(c.getNome_categoria());
+        }
+
+    }
+
+    public void listarMarca() {
+        marcaDAO = new MarcaProduto_DAO();
+        for (MarcaProduto c : marcaDAO.listarMarcas()) {
+            jcbMarca.addItem(c.getNome_marca());
         }
     }
 
@@ -108,51 +120,54 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
     public void fechaCampos() {
         txtCodigoBarras.setEnabled(false);
-        txtValorCustoProd.setEnabled(false);
+        txtValorVendaProd.setEnabled(false);
         txtDescricaoProdutos.setEnabled(false);
-        txtQuantidadeMinProd.setEnabled(false);
         txtQuantidadeProd.setEnabled(false);
+        txtQuantidadeMinProd.setEnabled(false);
+        txtValorCustoProd.setEnabled(false);
+        jcbCategoria.setEnabled(false);
+        jcbMarca.setEnabled(false);
     }
 
     public void abreCampos() {
         txtCodigoBarras.setEnabled(true);
-        txtValorCustoProd.setEnabled(true);
+        txtValorVendaProd.setEnabled(true);
         txtDescricaoProdutos.setEnabled(true);
-        txtQuantidadeMinProd.setEnabled(true);
         txtQuantidadeProd.setEnabled(true);
+        txtQuantidadeMinProd.setEnabled(true);
+        txtValorCustoProd.setEnabled(true);
+        jcbCategoria.setEnabled(true);
+        jcbMarca.setEnabled(true);
     }
 
     public void limpaCampos() {
         txtCodigoBarras.setText("");
-        txtValorCustoProd.setText("");
+        txtValorVendaProd.setText("");
         txtDescricaoProdutos.setText("");
-        txtQuantidadeMinProd.setText("");
         txtQuantidadeProd.setText("");
+        txtQuantidadeMinProd.setText("");
+        txtValorCustoProd.setText("");
         txtCodProdutos.setText("");
+        jcbCategoria.setSelectedIndex(0);
+        jcbMarca.setSelectedIndex(0);
     }
 
     public List<String> getCampos() {
         List<String> listaCampos = new ArrayList<>();
 
-        if (txtDescricaoProdutos.getText().isEmpty() || txtQuantidadeMinProd.getText().isEmpty()
-                || txtCodigoBarras.getText().isEmpty() || txtValorCustoProd.getText().isEmpty()
-               
-                || jcbFornecedor.getSelectedItem() == "Selecione" || txtQuantidadeProd.getText().isEmpty()) {
-
+        if (txtDescricaoProdutos.getText().isEmpty() || txtQuantidadeProd.getText().isEmpty() || txtQuantidadeMinProd.getText().isEmpty()
+                || txtCodigoBarras.getText().isEmpty() || txtValorVendaProd.getText().isEmpty()
+                || txtValorCustoProd.getText().isEmpty() || jcbCategoria.getSelectedItem() == "Selecione" || jcbMarca.getSelectedItem() == "Selecione") {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-
         } else {
             listaCampos.add(txtDescricaoProdutos.getText());
             listaCampos.add(txtQuantidadeMinProd.getText());
             listaCampos.add(txtCodigoBarras.getText());
             listaCampos.add(txtValorCustoProd.getText());
-
-
+            listaCampos.add(txtValorVendaProd.getText());
             listaCampos.add(txtQuantidadeProd.getText());
-
             return listaCampos;
         }
-
         return null;
     }
 
@@ -293,9 +308,9 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
         jLabel11.setText("Marca");
 
-        jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", " " }));
+        jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
 
-        jcbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", " " }));
+        jcbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -425,7 +440,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         });
 
         jLabel21.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel21.setText("Nome Produtos");
+        jLabel21.setText("Código Produto");
 
         txtBuscaProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -444,7 +459,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Descrição", "Quantidade", "Quantidade mínima", "código barras", "Valor custo", "Valor venda", "Categoria", "Marca"
+                "Código", "Descrição", "Quantidade", "Quantidade mínima", "Código de Barra", "Valor custo", "Valor venda", "Categoria", "Marca"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -471,8 +486,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBuscaProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 765, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1138, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,7 +518,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1143, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnNovoProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -526,11 +541,12 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
     private void btnNovoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoProdutosActionPerformed
         abreCampos();
-        txtBuscaProdutos.setEnabled(false);
+        txtBuscaProdutos.setEnabled(true);
         //btnBuscar.setEnabled(false);
         btnNovoProdutos.setEnabled(false);
         btnExcluirProdutos.setEnabled(false);
         btnAlterarProdutos.setVisible(false);
+        btnAlterarProdutos.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
         btnSalvarProdutos.setVisible(true);
         btnSalvarProdutos.setEnabled(true);
@@ -542,104 +558,53 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         fechaCampos();
 
         btnAlterarProdutos.setEnabled(false);
+        btnAlterarProdutos.setVisible(false);
         btnNovoProdutos.setEnabled(true);
     }//GEN-LAST:event_btnCancelarProdutosActionPerformed
 
     private void btnSalvarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarProdutosActionPerformed
         List<String> listaCampos = getCampos();
-        if (rbnPF.isSelected() == false && rbnPJ.isSelected() == false) {
-            JOptionPane.showMessageDialog(null, "Defina o tipo de pessoa.");
-        }
-        if (rbnPF.isSelected()) {
-            //System.out.println("Entrei fora" + txtCpf.getText() + txtRg.getText());
-            if (txtCpf.getText().matches(".*\\d.*") == false
-                    || txtRg.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CPF/RG");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(0);
+        if (jcbCategoria.getSelectedItem() == "Selecione" || jcbMarca.getSelectedItem() == "Selecione") {
+            JOptionPane.showMessageDialog(null, "Selecione a Marca e Categoria");
+        } else {
+            produto = new Produto();
+            produto.setDescricao(listaCampos.get(0));
+            produto.setQuantidadeMinima(Integer.parseInt(listaCampos.get(1)));
+            produto.setCodigo_barras(listaCampos.get(2));
+            produto.setValor_custo(listaCampos.get(3));
+            produto.setValor_venda(listaCampos.get(4));
+            produto.setQuantidade(Integer.parseInt(listaCampos.get(5)));
 
-                cliContato = new Contato();
+            produto.setMarca(marca);
 
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
+            marca = new MarcaProduto();
+            marca.setNome_marca((String) jcbMarca.getSelectedItem());
 
-                cliEndereco = new Endereco();
+            produto.setCategoria(categoria);
 
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbFornecedor.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
+            categoria = new CategoriaProduto();
+            categoria.setNome_categoria((String) jcbCategoria.getSelectedItem());
 
-                cliFisica = new ClienteFisica();
+            try {
+                produtoDAO.SalvarProduto(produto, marca, categoria);
 
-                
-
-                try {
-                    clienteDAO.salvarFisica(cliente, cliFisica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(ProdutoVIEW.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoProdutos.setEnabled(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProdutoVIEW.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        if (rbnPJ.isSelected()) {
-            if (txtCnpj.getText().matches(".*\\d.*") == false
-                    || txtIe.getText().matches(".*\\d.*") == false) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
-            } else {
-                cliente = new Cliente();
 
-                cliente.setNome_cliente(listaCampos.get(0));
-                cliente.setTipo_cliente(1);
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
 
-                cliContato = new Contato();
+            limpaCampos();
+            fechaCampos();
+            fechaBotoes();
 
-                cliContato.setCelular_cliente(listaCampos.get(5));
-                cliContato.setTelefone_cliente(listaCampos.get(6));
-                cliContato.setEmail(listaCampos.get(7));
+            btnNovoProdutos.setEnabled(true);
+            txtBuscaProdutos.setEnabled(true);
 
-                cliEndereco = new Endereco();
-
-                cliEndereco.setBairro(listaCampos.get(2));
-                cliEndereco.setCep(listaCampos.get(4));
-                cliEndereco.setCidade(listaCampos.get(3));
-                cliEndereco.setEstado((String) jcbFornecedor.getSelectedItem());
-                cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-                cliEndereco.setRua(listaCampos.get(8));
-
-                
-
-                try {
-                    clienteDAO.salvarJuridica(cliente, cliJuridica, cliEndereco, cliContato);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(ProdutoVIEW.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-
-                limpaCampos();
-                fechaCampos();
-                fechaBotoes();
-
-                btnNovoProdutos.setEnabled(true);
-            }
+            jcbCategoria.setSelectedIndex(0);
+            jcbMarca.setSelectedIndex(0);
         }
     }//GEN-LAST:event_btnSalvarProdutosActionPerformed
 
@@ -661,51 +626,57 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
     private void btnAlterarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarProdutosActionPerformed
         List<String> listaCampos = getCampos();
-        cliente = new Cliente();
 
-        cliente.setCod_cliente(Integer.parseInt(txtCodProdutos.getText()));
-        cliente.setNome_cliente(listaCampos.get(0));
+        produto = new Produto();
 
-        cliEndereco = new Endereco();
+        produto.setDescricao(txtDescricaoProdutos.getText());
 
-        cliEndereco.setBairro(listaCampos.get(2));
-        cliEndereco.setCep(listaCampos.get(4));
-        cliEndereco.setCidade(listaCampos.get(3));
-        cliEndereco.setEstado((String) jcbFornecedor.getSelectedItem());
-        cliEndereco.setNumero(Integer.parseInt(listaCampos.get(1)));
-        cliEndereco.setRua(listaCampos.get(8));
+        produto.setMarca(marca);
+        marca = new MarcaProduto();
 
-        cliContato = new Contato();
+        marca.setNome_marca((String) jcbMarca.getSelectedItem());
 
-        cliContato.setCelular_cliente(listaCampos.get(5));
-        cliContato.setTelefone_cliente(listaCampos.get(6));
-        cliContato.setEmail(listaCampos.get(7));
+        produto.setCategoria(categoria);
+
+        categoria = new CategoriaProduto();
+        categoria.setNome_categoria((String) jcbCategoria.getSelectedItem());
+
+        produto.setQuantidade(Integer.parseInt(txtQuantidadeProd.getText()));
+        produto.setQuantidadeMinima(Integer.parseInt(txtQuantidadeMinProd.getText()));
+        produto.setCodigo_barras(txtCodigoBarras.getText());
+        produto.setValor_custo(txtValorCustoProd.getText());
+        produto.setValor_venda(txtValorVendaProd.getText());
+        produto.setCod_produto(Integer.parseInt(txtCodProdutos.getText()));
 
         try {
-            clienteDAO.alterar(cliente, cliEndereco, cliContato);
+            produtoDAO.alterarProduto(produto, marca, categoria);
+
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoVIEW.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
+
         JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
-        btnAlterarProdutos.setVisible(false);
-        btnSalvarProdutos.setVisible(true);
-        btnSalvarProdutos.setEnabled(false);
-        btnNovoProdutos.setEnabled(true);
         limpaCampos();
         fechaCampos();
         fechaBotoes();
 
+        btnNovoProdutos.setEnabled(true);
+        txtBuscaProdutos.setEnabled(true);
+        btnAlterarProdutos.setEnabled(false);
+        jcbCategoria.setSelectedIndex(0);
+        jcbMarca.setSelectedIndex(0);
     }//GEN-LAST:event_btnAlterarProdutosActionPerformed
 
     private void btnExcluirProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirProdutosActionPerformed
-        cliente = new Cliente();
-        cliente.setCod_cliente(Integer.parseInt(txtCodProdutos.getText()));
+        produto = new Produto();
+        produto.setCod_produto(Integer.parseInt(txtCodProdutos.getText()));
 
         int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtDescricaoProdutos.getText() + "?");
 
         if (confirma == 0) {
             try {
-                clienteDAO.excluir(cliente);
+                produtoDAO.ExcluirProduto(produto);
 
             } catch (SQLException ex) {
                 Logger.getLogger(ProdutoVIEW.class
@@ -719,7 +690,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             btnAlterarProdutos.setVisible(false);
             btnSalvarProdutos.setVisible(true);
             btnNovoProdutos.setEnabled(true);
-
+            txtBuscaProdutos.setEnabled(true);
         }
     }//GEN-LAST:event_btnExcluirProdutosActionPerformed
 
@@ -728,100 +699,27 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(0);
         txtCodProdutos.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 0).toString());
         txtDescricaoProdutos.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 1).toString());
-        
-        txtQuantidadeProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 7).toString());
-        txtQuantidadeMinProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 8).toString());
-        txtCodigoBarras.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 9).toString());
-        txtValorCustoProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 10).toString());
-        
-
-        if (rbnBuscaFisica.isSelected()) {
-            txtCpf.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 2).toString());
-            txtRg.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 3).toString());
-
-            txtCnpj.setText("");
-            txtIe.setText("");
-        } else {
-            if (rbnBuscaJuridica.isSelected()) {
-                txtCnpj.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 2).toString());
-                txtIe.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 3).toString());
-
-                txtCpf.setText("");
-                txtRg.setText("");
-            }
-        }
+        txtQuantidadeProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 2).toString());
+        txtQuantidadeMinProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 3).toString());
+        txtCodigoBarras.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 4).toString());
+        txtValorCustoProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 5).toString());
+        txtValorVendaProd.setText(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 6).toString());
+        jcbCategoria.setSelectedItem(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 7).toString());
+        jcbMarca.setSelectedItem(tabelaConsultaProdutos.getValueAt(tabelaConsultaProdutos.getSelectedRow(), 8).toString());
 
         abreCampos();
         btnSalvarProdutos.setVisible(false);
         btnNovoProdutos.setEnabled(false);
-
         btnAlterarProdutos.setVisible(true);
         btnAlterarProdutos.setEnabled(true);
         btnExcluirProdutos.setEnabled(true);
         btnCancelarProdutos.setEnabled(true);
 
-        
+
     }//GEN-LAST:event_tabelaConsultaProdutosMouseClicked
 
     private void txtBuscaProdutosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaProdutosKeyPressed
-        if (rbnBuscaFisica.isSelected()) {
-            String nome = "%" + txtBuscaProdutos.getText() + "%";
-
-            clienteDAO = new ClienteDAO();
-
-            List<Cliente> lista = clienteDAO.buscaClientesFisica(nome);
-            DefaultTableModel dados = (DefaultTableModel) tabelaConsultaProdutos.getModel();
-
-            dados.setNumRows(0);
-
-            for (Cliente c : lista) {
-                dados.addRow(new Object[]{
-                    c.getCod_cliente(),
-                    c.getNome_cliente(),
-                    c.getCliFisica().getCpf(),
-                    c.getCliFisica().getRg(),
-                    c.getCliContato().getCelular_cliente(),
-                    c.getCliContato().getTelefone_cliente(),
-                    c.getCliContato().getEmail(),
-                    c.getCliEndereco().getRua(),
-                    c.getCliEndereco().getNumero(),
-                    c.getCliEndereco().getBairro(),
-                    c.getCliEndereco().getCidade(),
-                    c.getCliEndereco().getEstado(),
-                    c.getCliEndereco().getCep()
-                });
-            }
-
-        } else {
-            if (rbnBuscaJuridica.isSelected()) {
-                String nome = "%" + txtBuscaProdutos.getText() + "%";
-
-                clienteDAO = new ClienteDAO();
-
-                List<Cliente> lista2 = clienteDAO.buscaClienteJuridica(nome);
-                DefaultTableModel dados = (DefaultTableModel) tabelaConsultaProdutos.getModel();
-
-                dados.setNumRows(0);
-
-                for (Cliente c : lista2) {
-                    dados.addRow(new Object[]{
-                        c.getCod_cliente(),
-                        c.getNome_cliente(),
-                        c.getCliJuridica().getCnpj(),
-                        c.getCliJuridica().getInscricao_estadual(),
-                        c.getCliContato().getCelular_cliente(),
-                        c.getCliContato().getTelefone_cliente(),
-                        c.getCliContato().getEmail(),
-                        c.getCliEndereco().getRua(),
-                        c.getCliEndereco().getNumero(),
-                        c.getCliEndereco().getBairro(),
-                        c.getCliEndereco().getCidade(),
-                        c.getCliEndereco().getEstado(),
-                        c.getCliEndereco().getCep()
-                    });
-                }
-            }
-        }
+        listaProdutosNome();
     }//GEN-LAST:event_txtBuscaProdutosKeyPressed
 
     private void txtQuantidadeMinProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQuantidadeMinProdActionPerformed

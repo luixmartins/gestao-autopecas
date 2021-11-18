@@ -183,8 +183,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mni_MarcaActionPerformed
 
     private void mni_ProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ProdutoActionPerformed
-        // ProdutoVIEW produtoview = new ProdutoVIEW();
-        // produtoview.setVisible(True);
+        ProdutoVIEW produtoview = new ProdutoVIEW();
+        produtoview.setVisible(true);
     }//GEN-LAST:event_mni_ProdutoActionPerformed
 
     private void mni_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_EntradaActionPerformed
