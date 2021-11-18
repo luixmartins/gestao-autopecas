@@ -7,7 +7,6 @@ import MODEL.Contato;
 import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
-import MODEL.WebServiceCep;
 /* Importações do SQL */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -441,31 +440,6 @@ public class ClienteDAO {
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
 
-        return null;
-    }
-
-    //BUSCA DE CEP 
-    public Endereco buscaCep(String cep) {
-        try {
-            WebServiceCep webServiceCep = WebServiceCep.searchCep(cep);
-
-            Endereco cliEndereco = new Endereco();
-
-            if (webServiceCep.wasSuccessful()) {
-                cliEndereco.setRua((webServiceCep.getLogradouroFull()));
-                cliEndereco.setCidade((webServiceCep.getCidade()));
-                cliEndereco.setEstado(webServiceCep.getUf());
-                cliEndereco.setBairro(webServiceCep.getBairro());
-
-                return cliEndereco;
-            } else {
-                JOptionPane.showMessageDialog(null, "Erro ao encontrar endereço! Insira manualmente.");
-
-                return null;
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Falha no sistema! Contate o desenvolvedor.");
-        }
         return null;
     }
 }
