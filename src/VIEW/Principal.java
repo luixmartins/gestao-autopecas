@@ -307,11 +307,13 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_labelProdutoMouseClicked
 
     private void iconeEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeEntradaMouseClicked
-        // TODO add your handling code here:
+        EntradaVIEW entradaview = new EntradaVIEW();
+        entradaview.setVisible(true);
     }//GEN-LAST:event_iconeEntradaMouseClicked
 
     private void labelEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelEntradaMouseClicked
-        // TODO add your handling code here:
+        EntradaVIEW entradaview = new EntradaVIEW();
+        entradaview.setVisible(true);
     }//GEN-LAST:event_labelEntradaMouseClicked
 
 
