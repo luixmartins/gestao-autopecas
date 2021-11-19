@@ -116,11 +116,12 @@ public class ProdutoDAO {
         }
         return null;
     }
-public List<Produto> listaProduto(String nome) {
+
+    public List<Produto> listaProduto(String nome) {
         try {
             List<Produto> lista = new ArrayList<>();
             String sqlBuscaProduto2;
-            sqlBuscaProduto2 = "select * from produto  inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria where produto.cod_Produto like \"" + nome + "\"";
+            sqlBuscaProduto2 = "select * from produto inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria where produto.cod_Produto like \"" + nome + "\" or produto.descricao_produto like \"" + nome + "\" or categoria.nome_categoria like \"" + nome + "\" or marca.nome_marca like \"" + nome + "\"";
             pst = Conexao.getInstance().prepareStatement(sqlBuscaProduto2);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -154,6 +155,46 @@ public List<Produto> listaProduto(String nome) {
         }
         return null;
     }
+
+    public List<Produto> listaQuantidade() {
+        try {
+            List<Produto> lista = new ArrayList<>();
+            String sqlBuscaProduto3;
+            sqlBuscaProduto3 = "select * from produto  inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria where produto.quantidade < produto.quantidade_minima order by produto.quantidade ASC ";
+            pst = Conexao.getInstance().prepareStatement(sqlBuscaProduto3);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                /* Instanciando Classes */
+                Produto produto = new Produto();
+                MarcaProduto marca = new MarcaProduto();
+                CategoriaProduto categoria = new CategoriaProduto();
+                /* Setando Atributos Produto */
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                /* Setando Marca */
+                produto.setMarca(marca);
+                marca.setNome_marca(rs.getString("nome_marca"));
+                /* Setando Categoria */
+                produto.setCategoria(categoria);
+                categoria.setNome_categoria(rs.getString("nome_categoria"));
+                /* Continuação Produto */
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setQuantidadeMinima(rs.getInt("quantidade_minima"));
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setValor_custo(rs.getString("valor_custo"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                /* Adicionando dados na Lista */
+                lista.add(produto);
+            }
+
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+        return null;
+    }
+
     /* Alterar Produto */
     public void alterarProduto(Produto produto, MarcaProduto marca, CategoriaProduto categoria) throws SQLException {
         String buscaMarca, buscaCategoria, updateProduto;
