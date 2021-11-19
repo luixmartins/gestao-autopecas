@@ -93,7 +93,6 @@ public class EntradaVIEW extends javax.swing.JFrame {
 
         jLabel11.setText("Preço Total");
 
-        btnAdicionar.setBackground(new java.awt.Color(162, 190, 190));
         btnAdicionar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnAdicionar.setText("+");
 
@@ -121,7 +120,6 @@ public class EntradaVIEW extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabelaFornecedores);
 
-        btnSubtrair.setBackground(new java.awt.Color(162, 190, 190));
         btnSubtrair.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnSubtrair.setText("-");
 
