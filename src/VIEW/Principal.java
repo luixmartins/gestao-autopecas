@@ -38,10 +38,10 @@ public class Principal extends javax.swing.JFrame {
         iconeFornecedor = new javax.swing.JLabel();
         iconeProdutos = new javax.swing.JLabel();
         iconeEntrada = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        labelCliente = new javax.swing.JLabel();
+        labelProduto = new javax.swing.JLabel();
+        labelEntrada = new javax.swing.JLabel();
+        labelFornecedor = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mni_cliente = new javax.swing.JMenu();
         mni_Cliente = new javax.swing.JMenuItem();
@@ -59,42 +59,91 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jLabel2.setText("Barcelos");
 
-        iconeCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/user.png"))); // NOI18N
+        iconeCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/user.png"))); // NOI18N
+        iconeCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iconeClienteMouseClicked(evt);
+            }
+        });
 
-        iconeFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/fornecem (2).png"))); // NOI18N
+        iconeFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/fornecem (2).png"))); // NOI18N
+        iconeFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iconeFornecedorMouseClicked(evt);
+            }
+        });
 
-        iconeProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/gestao-de-produtos.png"))); // NOI18N
+        iconeProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/gestao-de-produtos.png"))); // NOI18N
+        iconeProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iconeProdutosMouseClicked(evt);
+            }
+        });
 
-        iconeEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/caixa-de-entrada.png"))); // NOI18N
+        iconeEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/caixa-de-entrada.png"))); // NOI18N
+        iconeEntrada.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iconeEntradaMouseClicked(evt);
+            }
+        });
 
-        jLabel3.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        jLabel3.setText("Cliente");
+        labelCliente.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        labelCliente.setText("Cliente");
+        labelCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelClienteMouseClicked(evt);
+            }
+        });
 
-        jLabel5.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        jLabel5.setText("Produtos");
+        labelProduto.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        labelProduto.setText("Produtos");
+        labelProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelProdutoMouseClicked(evt);
+            }
+        });
 
-        jLabel6.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        jLabel6.setText("Entrada");
+        labelEntrada.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        labelEntrada.setText("Entrada");
+        labelEntrada.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelEntradaMouseClicked(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
-        jLabel4.setText("Fornecedor");
+        labelFornecedor.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        labelFornecedor.setText("Fornecedor");
+        labelFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelFornecedorMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout iconeMarcaLayout = new javax.swing.GroupLayout(iconeMarca);
         iconeMarca.setLayout(iconeMarcaLayout);
         iconeMarcaLayout.setHorizontalGroup(
             iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(iconeMarcaLayout.createSequentialGroup()
-                .addContainerGap(124, Short.MAX_VALUE)
+                .addContainerGap(698, Short.MAX_VALUE)
                 .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jLabel2)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(84, 84, 84))))
+            .addGroup(iconeMarcaLayout.createSequentialGroup()
+                .addGap(104, 104, 104)
+                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(labelCliente)
                         .addGap(142, 142, 142)
-                        .addComponent(jLabel4)
+                        .addComponent(labelFornecedor)
                         .addGap(123, 123, 123)
-                        .addComponent(jLabel5)
+                        .addComponent(labelProduto)
                         .addGap(125, 125, 125)
-                        .addComponent(jLabel6)
-                        .addGap(164, 164, 164))
+                        .addComponent(labelEntrada)
+                        .addGap(38, 38, 38))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
                         .addComponent(iconeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)
@@ -102,36 +151,31 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(32, 32, 32)
                         .addComponent(iconeProdutos)
                         .addGap(45, 45, 45)
-                        .addComponent(iconeEntrada)
-                        .addGap(126, 126, 126))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(84, 84, 84))))
+                        .addComponent(iconeEntrada)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         iconeMarcaLayout.setVerticalGroup(
             iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(iconeMarcaLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap(90, Short.MAX_VALUE)
                 .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(iconeMarcaLayout.createSequentialGroup()
                         .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(iconeEntrada)
                             .addComponent(iconeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3))
+                        .addComponent(labelCliente))
                     .addGroup(iconeMarcaLayout.createSequentialGroup()
                         .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(iconeProdutos)
                             .addComponent(iconeFornecedor))
                         .addGap(22, 22, 22)
-                        .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
+                        .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelProduto)
+                            .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelFornecedor)
+                                .addComponent(labelEntrada)))))
+                .addGap(88, 88, 88)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -232,6 +276,44 @@ public class Principal extends javax.swing.JFrame {
         view.setVisible(true);
     }//GEN-LAST:event_mni_ClienteActionPerformed
 
+    private void iconeClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeClienteMouseClicked
+        ClienteVIEW view = new ClienteVIEW();
+        view.setVisible(true);
+    }//GEN-LAST:event_iconeClienteMouseClicked
+
+    private void labelClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelClienteMouseClicked
+        ClienteVIEW view = new ClienteVIEW();
+        view.setVisible(true);
+    }//GEN-LAST:event_labelClienteMouseClicked
+
+    private void iconeFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeFornecedorMouseClicked
+        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        fornecedorview.setVisible(true);
+    }//GEN-LAST:event_iconeFornecedorMouseClicked
+
+    private void labelFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFornecedorMouseClicked
+        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        fornecedorview.setVisible(true);
+    }//GEN-LAST:event_labelFornecedorMouseClicked
+
+    private void iconeProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeProdutosMouseClicked
+        ProdutoVIEW produtoview = new ProdutoVIEW();
+        produtoview.setVisible(true);
+    }//GEN-LAST:event_iconeProdutosMouseClicked
+
+    private void labelProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelProdutoMouseClicked
+        ProdutoVIEW produtoview = new ProdutoVIEW();
+        produtoview.setVisible(true);
+    }//GEN-LAST:event_labelProdutoMouseClicked
+
+    private void iconeEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeEntradaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_iconeEntradaMouseClicked
+
+    private void labelEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelEntradaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_labelEntradaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconeCliente;
@@ -241,11 +323,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel iconeProdutos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel labelCliente;
+    private javax.swing.JLabel labelEntrada;
+    private javax.swing.JLabel labelFornecedor;
+    private javax.swing.JLabel labelProduto;
     private javax.swing.JMenuItem mni_Cliente;
     private javax.swing.JMenuItem mni_Entrada;
     private javax.swing.JMenuItem mni_Fornecedor;
