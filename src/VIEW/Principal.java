@@ -31,15 +31,21 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnl_principal = new javax.swing.JPanel();
+        iconeMarca = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        iconeCliente = new javax.swing.JLabel();
+        iconeFornecedor = new javax.swing.JLabel();
+        iconeProdutos = new javax.swing.JLabel();
+        iconeEntrada = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mni_cliente = new javax.swing.JMenu();
         mni_Cliente = new javax.swing.JMenuItem();
         mni_Fornecedor = new javax.swing.JMenuItem();
-        mni_Categoria = new javax.swing.JMenuItem();
-        mni_Marca = new javax.swing.JMenuItem();
         mni_Produto = new javax.swing.JMenuItem();
         mni_Entrada = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
@@ -53,28 +59,83 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jLabel2.setText("Barcelos");
 
-        javax.swing.GroupLayout pnl_principalLayout = new javax.swing.GroupLayout(pnl_principal);
-        pnl_principal.setLayout(pnl_principalLayout);
-        pnl_principalLayout.setHorizontalGroup(
-            pnl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_principalLayout.createSequentialGroup()
-                .addContainerGap(472, Short.MAX_VALUE)
-                .addGroup(pnl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_principalLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(83, 83, 83))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_principalLayout.createSequentialGroup()
+        iconeCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/user.png"))); // NOI18N
+
+        iconeFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/fornecem (2).png"))); // NOI18N
+
+        iconeProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/gestao-de-produtos.png"))); // NOI18N
+
+        iconeEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VIEW/caixa-de-entrada.png"))); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        jLabel3.setText("Cliente");
+
+        jLabel5.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        jLabel5.setText("Produtos");
+
+        jLabel6.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        jLabel6.setText("Entrada");
+
+        jLabel4.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        jLabel4.setText("Fornecedor");
+
+        javax.swing.GroupLayout iconeMarcaLayout = new javax.swing.GroupLayout(iconeMarca);
+        iconeMarca.setLayout(iconeMarcaLayout);
+        iconeMarcaLayout.setHorizontalGroup(
+            iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(iconeMarcaLayout.createSequentialGroup()
+                .addContainerGap(124, Short.MAX_VALUE)
+                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(142, 142, 142)
+                        .addComponent(jLabel4)
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel5)
+                        .addGap(125, 125, 125)
+                        .addComponent(jLabel6)
+                        .addGap(164, 164, 164))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(iconeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(iconeFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(iconeProdutos)
+                        .addGap(45, 45, 45)
+                        .addComponent(iconeEntrada)
+                        .addGap(126, 126, 126))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(29, 29, 29))))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(84, 84, 84))))
         );
-        pnl_principalLayout.setVerticalGroup(
-            pnl_principalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_principalLayout.createSequentialGroup()
-                .addContainerGap(224, Short.MAX_VALUE)
+        iconeMarcaLayout.setVerticalGroup(
+            iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(iconeMarcaLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(iconeMarcaLayout.createSequentialGroup()
+                        .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(iconeEntrada)
+                            .addComponent(iconeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3))
+                    .addGroup(iconeMarcaLayout.createSequentialGroup()
+                        .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(iconeProdutos)
+                            .addComponent(iconeFornecedor))
+                        .addGap(22, 22, 22)
+                        .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(23, 23, 23))
+                .addGap(55, 55, 55))
         );
 
         mni_cliente.setText("Arquivo");
@@ -94,22 +155,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         mni_cliente.add(mni_Fornecedor);
-
-        mni_Categoria.setText("Categoria");
-        mni_Categoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mni_CategoriaActionPerformed(evt);
-            }
-        });
-        mni_cliente.add(mni_Categoria);
-
-        mni_Marca.setText("Marca");
-        mni_Marca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mni_MarcaActionPerformed(evt);
-            }
-        });
-        mni_cliente.add(mni_Marca);
 
         mni_Produto.setText("Produto");
         mni_Produto.addActionListener(new java.awt.event.ActionListener() {
@@ -147,15 +192,39 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnl_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(iconeMarca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnl_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 22, Short.MAX_VALUE)
+                .addComponent(iconeMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mni_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_sairActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_mni_sairActionPerformed
+
+    private void mni_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_EntradaActionPerformed
+        // EntradaVIEW entradaview = new EntradaVIEW();
+        // entradaview.setVisible(True);
+    }//GEN-LAST:event_mni_EntradaActionPerformed
+
+    private void mni_ProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ProdutoActionPerformed
+        ProdutoVIEW produtoview = new ProdutoVIEW();
+        produtoview.setVisible(true);
+    }//GEN-LAST:event_mni_ProdutoActionPerformed
+
+    private void mni_FornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_FornecedorActionPerformed
+        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        fornecedorview.setVisible(true);
+    }//GEN-LAST:event_mni_FornecedorActionPerformed
 
     private void mni_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ClienteActionPerformed
         /* Instanciando tela Cliente View*/
@@ -163,49 +232,26 @@ public class Principal extends javax.swing.JFrame {
         view.setVisible(true);
     }//GEN-LAST:event_mni_ClienteActionPerformed
 
-    private void mni_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_sairActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_mni_sairActionPerformed
-
-    private void mni_FornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_FornecedorActionPerformed
-        FornecedorVIEW fornecedorview = new FornecedorVIEW();
-        fornecedorview.setVisible(true);
-    }//GEN-LAST:event_mni_FornecedorActionPerformed
-
-    private void mni_CategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_CategoriaActionPerformed
-        CategoriaVIEW categoriaview = new CategoriaVIEW();
-        categoriaview.setVisible(true);
-    }//GEN-LAST:event_mni_CategoriaActionPerformed
-
-    private void mni_MarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_MarcaActionPerformed
-        MarcaVIEW marcaview = new MarcaVIEW();
-        marcaview.setVisible(true);
-    }//GEN-LAST:event_mni_MarcaActionPerformed
-
-    private void mni_ProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ProdutoActionPerformed
-        ProdutoVIEW produtoview = new ProdutoVIEW();
-        produtoview.setVisible(true);
-    }//GEN-LAST:event_mni_ProdutoActionPerformed
-
-    private void mni_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_EntradaActionPerformed
-       // EntradaVIEW entradaview = new EntradaVIEW();
-       // entradaview.setVisible(True);
-    }//GEN-LAST:event_mni_EntradaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel iconeCliente;
+    private javax.swing.JLabel iconeEntrada;
+    private javax.swing.JLabel iconeFornecedor;
+    private javax.swing.JPanel iconeMarca;
+    private javax.swing.JLabel iconeProdutos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem mni_Categoria;
     private javax.swing.JMenuItem mni_Cliente;
     private javax.swing.JMenuItem mni_Entrada;
     private javax.swing.JMenuItem mni_Fornecedor;
-    private javax.swing.JMenuItem mni_Marca;
     private javax.swing.JMenuItem mni_Produto;
     private javax.swing.JMenu mni_cliente;
     private javax.swing.JMenuItem mni_sair;
     private javax.swing.JMenu mnu_sair;
-    private javax.swing.JPanel pnl_principal;
     // End of variables declaration//GEN-END:variables
 }
