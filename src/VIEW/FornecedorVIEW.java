@@ -41,7 +41,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         txtBuscaFornecedores.setEnabled(true);
         fechaBotoes();
         fechaCampos();
-         txtBuscaFornecedores.setEnabled(true);
+        txtBuscaFornecedores.setEnabled(true);
         listarFornecedores();
     }
 
@@ -630,7 +630,7 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     private void btnSalvarFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarFornecedoresActionPerformed
         List<String> listaCampos = getCampos();
 
-        if (txtCnpjFornecedores.getText().matches(".*\\d.*") == false  || txtIeFornecedores.getText().matches(".*\\d.*") == false) {
+        if (txtCnpjFornecedores.getText().matches(".*\\d.*") == false || txtIeFornecedores.getText().matches(".*\\d.*") == false) {
             JOptionPane.showMessageDialog(null, "Preencha os campos CNPJ/INSCRIÇÃO ESTADUAL");
         } else {
             fornecedor = new Fornecedor();
@@ -669,7 +669,9 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             fechaBotoes();
 
             btnNovoFornecedores.setEnabled(true);
-        }    
+            tabelaFornecedores.removeAll();
+            listarFornecedores();
+        }
     }//GEN-LAST:event_btnSalvarFornecedoresActionPerformed
 
     private void txtBuscaFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscaFornecedoresActionPerformed
@@ -713,11 +715,10 @@ public class FornecedorVIEW extends javax.swing.JFrame {
 
         try {
             fornecedorDAO.alterarFornecedor(fornecedor, Endereco, Contato);
-        
 
-} catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(FornecedorVIEW.class
-.getName()).log(Level.SEVERE, null, ex);
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
         btnAlterarFornecedores.setVisible(false);
@@ -727,6 +728,8 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         limpaCampos();
         fechaCampos();
         fechaBotoes();
+        tabelaFornecedores.removeAll();
+        listarFornecedores();
 
     }//GEN-LAST:event_btnAlterarFornecedoresActionPerformed
 
@@ -740,12 +743,9 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             try {
                 fornecedorDAO.excluirFornecedor(fornecedor);
 
-            
-
-} catch (SQLException ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(FornecedorVIEW.class
-
-.getName()).log(Level.SEVERE, null, ex);
+                        .getName()).log(Level.SEVERE, null, ex);
             }
 
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
@@ -755,6 +755,8 @@ public class FornecedorVIEW extends javax.swing.JFrame {
             btnAlterarFornecedores.setVisible(false);
             btnSalvarFornecedores.setVisible(true);
             btnNovoFornecedores.setEnabled(true);
+            tabelaFornecedores.removeAll();
+            listarFornecedores();
 
         }
     }//GEN-LAST:event_btnExcluirFornecedoresActionPerformed
@@ -791,34 +793,33 @@ public class FornecedorVIEW extends javax.swing.JFrame {
 
     private void txtBuscaFornecedoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaFornecedoresKeyPressed
 
-       
-            String nome = "%" + txtBuscaFornecedores.getText() + "%";
+        String nome = "%" + txtBuscaFornecedores.getText() + "%";
 
-            fornecedorDAO = new FornecedorDAO();
+        fornecedorDAO = new FornecedorDAO();
 
-            List<Fornecedor> lista2 = fornecedorDAO.listarFornecedores(nome);
-            DefaultTableModel dados = (DefaultTableModel) tabelaFornecedores.getModel();
+        List<Fornecedor> lista2 = fornecedorDAO.listarFornecedores(nome);
+        DefaultTableModel dados = (DefaultTableModel) tabelaFornecedores.getModel();
 
-            dados.setNumRows(0);
+        dados.setNumRows(0);
 
-            for (Fornecedor f : lista2) {
-                dados.addRow(new Object[]{
-                    f.getCod_fornecedor(),
-                    f.getNome(),
-                    f.getCnpj(),
-                    f.getInscricao_estadual(),
-                    f.getContatoFor().getCelular_cliente(),
-                    f.getContatoFor().getTelefone_cliente(),
-                    f.getContatoFor().getEmail(),
-                    f.getEndFor().getRua(),
-                    f.getEndFor().getNumero(),
-                    f.getEndFor().getBairro(),
-                    f.getEndFor().getCidade(),
-                    f.getEndFor().getEstado(),
-                    f.getEndFor().getCep()
-                });
-            }
-        
+        for (Fornecedor f : lista2) {
+            dados.addRow(new Object[]{
+                f.getCod_fornecedor(),
+                f.getNome(),
+                f.getCnpj(),
+                f.getInscricao_estadual(),
+                f.getContatoFor().getCelular_cliente(),
+                f.getContatoFor().getTelefone_cliente(),
+                f.getContatoFor().getEmail(),
+                f.getEndFor().getRua(),
+                f.getEndFor().getNumero(),
+                f.getEndFor().getBairro(),
+                f.getEndFor().getCidade(),
+                f.getEndFor().getEstado(),
+                f.getEndFor().getCep()
+            });
+        }
+
     }//GEN-LAST:event_txtBuscaFornecedoresKeyPressed
 
     private void txtCepFornecedoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCepFornecedoresKeyPressed

@@ -51,7 +51,7 @@ public class CategoriaDAO {
         try {
             List<CategoriaProduto> lista = new ArrayList<>();
             String SQLBuscaCategoria;
-            SQLBuscaCategoria = "select * from categoria";
+            SQLBuscaCategoria = "select * from categoria order by nome_categoria asc";
             pst = Conexao.getInstance().prepareStatement(SQLBuscaCategoria);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {

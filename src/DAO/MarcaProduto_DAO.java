@@ -45,7 +45,7 @@ public class MarcaProduto_DAO {
         try {
             List<MarcaProduto> lista = new ArrayList<>();
             String SQLBuscaMarca;
-            SQLBuscaMarca = "select * from marca";
+            SQLBuscaMarca = "select * from marca order by nome_marca asc";
             pst = Conexao.getInstance().prepareStatement(SQLBuscaMarca);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {

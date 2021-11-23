@@ -22,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MarcaVIEW extends javax.swing.JFrame {
 
-    
     MarcaProduto marca;
     MarcaProduto_DAO marcaDAO;
 
@@ -453,6 +452,8 @@ public class MarcaVIEW extends javax.swing.JFrame {
         limpaCampos();
         fechaCampos();
         fechaBotoes();
+        tabelaMarca.removeAll();
+        listarMarcas();
     }//GEN-LAST:event_btnAlterarMarcaActionPerformed
 
     private void btnExcluirMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMarcaActionPerformed
@@ -477,6 +478,8 @@ public class MarcaVIEW extends javax.swing.JFrame {
             btnAlterarMarca.setVisible(false);
             btnSalvarMarca.setVisible(true);
             btnNovoMarca.setEnabled(true);
+            tabelaMarca.removeAll();
+            listarMarcas();
 
         }
     }//GEN-LAST:event_btnExcluirMarcaActionPerformed
@@ -516,9 +519,10 @@ public class MarcaVIEW extends javax.swing.JFrame {
             txtBuscaMarca.setEnabled(true);
 
             btnNovoMarca.setEnabled(true);
+            tabelaMarca.removeAll();
+            listarMarcas();
         }
 
-    
 
     }//GEN-LAST:event_btnSalvarMarcaActionPerformed
 
