@@ -439,6 +439,8 @@ public class CategoriaVIEW extends javax.swing.JFrame {
         limpaCampos();
         fechaCampos();
         fechaBotoes();
+        tabelaCategoria.removeAll();
+        listarCategoria();
     }//GEN-LAST:event_btnAlterarCategoriaActionPerformed
 
     private void btnExcluirCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirCategoriaActionPerformed
@@ -463,6 +465,8 @@ public class CategoriaVIEW extends javax.swing.JFrame {
             btnAlterarCategoria.setVisible(false);
             btnSalvarCategoria.setVisible(true);
             btnNovoCategoria.setEnabled(true);
+            tabelaCategoria.removeAll();
+            listarCategoria();
 
         }
     }//GEN-LAST:event_btnExcluirCategoriaActionPerformed
@@ -502,6 +506,8 @@ public class CategoriaVIEW extends javax.swing.JFrame {
 
             btnNovoCategoria.setEnabled(true);
             txtBuscaCategoria.setEnabled(true);
+            tabelaCategoria.removeAll();
+            listarCategoria();
         }
 
     }//GEN-LAST:event_btnSalvarCategoriaActionPerformed

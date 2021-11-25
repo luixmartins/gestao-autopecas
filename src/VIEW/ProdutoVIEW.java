@@ -230,7 +230,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(1029, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -242,6 +242,14 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jTabbedPane1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTabbedPane1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTabbedPane1FocusLost(evt);
+            }
+        });
         jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTabbedPane1MouseClicked(evt);
@@ -377,7 +385,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                             .addComponent(txtDescricaoProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 200, Short.MAX_VALUE)
+                                .addGap(18, 18, Short.MAX_VALUE)
                                 .addComponent(btnAlterarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSalvarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -419,7 +427,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtCodProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -552,7 +560,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(rbt_quantidaMinima)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1141, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -588,7 +596,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -671,6 +679,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
             jcbCategoria.setSelectedIndex(0);
             jcbMarca.setSelectedIndex(0);
+            tabelaConsultaProdutos.removeAll();
+            listarProdutos();
         }
     }//GEN-LAST:event_btnSalvarProdutosActionPerformed
 
@@ -732,7 +742,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         btnAlterarProdutos.setEnabled(false);
         jcbCategoria.setSelectedIndex(0);
         jcbMarca.setSelectedIndex(0);
-
+        tabelaConsultaProdutos.removeAll();
+        listarProdutos();
     }//GEN-LAST:event_btnAlterarProdutosActionPerformed
 
     private void btnExcluirProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirProdutosActionPerformed
@@ -758,6 +769,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             btnSalvarProdutos.setVisible(true);
             btnNovoProdutos.setEnabled(true);
             txtBuscaProdutos.setEnabled(true);
+            tabelaConsultaProdutos.removeAll();
+            listarProdutos();
         }
     }//GEN-LAST:event_btnExcluirProdutosActionPerformed
 
@@ -838,6 +851,14 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         jcbMarca.addItem("Selecione");
         listarMarca();
     }//GEN-LAST:event_jcbMarcaMouseClicked
+
+    private void jTabbedPane1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTabbedPane1FocusGained
+       
+    }//GEN-LAST:event_jTabbedPane1FocusGained
+
+    private void jTabbedPane1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTabbedPane1FocusLost
+        
+    }//GEN-LAST:event_jTabbedPane1FocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
