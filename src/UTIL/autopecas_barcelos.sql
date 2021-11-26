@@ -211,6 +211,34 @@ CREATE TABLE IF NOT EXISTS `autopecas_barcelos`.`Produto_has_Fornecedor` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `autopecas_barcelos`.`Funcionario` (
+  `idFuncionario` INT NOT NULL AUTO_INCREMENT,
+  `nome_funcionario` VARCHAR(255) NOT NULL,
+  `cpf_funcionario` VARCHAR(45) NOT NULL,
+  `rg_funcionario` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(45) NOT NULL,
+  `data_admissao` DATETIME NOT NULL,
+  `status` INT NOT NULL,
+  `nivel_acesso` INT NOT NULL,
+  `contato_cod_contato` INT(11) NOT NULL,
+  `endereco_cod_endereco` INT(11) NOT NULL,
+  PRIMARY KEY (`idFuncionario`),
+  UNIQUE INDEX `cpf_UNIQUE` (`cpf_funcionario`),
+  UNIQUE INDEX `rg_funcionario_UNIQUE` (`rg_funcionario`),
+  INDEX `fk_Funcionario_contato1_idx` (`contato_cod_contato`),
+  INDEX `fk_Funcionario_endereco1_idx` (`endereco_cod_endereco`),
+  CONSTRAINT `fk_Funcionario_contato1`
+    FOREIGN KEY (`contato_cod_contato`)
+    REFERENCES `autopecas_barcelos`.`contato` (`cod_contato`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Funcionario_endereco1`
+    FOREIGN KEY (`endereco_cod_endereco`)
+    REFERENCES `autopecas_barcelos`.`endereco` (`cod_endereco`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
