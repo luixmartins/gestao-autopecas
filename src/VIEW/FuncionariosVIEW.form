@@ -41,13 +41,6 @@
               <Component id="jtpFuncionarios" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="522" max="-2" attributes="0"/>
-                  <Component id="jTextField8" min="-2" pref="211" max="-2" attributes="0"/>
-                  <EmptySpace pref="637" max="32767" attributes="0"/>
-              </Group>
-          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -60,13 +53,6 @@
               <EmptySpace pref="11" max="32767" attributes="0"/>
               <Component id="btnNovoFuncionario" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="258" max="-2" attributes="0"/>
-                  <Component id="jTextField8" min="-2" pref="20" max="-2" attributes="0"/>
-                  <EmptySpace pref="323" max="32767" attributes="0"/>
-              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -222,13 +208,15 @@
                           <Component id="txtCodigoFuncionario" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel11" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtNomeFuncionario" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="txtNumeroFuncionario" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                          <Component id="txtNivelAcessoFuncionario" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNomeFuncionario" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="txtNumeroFuncionario" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="txtNivelAcessoFuncionario" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -515,11 +503,6 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="jTextField8">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
