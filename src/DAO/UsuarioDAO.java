@@ -23,7 +23,7 @@ public class UsuarioDAO {
             Usuario user = null;
 
             String sql = "select * from funcionario where idFuncionario = " + cod + " and senha "
-                    + "COLLATE utf8mb4_general_ci = " + senha;
+                    + " = convert(\"" + senha + "\" using utf8mb4) COLLATE utf8mb4_bin";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
