@@ -1,7 +1,10 @@
 package CONTROLLER;
 
+import DAO.UsuarioDAO;
 import VIEW.LoginVIEW;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AutoPecas {
 

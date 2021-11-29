@@ -5,17 +5,32 @@
  */
 package VIEW;
 
+import DAO.UsuarioDAO;
+import MODEL.Usuario;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author danis
  */
 public class LoginVIEW extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LoginVIEW
-     */
+    Usuario user;
+    UsuarioDAO dao;
+
     public LoginVIEW() {
+        user = new Usuario();
+        dao = new UsuarioDAO();
+
         initComponents();
+
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+
+        txtCodigoAutentificacao.requestFocus();
     }
 
     /**
@@ -30,10 +45,10 @@ public class LoginVIEW extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtCodigoAutentificacao1 = new javax.swing.JTextField();
+        txtCodigoAutentificacao = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,9 +61,9 @@ public class LoginVIEW extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI Semilight", 1, 12)); // NOI18N
         jLabel4.setText("Senha");
 
-        txtCodigoAutentificacao1.addActionListener(new java.awt.event.ActionListener() {
+        txtCodigoAutentificacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoAutentificacao1ActionPerformed(evt);
+                txtCodigoAutentificacaoActionPerformed(evt);
             }
         });
 
@@ -84,8 +99,8 @@ public class LoginVIEW extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigoAutentificacao1)
-                            .addComponent(jPasswordField1))))
+                            .addComponent(txtCodigoAutentificacao)
+                            .addComponent(txtSenha))))
                 .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
@@ -97,12 +112,12 @@ public class LoginVIEW extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCodigoAutentificacao1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigoAutentificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
@@ -111,20 +126,42 @@ public class LoginVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCodigoAutentificacao1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoAutentificacao1ActionPerformed
+    private void txtCodigoAutentificacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoAutentificacaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoAutentificacao1ActionPerformed
+    }//GEN-LAST:event_txtCodigoAutentificacaoActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        Principal principal = new Principal();
-        principal.setVisible(true);
-        principal.setLocationRelativeTo(null);
+
+        if (txtCodigoAutentificacao.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha o código de autenticação.");
+            txtCodigoAutentificacao.requestFocus();
+        } else if (String.valueOf(txtSenha.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha a senha.");
+            txtSenha.requestFocus();
+        } else {
+            try {
+                user = dao.buscaLogin(Integer.parseInt(txtCodigoAutentificacao.getText()), String.valueOf(txtSenha.getPassword()));
+
+                if (user == null) {
+                    JOptionPane.showMessageDialog(null, "Usuário ou senha não encontrado", "Erro", JOptionPane.ERROR_MESSAGE);
+                    txtCodigoAutentificacao.setText("");
+                    txtSenha.setText("");
+                    txtCodigoAutentificacao.requestFocus();
+                } else {
+                    Principal principal = new Principal();
+                    principal.setVisible(true);
+                    principal.setLocationRelativeTo(null);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
@@ -132,7 +169,7 @@ public class LoginVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField txtCodigoAutentificacao1;
+    private javax.swing.JTextField txtCodigoAutentificacao;
+    private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
 }
