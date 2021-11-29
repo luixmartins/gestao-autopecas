@@ -10,12 +10,13 @@ package MODEL;
  * @author luizh
  */
 public class Usuario {
-    private int nivel_acesso;
-    private int cod_funcionario;
-    private String senha;
-    
-    public Usuario(){
-        
+
+    private static  int nivel_acesso;
+    private static int cod_funcionario;
+    private static String senha;
+
+    public Usuario() {
+
     }
 
     public Usuario(int nivel_acesso, int cod_funcionario, String senha) {
@@ -24,28 +25,30 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public int getNivel_acesso() {
+    public static int getNivel_acesso() {
         return nivel_acesso;
     }
 
-    public void setNivel_acesso(int nivel_acesso) {
-        this.nivel_acesso = nivel_acesso;
+    public static void setNivel_acesso(int nivel_acesso) {
+        Usuario.nivel_acesso = nivel_acesso;
     }
 
-    public int getCod_funcionario() {
+    public static int getCod_funcionario() {
         return cod_funcionario;
     }
 
-    public void setCod_funcionario(int cod_funcionario) {
-        this.cod_funcionario = cod_funcionario;
+    public static void setCod_funcionario(int cod_funcionario) {
+        Usuario.cod_funcionario = cod_funcionario;
     }
 
-    public String getSenha() {
+    public static String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public static void setSenha(String senha) {
+        Usuario.senha = senha;
     }
     
+    
+
 }
