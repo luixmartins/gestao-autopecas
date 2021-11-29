@@ -1,12 +1,13 @@
 
 package VIEW;
 
+import MODEL.Usuario;
 import javax.swing.JFrame;
 
 public class Principal extends javax.swing.JFrame {
 
     
-    public Principal() {
+    public Principal(Usuario user) {
         initComponents();
         this.setVisible(true);
         this.setLocationRelativeTo(null);

@@ -77,6 +77,7 @@ public class LoginVIEW extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/user (1).png"))); // NOI18N
 
+        txtSenha.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSenhaActionPerformed(evt);
@@ -154,9 +155,10 @@ public class LoginVIEW extends javax.swing.JFrame {
                     txtSenha.setText("");
                     txtCodigoAutentificacao.requestFocus();
                 } else {
-                    Principal principal = new Principal();
+                    Principal principal = new Principal(user);
                     principal.setVisible(true);
                     principal.setLocationRelativeTo(null);
+                    this.dispose();
                 }
 
             } catch (SQLException ex) {
