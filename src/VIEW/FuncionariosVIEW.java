@@ -16,6 +16,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
      */
     public FuncionariosVIEW() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -102,6 +103,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         btnSalvarFuncionario.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnSalvarFuncionario.setText("Salvar");
+        btnSalvarFuncionario.setEnabled(false);
         btnSalvarFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarFuncionarioActionPerformed(evt);
@@ -110,6 +112,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         btnCancelarFuncionario.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnCancelarFuncionario.setText("Cancelar");
+        btnCancelarFuncionario.setEnabled(false);
         btnCancelarFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarFuncionarioActionPerformed(evt);
@@ -118,6 +121,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         btnExcluirFuncionario.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnExcluirFuncionario.setText("Excluir");
+        btnExcluirFuncionario.setEnabled(false);
         btnExcluirFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirFuncionarioActionPerformed(evt);
@@ -126,6 +130,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         btnAlterarFuncionario.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnAlterarFuncionario.setText("Alterar");
+        btnAlterarFuncionario.setEnabled(false);
         btnAlterarFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarFuncionarioActionPerformed(evt);
@@ -158,35 +163,64 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         jLabel23.setText("CEP");
 
+        txtCodigoFuncionario.setEnabled(false);
         txtCodigoFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoFuncionarioActionPerformed(evt);
             }
         });
 
+        txtNomeFuncionario.setEnabled(false);
+
+        txtEmailFuncionario.setEnabled(false);
+
+        txtCelularFuncionario.setEnabled(false);
+
+        txtRuaFuncionario.setEnabled(false);
+
+        txtBairroFuncionario.setEnabled(false);
+
+        txtNumeroFuncionario.setEnabled(false);
+
+        txtCidadeFuncionario.setEnabled(false);
+
+        txtEstadoFuncionario.setEnabled(false);
+
+        txtNivelAcessoFuncionario.setEnabled(false);
+
+        txtStatusFuncionario.setEnabled(false);
+
+        txtTelefoneFuncionario.setEnabled(false);
+
         try {
             jftCpfFuncionários.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftCpfFuncionários.setEnabled(false);
 
         try {
             jftRgFuncionários.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###-###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftRgFuncionários.setEnabled(false);
 
         try {
             jftCepFuncionario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftCepFuncionario.setEnabled(false);
 
         try {
             jftDataAdmissãoFuncionario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftDataAdmissãoFuncionario.setEnabled(false);
+
+        jpfSenhaFuncionario.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -440,7 +474,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnNovoFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jtpConsultaFuncionaros)
                 .addContainerGap())
@@ -450,9 +484,9 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtpConsultaFuncionaros, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(jtpConsultaFuncionaros, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNovoFuncionario)
                 .addContainerGap())
         );
