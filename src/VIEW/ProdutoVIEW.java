@@ -11,6 +11,7 @@ import MODEL.Produto;
 import MODEL.Usuario;
 /* Importações do JAVA */
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -147,17 +148,19 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         txtQuantidadeProd.setEnabled(false);
         txtQuantidadeMinProd.setEnabled(false);
         txtValorCustoProd.setEnabled(false);
+        txt_porcentagem.setEnabled(false);
         jcbCategoria.setEnabled(false);
         jcbMarca.setEnabled(false);
     }
 
     public void abreCampos() {
         txtCodigoBarras.setEnabled(true);
-        txtValorVendaProd.setEnabled(true);
+        txtValorVendaProd.setEnabled(false);
         txtDescricaoProdutos.setEnabled(true);
         txtQuantidadeProd.setEnabled(true);
         txtQuantidadeMinProd.setEnabled(true);
         txtValorCustoProd.setEnabled(true);
+        txt_porcentagem.setEnabled(true);
         jcbCategoria.setEnabled(true);
         jcbMarca.setEnabled(true);
     }
@@ -226,6 +229,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         jcbMarca = new javax.swing.JComboBox<>();
         btnMarca = new javax.swing.JToggleButton();
         btnCategoria = new javax.swing.JToggleButton();
+        jLabel4 = new javax.swing.JLabel();
+        txt_porcentagem = new javax.swing.JTextField();
         pnl_consultaproduto = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         txtBuscaProdutos = new javax.swing.JTextField();
@@ -337,6 +342,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             }
         });
 
+        txtValorVendaProd.setEnabled(false);
+
         jLabel5.setText("Categoria");
 
         jLabel11.setText("Marca");
@@ -376,6 +383,20 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         btnCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCategoriaActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Taxa de Lucro");
+
+        txt_porcentagem.setEnabled(false);
+        txt_porcentagem.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txt_porcentagemCaretUpdate(evt);
+            }
+        });
+        txt_porcentagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_porcentagemActionPerformed(evt);
             }
         });
 
@@ -426,24 +447,27 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                                         .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtValorVendaProd, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtValorCustoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pnl_cadastraprodutosLayout.createSequentialGroup()
-                                        .addComponent(jcbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnCategoria))
-                                    .addGroup(pnl_cadastraprodutosLayout.createSequentialGroup()
-                                        .addComponent(jcbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnMarca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtValorVendaProd, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtValorCustoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(pnl_cadastraprodutosLayout.createSequentialGroup()
+                                            .addComponent(jcbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnCategoria))
+                                        .addGroup(pnl_cadastraprodutosLayout.createSequentialGroup()
+                                            .addComponent(jcbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnMarca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(txt_porcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 40, Short.MAX_VALUE))))
                     .addGroup(pnl_cadastraprodutosLayout.createSequentialGroup()
                         .addComponent(txtCodProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 40, Short.MAX_VALUE))
         );
         pnl_cadastraprodutosLayout.setVerticalGroup(
             pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -474,11 +498,15 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                             .addComponent(txtQuantidadeMinProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)))
                     .addGroup(pnl_cadastraprodutosLayout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txt_porcentagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtValorVendaProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(pnl_cadastraprodutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jcbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
@@ -612,7 +640,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -890,6 +918,21 @@ public class ProdutoVIEW extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTabbedPane1FocusLost
 
+    private void txt_porcentagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_porcentagemActionPerformed
+
+    }//GEN-LAST:event_txt_porcentagemActionPerformed
+
+    private void txt_porcentagemCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txt_porcentagemCaretUpdate
+        if (txtValorCustoProd == null && txtValorVendaProd == null) {
+
+        } else {
+            float porcentagem = (Float.parseFloat(txtValorCustoProd.getText()) * (Float.parseFloat(txt_porcentagem.getText()) / 100)) + Float.parseFloat(txtValorCustoProd.getText());
+            
+            DecimalFormat df = new DecimalFormat("#.00");
+            txtValorVendaProd.setText(df.format(porcentagem));
+        }
+    }//GEN-LAST:event_txt_porcentagemCaretUpdate
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterarProdutos;
@@ -907,6 +950,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -929,5 +973,6 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private javax.swing.JTextField txtQuantidadeProd;
     private javax.swing.JTextField txtValorCustoProd;
     private javax.swing.JTextField txtValorVendaProd;
+    private javax.swing.JTextField txt_porcentagem;
     // End of variables declaration//GEN-END:variables
 }
