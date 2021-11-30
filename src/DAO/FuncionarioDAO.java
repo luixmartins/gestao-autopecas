@@ -214,6 +214,114 @@ public class FuncionarioDAO {
                 
                 func.setStatus(rs.getInt("status"));
                 func.setNivel_acesso(rs.getInt("nivel_acesso"));
+                func.setCod_funcionario(rs.getInt("idFuncionario"));
+                
+                func.setFuncContato(cliContato);
+                func.setFuncEndereco(cliEndereco);
+                
+                lista.add(func);
+            }
+            return lista;
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public List<Funcionario> buscarFuncionarios(String text) throws ParseException{
+        try {
+            List<Funcionario> lista = new ArrayList<>();
+        
+            String sql = "select * from funcionario " +
+                    "inner join contato on contato.cod_contato = funcionario.contato_cod_contato " +
+                    "inner join endereco on endereco.cod_endereco = funcionario.endereco_cod_endereco"
+                    + " where nome_funcionario like \"" + text + "\"";
+            
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()){
+                Funcionario func = new Funcionario();
+                Contato cliContato = new Contato();
+                Endereco cliEndereco = new Endereco();
+                
+                cliContato.setCelular_cliente(rs.getString("celular_contato"));
+                cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
+                cliContato.setEmail(rs.getString("email_contato"));
+                
+                cliEndereco.setRua(rs.getString("rua_endereco"));
+                cliEndereco.setNumero(rs.getInt("numero_endereco"));
+                cliEndereco.setBairro(rs.getString("bairro_endereco"));
+                cliEndereco.setCidade(rs.getString("cidade_endereco"));
+                cliEndereco.setEstado(rs.getString("estado_endereco"));
+                cliEndereco.setCep(rs.getString("cep_endereco"));
+                
+                func.setNome_funcionario(rs.getString("nome_funcionario"));
+                func.setCpf_funcionario(rs.getString("cpf_funcionario"));
+                func.setRg_funcionario(rs.getString("rg_funcionario"));
+                func.setSenha(rs.getString("senha"));
+                
+                Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(rs.getString("data_admissao"));  
+                func.setData_admissao(date);
+                
+                func.setStatus(rs.getInt("status"));
+                func.setNivel_acesso(rs.getInt("nivel_acesso"));
+                func.setCod_funcionario(rs.getInt("idFuncionario"));
+                
+                func.setFuncContato(cliContato);
+                func.setFuncEndereco(cliEndereco);
+                
+                
+                lista.add(func);
+            }
+            return lista;
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public List<Funcionario> buscarFuncionariosCodigo(String cod) throws ParseException{
+        try {
+            List<Funcionario> lista = new ArrayList<>();
+        
+            String sql = "select * from funcionario " +
+                    "inner join contato on contato.cod_contato = funcionario.contato_cod_contato " +
+                    "inner join endereco on endereco.cod_endereco = funcionario.endereco_cod_endereco"
+                    + " where idFuncionario = " + cod;
+            
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()){
+                Funcionario func = new Funcionario();
+                Contato cliContato = new Contato();
+                Endereco cliEndereco = new Endereco();
+                
+                cliContato.setCelular_cliente(rs.getString("celular_contato"));
+                cliContato.setTelefone_cliente(rs.getString("telefone_contato"));
+                cliContato.setEmail(rs.getString("email_contato"));
+                
+                cliEndereco.setRua(rs.getString("rua_endereco"));
+                cliEndereco.setNumero(rs.getInt("numero_endereco"));
+                cliEndereco.setBairro(rs.getString("bairro_endereco"));
+                cliEndereco.setCidade(rs.getString("cidade_endereco"));
+                cliEndereco.setEstado(rs.getString("estado_endereco"));
+                cliEndereco.setCep(rs.getString("cep_endereco"));
+                
+                func.setNome_funcionario(rs.getString("nome_funcionario"));
+                func.setCpf_funcionario(rs.getString("cpf_funcionario"));
+                func.setRg_funcionario(rs.getString("rg_funcionario"));
+                func.setSenha(rs.getString("senha"));
+                
+                Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(rs.getString("data_admissao"));  
+                func.setData_admissao(date);
+                
+                func.setStatus(rs.getInt("status"));
+                func.setNivel_acesso(rs.getInt("nivel_acesso"));
+                func.setCod_funcionario(rs.getInt("idFuncionario"));
                 
                 func.setFuncContato(cliContato);
                 func.setFuncEndereco(cliEndereco);

@@ -1,6 +1,9 @@
 package VIEW;
 
 import MODEL.Usuario;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 public class Principal extends javax.swing.JFrame {
@@ -323,8 +326,14 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_labelEntradaMouseClicked
 
     private void mnu_funcionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_funcionariosActionPerformed
-        FuncionariosVIEW funcionario = new FuncionariosVIEW();
-        funcionario.setVisible(true);
+        FuncionariosVIEW view;
+        try {
+            view = new FuncionariosVIEW();
+            
+            view.setVisible(true);
+        } catch (ParseException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_mnu_funcionariosActionPerformed
 
 
