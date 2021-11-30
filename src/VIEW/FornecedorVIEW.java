@@ -9,6 +9,7 @@ import DAO.FornecedorDAO;
 import MODEL.Contato;
 import MODEL.Endereco;
 import MODEL.Fornecedor;
+import MODEL.Usuario;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,8 +29,9 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     Contato Contato;
     Endereco Endereco;
     FornecedorDAO fornecedorDAO;
+    Usuario user;
 
-    public FornecedorVIEW() {
+    public FornecedorVIEW(Usuario user) {
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -43,6 +45,18 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         fechaCampos();
         txtBuscaFornecedores.setEnabled(true);
         listarFornecedores();
+        if (user.getNivel_acesso() == 1) {
+            jTabbedPane1.setEnabledAt(0, false);
+            jTabbedPane1.setSelectedIndex(1);
+            btnNovoFornecedores.setVisible(false);
+
+        } else if (user.getNivel_acesso() == 2) {
+            btnExcluirFornecedores.setVisible(false);
+
+        } else {
+
+        }
+
     }
 
     public void listarFornecedores() {
@@ -730,6 +744,10 @@ public class FornecedorVIEW extends javax.swing.JFrame {
         fechaBotoes();
         tabelaFornecedores.removeAll();
         listarFornecedores();
+        if (user.getNivel_acesso() == 2) {
+            btnExcluirFornecedores.setVisible(false);
+
+        }
 
     }//GEN-LAST:event_btnAlterarFornecedoresActionPerformed
 
@@ -762,33 +780,42 @@ public class FornecedorVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirFornecedoresActionPerformed
 
     private void tabelaFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedoresMouseClicked
-        /* Pegando os Dados */
-        jTabbedPane1.setSelectedIndex(0);
-        txtCodFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 0).toString());
-        txtNomeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 1).toString());
-        txtCnpjFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 2).toString());
-        txtIeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 3).toString());
-        txtCelularFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 4).toString());
-        txtTelefoneFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 5).toString());
-        txtEmailFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 6).toString());
-        txtRuaFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 7).toString());
-        txtNumeroFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 8).toString());
-        txtBairroFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 9).toString());
-        txtCidadeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 10).toString());
-        jcbEstadoFornecedores.setSelectedItem(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 11).toString());
-        txtCepFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 12).toString());
+        if (user.getNivel_acesso() == 1) {
 
-        abreCampos();
-        btnSalvarFornecedores.setVisible(false);
-        btnNovoFornecedores.setEnabled(false);
+        } else {
+            /* Pegando os Dados */
+            jTabbedPane1.setSelectedIndex(0);
+            txtCodFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 0).toString());
+            txtNomeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 1).toString());
+            txtCnpjFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 2).toString());
+            txtIeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 3).toString());
+            txtCelularFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 4).toString());
+            txtTelefoneFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 5).toString());
+            txtEmailFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 6).toString());
+            txtRuaFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 7).toString());
+            txtNumeroFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 8).toString());
+            txtBairroFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 9).toString());
+            txtCidadeFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 10).toString());
+            jcbEstadoFornecedores.setSelectedItem(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 11).toString());
+            txtCepFornecedores.setText(tabelaFornecedores.getValueAt(tabelaFornecedores.getSelectedRow(), 12).toString());
 
-        btnAlterarFornecedores.setVisible(true);
-        btnAlterarFornecedores.setEnabled(true);
-        btnExcluirFornecedores.setEnabled(true);
-        btnCancelarFornecedores.setEnabled(true);
+            abreCampos();
+            btnSalvarFornecedores.setVisible(false);
+            btnNovoFornecedores.setEnabled(false);
 
-        txtCnpjFornecedores.setEnabled(true);
-        txtIeFornecedores.setEnabled(true);
+            btnAlterarFornecedores.setVisible(true);
+            btnAlterarFornecedores.setEnabled(true);
+            btnExcluirFornecedores.setEnabled(true);
+            btnCancelarFornecedores.setEnabled(true);
+
+            txtCnpjFornecedores.setEnabled(true);
+            txtIeFornecedores.setEnabled(true);
+
+            if (user.getNivel_acesso() == 2) {
+                btnExcluirFornecedores.setVisible(false);
+
+            }
+        }
     }//GEN-LAST:event_tabelaFornecedoresMouseClicked
 
     private void txtBuscaFornecedoresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaFornecedoresKeyPressed

@@ -11,6 +11,7 @@ import MODEL.Contato;
 import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
+import MODEL.Usuario;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -38,7 +39,9 @@ public class ClienteVIEW extends javax.swing.JFrame {
     ClienteJuridica cliJuridica;
     ClienteDAO clienteDAO;
 
-    public ClienteVIEW() {
+    Usuario user;
+
+    public ClienteVIEW(Usuario user) {
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -50,6 +53,17 @@ public class ClienteVIEW extends javax.swing.JFrame {
         txtBusca.setEnabled(false);
         fechaBotoes();
         fechaCampos();
+        if (user.getNivel_acesso() == 1) {
+            jTabbedPane1.setEnabledAt(0, false);
+            jTabbedPane1.setSelectedIndex(1);
+            btnNovo.setVisible(false);
+
+        } else if (user.getNivel_acesso() == 2) {
+            btnExcluir.setVisible(false);
+
+        } else {
+
+        }
     }
 
     public void listarClientesFisica() {
@@ -941,6 +955,11 @@ public class ClienteVIEW extends javax.swing.JFrame {
         fechaCampos();
         fechaBotoes();
 
+        if (user.getNivel_acesso() == 2) {
+            btnExcluir.setVisible(false);
+
+        }
+
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -970,51 +989,59 @@ public class ClienteVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void tabelaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesMouseClicked
-        /* Pegando os Dados */
-        jTabbedPane1.setSelectedIndex(0);
-        txtCod.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString());
-        txtNome.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1).toString());
-        txtCelular.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4).toString());
-        txtTelefone.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 5).toString());
-        txtEmail.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 6).toString());
-        txtRua.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 7).toString());
-        txtNumero.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 8).toString());
-        txtBairro.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 9).toString());
-        txtCidade.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 10).toString());
-        jcbEstado.setSelectedItem(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 11).toString());
-        txtCep.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 12).toString());
+        if (user.getNivel_acesso() == 1) {
 
-        if (rbnBuscaFisica.isSelected()) {
-            txtCpf.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
-            txtRg.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
-
-            txtCnpj.setText("");
-            txtIe.setText("");
         } else {
-            if (rbnBuscaJuridica.isSelected()) {
-                txtCnpj.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
-                txtIe.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
+            /* Pegando os Dados */
+            jTabbedPane1.setSelectedIndex(0);
+            txtCod.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString());
+            txtNome.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1).toString());
+            txtCelular.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4).toString());
+            txtTelefone.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 5).toString());
+            txtEmail.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 6).toString());
+            txtRua.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 7).toString());
+            txtNumero.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 8).toString());
+            txtBairro.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 9).toString());
+            txtCidade.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 10).toString());
+            jcbEstado.setSelectedItem(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 11).toString());
+            txtCep.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 12).toString());
 
-                txtCpf.setText("");
-                txtRg.setText("");
+            if (rbnBuscaFisica.isSelected()) {
+                txtCpf.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
+                txtRg.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
+
+                txtCnpj.setText("");
+                txtIe.setText("");
+            } else {
+                if (rbnBuscaJuridica.isSelected()) {
+                    txtCnpj.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2).toString());
+                    txtIe.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3).toString());
+
+                    txtCpf.setText("");
+                    txtRg.setText("");
+                }
+            }
+
+            abreCampos();
+            btnSalvar.setVisible(false);
+            btnNovo.setEnabled(false);
+
+            btnAlterar.setVisible(true);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+            btnCancelar.setEnabled(true);
+
+            rbnPF.setEnabled(false);
+            rbnPJ.setEnabled(false);
+            txtCpf.setEnabled(false);
+            txtRg.setEnabled(false);
+            txtCnpj.setEnabled(false);
+            txtIe.setEnabled(false);
+            if (user.getNivel_acesso() == 2) {
+                btnExcluir.setVisible(false);
+
             }
         }
-
-        abreCampos();
-        btnSalvar.setVisible(false);
-        btnNovo.setEnabled(false);
-
-        btnAlterar.setVisible(true);
-        btnAlterar.setEnabled(true);
-        btnExcluir.setEnabled(true);
-        btnCancelar.setEnabled(true);
-
-        rbnPF.setEnabled(false);
-        rbnPJ.setEnabled(false);
-        txtCpf.setEnabled(false);
-        txtRg.setEnabled(false);
-        txtCnpj.setEnabled(false);
-        txtIe.setEnabled(false);
     }//GEN-LAST:event_tabelaClientesMouseClicked
 
     private void txtBuscaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaKeyPressed

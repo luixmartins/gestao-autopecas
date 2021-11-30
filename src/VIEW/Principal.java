@@ -1,4 +1,3 @@
-
 package VIEW;
 
 import MODEL.Usuario;
@@ -6,14 +5,20 @@ import javax.swing.JFrame;
 
 public class Principal extends javax.swing.JFrame {
 
-    
+    Usuario user;
+
     public Principal(Usuario user) {
         initComponents();
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+        if (user.getNivel_acesso() == 3) {
+            mnu_config.setVisible(true);
+
+        } else {
+            mnu_config.setVisible(false);
+        }
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -35,6 +40,8 @@ public class Principal extends javax.swing.JFrame {
         mni_Fornecedor = new javax.swing.JMenuItem();
         mni_Produto = new javax.swing.JMenuItem();
         mni_Entrada = new javax.swing.JMenuItem();
+        mnu_config = new javax.swing.JMenu();
+        mnu_funcionarios = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
         mni_sair = new javax.swing.JMenuItem();
 
@@ -205,6 +212,18 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(mni_cliente);
 
+        mnu_config.setText("Configuração");
+
+        mnu_funcionarios.setText("Funcionários");
+        mnu_funcionarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnu_funcionariosActionPerformed(evt);
+            }
+        });
+        mnu_config.add(mnu_funcionarios);
+
+        jMenuBar1.add(mnu_config);
+
         mnu_sair.setText("Sair");
 
         mni_sair.setText("Sair");
@@ -248,48 +267,48 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mni_EntradaActionPerformed
 
     private void mni_ProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ProdutoActionPerformed
-        ProdutoVIEW produtoview = new ProdutoVIEW();
+        ProdutoVIEW produtoview = new ProdutoVIEW(user);
         produtoview.setVisible(true);
     }//GEN-LAST:event_mni_ProdutoActionPerformed
 
     private void mni_FornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_FornecedorActionPerformed
-        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        FornecedorVIEW fornecedorview = new FornecedorVIEW(user);
         fornecedorview.setVisible(true);
     }//GEN-LAST:event_mni_FornecedorActionPerformed
 
     private void mni_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_ClienteActionPerformed
         /* Instanciando tela Cliente View*/
-        ClienteVIEW view = new ClienteVIEW();
+        ClienteVIEW view = new ClienteVIEW(user);
         view.setVisible(true);
     }//GEN-LAST:event_mni_ClienteActionPerformed
 
     private void iconeClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeClienteMouseClicked
-        ClienteVIEW view = new ClienteVIEW();
+        ClienteVIEW view = new ClienteVIEW(user);
         view.setVisible(true);
     }//GEN-LAST:event_iconeClienteMouseClicked
 
     private void labelClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelClienteMouseClicked
-        ClienteVIEW view = new ClienteVIEW();
+        ClienteVIEW view = new ClienteVIEW(user);
         view.setVisible(true);
     }//GEN-LAST:event_labelClienteMouseClicked
 
     private void iconeFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeFornecedorMouseClicked
-        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        FornecedorVIEW fornecedorview = new FornecedorVIEW(user);
         fornecedorview.setVisible(true);
     }//GEN-LAST:event_iconeFornecedorMouseClicked
 
     private void labelFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFornecedorMouseClicked
-        FornecedorVIEW fornecedorview = new FornecedorVIEW();
+        FornecedorVIEW fornecedorview = new FornecedorVIEW(user);
         fornecedorview.setVisible(true);
     }//GEN-LAST:event_labelFornecedorMouseClicked
 
     private void iconeProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeProdutosMouseClicked
-        ProdutoVIEW produtoview = new ProdutoVIEW();
+        ProdutoVIEW produtoview = new ProdutoVIEW(user);
         produtoview.setVisible(true);
     }//GEN-LAST:event_iconeProdutosMouseClicked
 
     private void labelProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelProdutoMouseClicked
-        ProdutoVIEW produtoview = new ProdutoVIEW();
+        ProdutoVIEW produtoview = new ProdutoVIEW(user);
         produtoview.setVisible(true);
     }//GEN-LAST:event_labelProdutoMouseClicked
 
@@ -302,6 +321,11 @@ public class Principal extends javax.swing.JFrame {
         EntradaVIEW entradaview = new EntradaVIEW();
         entradaview.setVisible(true);
     }//GEN-LAST:event_labelEntradaMouseClicked
+
+    private void mnu_funcionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_funcionariosActionPerformed
+        FuncionariosVIEW funcionario = new FuncionariosVIEW();
+        funcionario.setVisible(true);
+    }//GEN-LAST:event_mnu_funcionariosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -323,6 +347,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mni_Produto;
     private javax.swing.JMenu mni_cliente;
     private javax.swing.JMenuItem mni_sair;
+    private javax.swing.JMenu mnu_config;
+    private javax.swing.JMenuItem mnu_funcionarios;
     private javax.swing.JMenu mnu_sair;
     // End of variables declaration//GEN-END:variables
 }
