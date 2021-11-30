@@ -27,7 +27,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jtpFuncionarios = new javax.swing.JTabbedPane();
+        jtpConsultaFuncionaros = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -69,10 +69,15 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         jftCepFuncionario = new javax.swing.JFormattedTextField();
         jftDataAdmissãoFuncionario = new javax.swing.JFormattedTextField();
         jpfSenhaFuncionario = new javax.swing.JPasswordField();
+        jpConsultaFuncionario = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtBuscarFuncionaro = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaConsultaFuncionario = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnNovoFuncionario = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -352,7 +357,69 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jtpFuncionarios.addTab("Dados funcionários", jPanel2);
+        jtpConsultaFuncionaros.addTab("Dados funcionários", jPanel2);
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel3.setText("Buscar");
+
+        txtBuscarFuncionaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarFuncionaroActionPerformed(evt);
+            }
+        });
+
+        tabelaConsultaFuncionario.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaConsultaFuncionario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Nome", "CPF", "RG", "Data de Admissão", "Status", "Nível de Acesso"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaConsultaFuncionario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaConsultaFuncionarioMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelaConsultaFuncionario);
+
+        javax.swing.GroupLayout jpConsultaFuncionarioLayout = new javax.swing.GroupLayout(jpConsultaFuncionario);
+        jpConsultaFuncionario.setLayout(jpConsultaFuncionarioLayout);
+        jpConsultaFuncionarioLayout.setHorizontalGroup(
+            jpConsultaFuncionarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpConsultaFuncionarioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpConsultaFuncionarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpConsultaFuncionarioLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBuscarFuncionaro, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1325, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpConsultaFuncionarioLayout.setVerticalGroup(
+            jpConsultaFuncionarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpConsultaFuncionarioLayout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jpConsultaFuncionarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtBuscarFuncionaro, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jtpConsultaFuncionaros.addTab("Consulta funcionários", jpConsultaFuncionario);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
         jLabel1.setText("Funcionários");
@@ -375,7 +442,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                         .addGap(48, 48, 48))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jtpFuncionarios)
+                .addComponent(jtpConsultaFuncionaros)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -384,7 +451,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtpFuncionarios, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtpConsultaFuncionaros, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(btnNovoFuncionario)
                 .addContainerGap())
@@ -417,6 +484,15 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnSalvarFuncionarioActionPerformed
 
+    private void txtBuscarFuncionaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarFuncionaroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarFuncionaroActionPerformed
+
+    private void tabelaConsultaFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaConsultaFuncionarioMouseClicked
+        /* Pegando os Dados */
+        
+    }//GEN-LAST:event_tabelaConsultaFuncionarioMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterarFuncionario;
@@ -439,19 +515,24 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JFormattedTextField jftCepFuncionario;
     private javax.swing.JFormattedTextField jftCpfFuncionários;
     private javax.swing.JFormattedTextField jftDataAdmissãoFuncionario;
     private javax.swing.JFormattedTextField jftRgFuncionários;
+    private javax.swing.JPanel jpConsultaFuncionario;
     private javax.swing.JPasswordField jpfSenhaFuncionario;
-    private javax.swing.JTabbedPane jtpFuncionarios;
+    private javax.swing.JTabbedPane jtpConsultaFuncionaros;
+    private javax.swing.JTable tabelaConsultaFuncionario;
     private javax.swing.JTextField txtBairroFuncionario;
+    private javax.swing.JTextField txtBuscarFuncionaro;
     private javax.swing.JTextField txtCelularFuncionario;
     private javax.swing.JTextField txtCidadeFuncionario;
     private javax.swing.JTextField txtCodigoFuncionario;
