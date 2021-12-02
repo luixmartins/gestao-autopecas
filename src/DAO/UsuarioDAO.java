@@ -30,7 +30,7 @@ public class UsuarioDAO {
 
             while (rs.next()) {
                 user = new Usuario(rs.getInt("nivel_acesso"), rs.getInt("idFuncionario"),
-                        rs.getString("senha"));
+                        rs.getString("senha"), rs.getString("nome_funcionario"));
             }
             return user;
             

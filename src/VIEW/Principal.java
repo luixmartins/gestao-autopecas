@@ -20,6 +20,8 @@ public class Principal extends javax.swing.JFrame {
         } else {
             mnu_config.setVisible(false);
         }
+        txtUsuario.setText(user.getNome());
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -37,6 +39,8 @@ public class Principal extends javax.swing.JFrame {
         labelProduto = new javax.swing.JLabel();
         labelEntrada = new javax.swing.JLabel();
         labelFornecedor = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mni_cliente = new javax.swing.JMenu();
         mni_Cliente = new javax.swing.JMenuItem();
@@ -46,6 +50,7 @@ public class Principal extends javax.swing.JFrame {
         mnu_config = new javax.swing.JMenu();
         mnu_funcionarios = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
+        mniLogout = new javax.swing.JMenuItem();
         mni_sair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -116,19 +121,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Usuário Logado:");
+
+        txtUsuario.setText("jLabel4");
+
         javax.swing.GroupLayout iconeMarcaLayout = new javax.swing.GroupLayout(iconeMarca);
         iconeMarca.setLayout(iconeMarcaLayout);
         iconeMarcaLayout.setHorizontalGroup(
             iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(iconeMarcaLayout.createSequentialGroup()
-                .addContainerGap(698, Short.MAX_VALUE)
-                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(84, 84, 84))))
             .addGroup(iconeMarcaLayout.createSequentialGroup()
                 .addGap(104, 104, 104)
                 .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,12 +149,30 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(iconeProdutos)
                         .addGap(45, 45, 45)
                         .addComponent(iconeEntrada)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 104, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(84, 84, 84))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtUsuario)
+                        .addGap(88, 88, 88))))
         );
         iconeMarcaLayout.setVerticalGroup(
             iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(iconeMarcaLayout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtUsuario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(iconeMarcaLayout.createSequentialGroup()
                         .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,6 +247,14 @@ public class Principal extends javax.swing.JFrame {
 
         mnu_sair.setText("Sair");
 
+        mniLogout.setText("Trocar Usuário");
+        mniLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniLogoutActionPerformed(evt);
+            }
+        });
+        mnu_sair.add(mniLogout);
+
         mni_sair.setText("Sair");
         mni_sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,7 +279,7 @@ public class Principal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 22, Short.MAX_VALUE)
+                .addGap(0, 19, Short.MAX_VALUE)
                 .addComponent(iconeMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -336,6 +362,13 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnu_funcionariosActionPerformed
 
+    private void mniLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLogoutActionPerformed
+        LoginVIEW login = new LoginVIEW();
+        
+        login.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_mniLogoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconeCliente;
@@ -345,11 +378,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel iconeProdutos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel labelCliente;
     private javax.swing.JLabel labelEntrada;
     private javax.swing.JLabel labelFornecedor;
     private javax.swing.JLabel labelProduto;
+    private javax.swing.JMenuItem mniLogout;
     private javax.swing.JMenuItem mni_Cliente;
     private javax.swing.JMenuItem mni_Entrada;
     private javax.swing.JMenuItem mni_Fornecedor;
@@ -359,5 +394,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu mnu_config;
     private javax.swing.JMenuItem mnu_funcionarios;
     private javax.swing.JMenu mnu_sair;
+    private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

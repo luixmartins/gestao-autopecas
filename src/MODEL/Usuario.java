@@ -14,15 +14,25 @@ public class Usuario {
     private static  int nivel_acesso;
     private static int cod_funcionario;
     private static String senha;
+    private static String nome;
+
+    public static String getNome() {
+        return nome;
+    }
+
+    public static void setNome(String nome) {
+        Usuario.nome = nome;
+    }
 
     public Usuario() {
 
     }
 
-    public Usuario(int nivel_acesso, int cod_funcionario, String senha) {
+    public Usuario(int nivel_acesso, int cod_funcionario, String senha, String nome) {
         this.nivel_acesso = nivel_acesso;
         this.cod_funcionario = cod_funcionario;
         this.senha = senha;
+        this.nome = nome;
     }
 
     public static int getNivel_acesso() {

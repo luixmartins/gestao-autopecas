@@ -96,7 +96,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         txtNumeroFuncionario.setEnabled(true);
         txtRuaFuncionario.setEnabled(true);
         txtTelefoneFuncionario.setEnabled(true);
-
+        txtBuscarFuncionaro.setEnabled(true);
         txtEstado.setEnabled(true);
         txtNivelAcessoFuncionario.setEnabled(true);
         txtStatusFuncionario.setEnabled(true);
@@ -227,6 +227,12 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
+
+        jtpConsultaFuncionaros.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jtpConsultaFuncionarosStateChanged(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -594,6 +600,11 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         jtpConsultaFuncionaros.addTab("Dados funcionários", jPanel2);
 
         jpConsultaFuncionario.setBackground(new java.awt.Color(255, 255, 255));
+        jpConsultaFuncionario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jpConsultaFuncionarioMouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel3.setText("Buscar");
@@ -722,7 +733,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
             funcionario = new Funcionario();
-            
+
             funcionario.setCod_funcionario(Integer.parseInt(txtCodigoFuncionario.getText()));
             funcionario.setCpf_funcionario(txtCpf.getText());
             funcionario.setNivel_acesso(Integer.parseInt(txtNivelAcessoFuncionario.getText()));
@@ -775,12 +786,12 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
     private void btnExcluirFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirFuncionarioActionPerformed
         funcionario = new Funcionario();
-        
+
         funcionario.setCod_funcionario(Integer.parseInt(txtCodigoFuncionario.getText()));
-        
+
         int confirm = JOptionPane.showConfirmDialog(null, "Deseja excluir o usuário " + txtNomeFuncionario.getText() + "?");
-        
-        if(confirm == 0){
+
+        if (confirm == 0) {
             try {
                 dao.excluirFuncionario(funcionario);
             } catch (SQLException ex) {
@@ -788,7 +799,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             }
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!", "Exclusão", JOptionPane.PLAIN_MESSAGE);
         }
-        
+
         try {
             listarFuncionarios();
         } catch (ParseException ex) {
@@ -809,6 +820,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         btnAlterarFuncionario.setEnabled(false);
         btnNovoFuncionario.setEnabled(true);
+        txtBuscarFuncionaro.setEnabled(true);
     }//GEN-LAST:event_btnCancelarFuncionarioActionPerformed
 
     private void btnSalvarFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarFuncionarioActionPerformed
@@ -877,11 +889,11 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         List<Funcionario> lista;
 
         try {
-            
+
             lista = dao.buscarFuncionariosCodigo(cod);
 
             for (Funcionario f : lista) {
-                
+
                 txtCodigoFuncionario.setText(Integer.toString(f.getCod_funcionario()));
 
                 txtCelularFuncionario.setText(f.getFuncContato().getCelular_cliente());
@@ -952,7 +964,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
     private void btnNovoFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoFuncionarioActionPerformed
         abreCampos();
         limpaCampos();
-        txtBuscarFuncionaro.setEnabled(false);
+        txtBuscarFuncionaro.setEnabled(true);
         //btnBuscar.setEnabled(false);
         btnNovoFuncionario.setEnabled(false);
         btnExcluirFuncionario.setEnabled(false);
@@ -973,6 +985,19 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
     private void txtCepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCepActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCepActionPerformed
+
+    private void jpConsultaFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpConsultaFuncionarioMouseClicked
+
+    }//GEN-LAST:event_jpConsultaFuncionarioMouseClicked
+
+    private void jtpConsultaFuncionarosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jtpConsultaFuncionarosStateChanged
+        if (jtpConsultaFuncionaros.getSelectedIndex() == 0) {
+            btnNovoFuncionario.setVisible(true);
+        }
+        if (jtpConsultaFuncionaros.getSelectedIndex() == 1) {
+            btnNovoFuncionario.setVisible(false);
+        }
+    }//GEN-LAST:event_jtpConsultaFuncionarosStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
