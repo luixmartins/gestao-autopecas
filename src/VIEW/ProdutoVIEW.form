@@ -129,7 +129,7 @@
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="txtCodProdutos" min="-2" pref="40" max="-2" attributes="0"/>
@@ -159,12 +159,12 @@
                                       <Component id="btnCancelarProdutos" min="-2" pref="95" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="btnExcluirProdutos" min="-2" pref="95" max="-2" attributes="0"/>
-                                      <EmptySpace pref="98" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="1" attributes="0">
                                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -187,10 +187,10 @@
                                               </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="btnCategoria" min="-2" max="-2" attributes="0"/>
-                                          <Component id="btnMarca" min="-2" pref="131" max="-2" attributes="0"/>
+                                          <Component id="btnMarca" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="168" max="-2" attributes="0"/>
                                   </Group>
