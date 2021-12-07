@@ -151,7 +151,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(iconeEntrada)))
                 .addGap(0, 104, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(698, Short.MAX_VALUE)
                 .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -163,7 +163,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtUsuario)
-                        .addGap(88, 88, 88))))
+                        .addGap(22, 22, 22))))
         );
         iconeMarcaLayout.setVerticalGroup(
             iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
