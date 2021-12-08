@@ -122,7 +122,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         txtEstado.setSelectedItem("Selecione");
         txtCodigoFuncionario.setText("");
         txtNivelAcessoFuncionario.setText("");
-        txtStatusFuncionario.setText("");
+        txtStatusFuncionario.setSelectedIndex(0);
         txtSenha.setText("");
 
     }
@@ -172,7 +172,6 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         txtCidadeFuncionario = new javax.swing.JTextField();
         txtBairro = new javax.swing.JTextField();
         txtNivelAcessoFuncionario = new javax.swing.JTextField();
-        txtStatusFuncionario = new javax.swing.JTextField();
         txtCpf = new javax.swing.JFormattedTextField();
         txtRg = new javax.swing.JFormattedTextField();
         txtCep = new javax.swing.JFormattedTextField();
@@ -184,6 +183,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         txtTelefoneFuncionario = new javax.swing.JFormattedTextField();
         txtCelularFuncionario = new javax.swing.JFormattedTextField();
+        txtStatusFuncionario = new javax.swing.JComboBox<>();
         jpConsultaFuncionario = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtBuscarFuncionaro = new javax.swing.JTextField();
@@ -336,8 +336,6 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
 
         txtNivelAcessoFuncionario.setEnabled(false);
 
-        txtStatusFuncionario.setEnabled(false);
-
         try {
             txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
@@ -405,6 +403,9 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             }
         });
 
+        txtStatusFuncionario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Sim", "Não" }));
+        txtStatusFuncionario.setEnabled(false);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -462,9 +463,9 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNivelAcessoFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtStatusFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNivelAcessoFuncionario)
+                                    .addComponent(txtStatusFuncionario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAlterarFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -570,14 +571,14 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel8)
                                     .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel11)
                                     .addComponent(txtNivelAcessoFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel12)
-                                    .addComponent(txtStatusFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtStatusFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtCidadeFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -594,7 +595,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel22))))
-                        .addGap(0, 14, Short.MAX_VALUE))))
+                        .addGap(0, 28, Short.MAX_VALUE))))
         );
 
         jtpConsultaFuncionaros.addTab("Dados funcionários", jPanel2);
@@ -728,7 +729,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                 || txtEmailFuncionario.getText().isEmpty() || txtEstado.getSelectedItem() == "Selecione"
                 || txtNivelAcessoFuncionario.getText().isEmpty() || txtNumeroFuncionario.getText().isEmpty()
                 || txtRg.getText().matches(".*\\d.*") == false || txtRuaFuncionario.getText().isEmpty()
-                || txtSenha.getText().isEmpty() || txtStatusFuncionario.getText().isEmpty()
+                || txtSenha.getText().isEmpty() || txtStatusFuncionario.getSelectedItem() == "Selecione"
                 || txtTelefoneFuncionario.getText().matches(".*\\d.*") == false) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
@@ -740,7 +741,11 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             funcionario.setNome_funcionario(txtNomeFuncionario.getText());
             funcionario.setRg_funcionario(txtRg.getText());
             funcionario.setSenha(txtSenha.getText());
-            funcionario.setStatus(Integer.parseInt(txtStatusFuncionario.getText()));
+            if (txtStatusFuncionario.getSelectedItem() == "Sim") {
+                funcionario.setStatus(1);
+            } else if (txtStatusFuncionario.getSelectedItem() == "Não") {
+                funcionario.setStatus(0);
+            }
 
             cont = new Contato();
 
@@ -830,7 +835,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                 || txtEmailFuncionario.getText().isEmpty() || txtEstado.getSelectedItem() == "Selecione"
                 || txtNivelAcessoFuncionario.getText().isEmpty() || txtNumeroFuncionario.getText().isEmpty()
                 || txtRg.getText().matches(".*\\d.*") == false || txtRuaFuncionario.getText().isEmpty()
-                || txtSenha.getText().isEmpty() || txtStatusFuncionario.getText().isEmpty()
+                || txtSenha.getText().isEmpty() || txtStatusFuncionario.getSelectedItem() == "Selecione"
                 || txtTelefoneFuncionario.getText().matches(".*\\d.*") == false) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
@@ -841,7 +846,11 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             funcionario.setNome_funcionario(txtNomeFuncionario.getText());
             funcionario.setRg_funcionario(txtRg.getText());
             funcionario.setSenha(txtSenha.getText());
-            funcionario.setStatus(Integer.parseInt(txtStatusFuncionario.getText()));
+            if (txtStatusFuncionario.getSelectedItem() == "Sim") {
+                funcionario.setStatus(1);
+            } else if (txtStatusFuncionario.getSelectedItem() == "Não") {
+                funcionario.setStatus(0);
+            }
 
             cont = new Contato();
 
@@ -904,7 +913,11 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
                 txtNomeFuncionario.setText(f.getNome_funcionario());
                 txtNumeroFuncionario.setText(Integer.toString(f.getFuncEndereco().getNumero()));
                 txtRuaFuncionario.setText(f.getFuncEndereco().getRua());
-                txtStatusFuncionario.setText(Integer.toString(f.getStatus()));
+                if (f.getStatus() == 1) {
+                    txtStatusFuncionario.setSelectedIndex(1);
+                } else if (f.getStatus() == 0) {
+                    txtStatusFuncionario.setSelectedIndex(2);
+                }
                 txtTelefoneFuncionario.setText(f.getFuncContato().getTelefone_cliente());
                 txtCep.setText(f.getFuncEndereco().getCep());
 
@@ -1053,7 +1066,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtRg;
     private javax.swing.JTextField txtRuaFuncionario;
     private javax.swing.JTextField txtSenha;
-    private javax.swing.JTextField txtStatusFuncionario;
+    private javax.swing.JComboBox<String> txtStatusFuncionario;
     private javax.swing.JFormattedTextField txtTelefoneFuncionario;
     // End of variables declaration//GEN-END:variables
 }
