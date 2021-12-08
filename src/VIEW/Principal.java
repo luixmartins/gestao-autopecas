@@ -15,10 +15,10 @@ public class Principal extends javax.swing.JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         if (user.getNivel_acesso() == 3) {
-            mnu_config.setVisible(true);
+            mni_funcionarios.setVisible(true);
 
         } else {
-            mnu_config.setVisible(false);
+            mni_funcionarios.setVisible(false);
         }
         txtUsuario.setText(user.getNome());
         
@@ -47,8 +47,7 @@ public class Principal extends javax.swing.JFrame {
         mni_Fornecedor = new javax.swing.JMenuItem();
         mni_Produto = new javax.swing.JMenuItem();
         mni_Entrada = new javax.swing.JMenuItem();
-        mnu_config = new javax.swing.JMenu();
-        mnu_funcionarios = new javax.swing.JMenuItem();
+        mni_funcionarios = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
         mniLogout = new javax.swing.JMenuItem();
         mni_sair = new javax.swing.JMenuItem();
@@ -231,19 +230,15 @@ public class Principal extends javax.swing.JFrame {
         });
         mni_cliente.add(mni_Entrada);
 
-        jMenuBar1.add(mni_cliente);
-
-        mnu_config.setText("Configuração");
-
-        mnu_funcionarios.setText("Funcionários");
-        mnu_funcionarios.addActionListener(new java.awt.event.ActionListener() {
+        mni_funcionarios.setText("Funcionários");
+        mni_funcionarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnu_funcionariosActionPerformed(evt);
+                mni_funcionariosActionPerformed(evt);
             }
         });
-        mnu_config.add(mnu_funcionarios);
+        mni_cliente.add(mni_funcionarios);
 
-        jMenuBar1.add(mnu_config);
+        jMenuBar1.add(mni_cliente);
 
         mnu_sair.setText("Sair");
 
@@ -351,7 +346,7 @@ public class Principal extends javax.swing.JFrame {
         entradaview.setVisible(true);
     }//GEN-LAST:event_labelEntradaMouseClicked
 
-    private void mnu_funcionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_funcionariosActionPerformed
+    private void mni_funcionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_funcionariosActionPerformed
         FuncionariosVIEW view;
         try {
             view = new FuncionariosVIEW();
@@ -360,7 +355,7 @@ public class Principal extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_mnu_funcionariosActionPerformed
+    }//GEN-LAST:event_mni_funcionariosActionPerformed
 
     private void mniLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLogoutActionPerformed
         LoginVIEW login = new LoginVIEW();
@@ -390,9 +385,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mni_Fornecedor;
     private javax.swing.JMenuItem mni_Produto;
     private javax.swing.JMenu mni_cliente;
+    private javax.swing.JMenuItem mni_funcionarios;
     private javax.swing.JMenuItem mni_sair;
-    private javax.swing.JMenu mnu_config;
-    private javax.swing.JMenuItem mnu_funcionarios;
     private javax.swing.JMenu mnu_sair;
     private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
