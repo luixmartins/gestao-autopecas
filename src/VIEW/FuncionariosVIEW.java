@@ -403,7 +403,7 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             }
         });
 
-        txtStatusFuncionario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Sim", "Não" }));
+        txtStatusFuncionario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Ativo", "Inativo" }));
         txtStatusFuncionario.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -741,9 +741,9 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             funcionario.setNome_funcionario(txtNomeFuncionario.getText());
             funcionario.setRg_funcionario(txtRg.getText());
             funcionario.setSenha(txtSenha.getText());
-            if (txtStatusFuncionario.getSelectedItem() == "Sim") {
+            if (txtStatusFuncionario.getSelectedItem() == "Ativo") {
                 funcionario.setStatus(1);
-            } else if (txtStatusFuncionario.getSelectedItem() == "Não") {
+            } else if (txtStatusFuncionario.getSelectedItem() == "Inativo") {
                 funcionario.setStatus(0);
             }
 
@@ -846,9 +846,9 @@ public class FuncionariosVIEW extends javax.swing.JFrame {
             funcionario.setNome_funcionario(txtNomeFuncionario.getText());
             funcionario.setRg_funcionario(txtRg.getText());
             funcionario.setSenha(txtSenha.getText());
-            if (txtStatusFuncionario.getSelectedItem() == "Sim") {
+            if (txtStatusFuncionario.getSelectedItem() == "Ativo") {
                 funcionario.setStatus(1);
-            } else if (txtStatusFuncionario.getSelectedItem() == "Não") {
+            } else if (txtStatusFuncionario.getSelectedItem() == "Inativo") {
                 funcionario.setStatus(0);
             }
 

@@ -155,12 +155,15 @@ public class LoginVIEW extends javax.swing.JFrame {
                     txtSenha.setText("");
                     txtCodigoAutentificacao.requestFocus();
                 } else {
-                    Principal principal = new Principal(user);
-                    principal.setVisible(true);
-                    principal.setLocationRelativeTo(null);
-                    this.dispose();
+                    if (user.getStatus() == 1) {
+                        Principal principal = new Principal(user);
+                        principal.setVisible(true);
+                        principal.setLocationRelativeTo(null);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Atenção esse usuário está desativado", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-
             } catch (SQLException ex) {
                 Logger.getLogger(LoginVIEW.class.getName()).log(Level.SEVERE, null, ex);
             }

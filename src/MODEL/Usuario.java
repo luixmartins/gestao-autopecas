@@ -15,7 +15,16 @@ public class Usuario {
     private static int cod_funcionario;
     private static String senha;
     private static String nome;
+    private static int status;
 
+    public static int getStatus() {
+        return status;
+    }
+
+    public static void setStatus(int status) {
+        Usuario.status = status;
+    }
+    
     public static String getNome() {
         return nome;
     }
@@ -28,11 +37,12 @@ public class Usuario {
 
     }
 
-    public Usuario(int nivel_acesso, int cod_funcionario, String senha, String nome) {
+    public Usuario(int nivel_acesso, int cod_funcionario, String senha, String nome, int status) {
         this.nivel_acesso = nivel_acesso;
         this.cod_funcionario = cod_funcionario;
         this.senha = senha;
         this.nome = nome;
+        this.status = status;
     }
 
     public static int getNivel_acesso() {
