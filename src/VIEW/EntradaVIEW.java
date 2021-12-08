@@ -1,16 +1,150 @@
 package VIEW;
 
+import DAO.CategoriaDAO;
+import DAO.FornecedorDAO;
+import DAO.MarcaProduto_DAO;
+import DAO.ProdutoDAO;
+import MODEL.CategoriaProduto;
+import MODEL.Fornecedor;
+import MODEL.MarcaProduto;
+import MODEL.Produto;
+import MODEL.Usuario;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class EntradaVIEW extends javax.swing.JFrame {
 
-    public EntradaVIEW() {
+    Fornecedor fornecedor;
+    FornecedorDAO fornecedorDAO;
+
+    Produto produto;
+    CategoriaProduto categoria;
+    MarcaProduto marca;
+
+    ProdutoDAO produtoDAO;
+    MarcaProduto_DAO marcaDAO;
+    CategoriaDAO categoriaDAO;
+
+    Usuario user;
+
+    public EntradaVIEW(Usuario user) {
         initComponents();
         this.setLocationRelativeTo(null);
+        fornecedorDAO = new FornecedorDAO();
+        if (user.getNivel_acesso() == 1) {
+            this.dispose();
+        } else {
+
+        }
+        fechaBotoes();
+        fechaCampos();
+    }
+
+    public void listarFornecedores() {
+        fornecedorDAO = new FornecedorDAO();
+        List<Fornecedor> lista = fornecedorDAO.listarFornecedores();
+        DefaultTableModel dadosTable = (DefaultTableModel) tbl_fornecedor.getModel();
+        dadosTable.setNumRows(0);
+        for (Fornecedor f : lista) {
+            dadosTable.addRow(new Object[]{
+                f.getCod_fornecedor(),
+                f.getNome(),
+                f.getCnpj(),
+                f.getInscricao_estadual(),});
+        }
+    }
+
+    public void listarProdutos() {
+        produtoDAO = new ProdutoDAO();
+        List<Produto> lista = produtoDAO.listaProduto();
+        DefaultTableModel dados = (DefaultTableModel) tbl_produto.getModel();
+        dados.setNumRows(0);
+        for (Produto c : lista) {
+            dados.addRow(new Object[]{
+                c.getCod_produto(),
+                c.getDescricao(),
+                c.getCodigo_barras(),
+                c.getCategoria().getNome_categoria(),
+                c.getMarca().getNome_marca(),});
+        }
+    }
+
+    public void fechaBotoes() {
+        btnSalvarProdutos.setEnabled(false);
+        btnCancelarProdutos.setEnabled(false);
+        btnAdicionar.setEnabled(false);
+        btnSubtrair.setEnabled(false);
+        btn_selecionar_fornecedor.setEnabled(false);
+        btn_selecionar_produto.setEnabled(false);
+    }
+
+    public void fechaCampos() {
+        txtPrecoUnit.setEnabled(false);
+        txtQuantidade.setEnabled(false);
+        txtValorNota.setEnabled(false);
+        txt_Nomeforneceedor.setEnabled(false);
+        txt_chavedeacesso.setEnabled(false);
+        txt_nomeProduto.setEnabled(false);
+        txt_notafiscal.setEnabled(false);
+    }
+
+    public void abreCampos() {
+        txtPrecoUnit.setEnabled(true);
+        txtQuantidade.setEnabled(true);
+        txtValorNota.setEnabled(true);
+        txt_Nomeforneceedor.setEnabled(true);
+        txt_chavedeacesso.setEnabled(true);
+        txt_nomeProduto.setEnabled(true);
+        txt_notafiscal.setEnabled(true);
+    }
+
+    public void limpaCampos() {
+        txtPrecoUnit.setText("");
+        txtQuantidade.setText("");
+        txtValorNota.setText("");
+        txt_Nomeforneceedor.setText("");
+        txt_chavedeacesso.setText("");
+        txt_nomeProduto.setText("");
+        txt_notafiscal.setText("");
+    }
+
+    public List<String> getCampos() {
+        List<String> listaCampos = new ArrayList<>();
+
+        if (txtPrecoUnit.getText().isEmpty() || txtQuantidade.getText().isEmpty() || txtValorNota.getText().isEmpty()
+                || txt_Nomeforneceedor.getText().isEmpty() || txt_chavedeacesso.getText().isEmpty()
+                || txt_nomeProduto.getText().isEmpty() || txt_notafiscal.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+        } else {
+            listaCampos.add(txtPrecoUnit.getText());
+            listaCampos.add(txtQuantidade.getText());
+            listaCampos.add(txtValorNota.getText());
+            listaCampos.add(txt_Nomeforneceedor.getText());
+            listaCampos.add(txt_chavedeacesso.getText());
+            listaCampos.add(txt_nomeProduto.getText());
+            listaCampos.add(txt_notafiscal.getText());
+            return listaCampos;
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Dialog_Produto = new javax.swing.JDialog();
+        jLabel4 = new javax.swing.JLabel();
+        txt_busca_produto = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_produto = new javax.swing.JTable();
+        Dialog_Fornecedor = new javax.swing.JDialog();
+        jLabel3 = new javax.swing.JLabel();
+        txt_buscaFornecedor = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_fornecedor = new javax.swing.JTable();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -21,19 +155,17 @@ public class EntradaVIEW extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         btnSalvarProdutos = new javax.swing.JButton();
         btnCancelarProdutos = new javax.swing.JButton();
-        btnExcluirProdutos = new javax.swing.JButton();
-        btnAlterarProdutos = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         btnAdicionar = new javax.swing.JButton();
         txtPrecoUnit = new javax.swing.JTextField();
-        txtQuantidade1 = new javax.swing.JTextField();
-        txtPrecoUnit1 = new javax.swing.JTextField();
+        txtQuantidade = new javax.swing.JTextField();
+        txtValorNota = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaFornecedores = new javax.swing.JTable();
         btnSubtrair = new javax.swing.JButton();
-        txt_forneceedor = new javax.swing.JTextField();
+        txt_Nomeforneceedor = new javax.swing.JTextField();
         btn_selecionar_fornecedor = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txt_nomeProduto = new javax.swing.JTextField();
         btn_selecionar_produto = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -41,6 +173,149 @@ public class EntradaVIEW extends javax.swing.JFrame {
         txt_chavedeacesso = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         btnNovo = new javax.swing.JButton();
+
+        Dialog_Produto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Dialog_Produto.setMinimumSize(new java.awt.Dimension(859, 429));
+        Dialog_Produto.setModal(true);
+        Dialog_Produto.setName("Dialog_Produto"); // NOI18N
+        Dialog_Produto.setResizable(false);
+        Dialog_Produto.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                Dialog_ProdutoWindowOpened(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel4.setText("Buscar");
+
+        txt_busca_produto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_busca_produtoKeyPressed(evt);
+            }
+        });
+
+        tbl_produto.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "Cod. Barras", "Categoria", "Marca"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_produto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_produtoMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbl_produto);
+
+        javax.swing.GroupLayout Dialog_ProdutoLayout = new javax.swing.GroupLayout(Dialog_Produto.getContentPane());
+        Dialog_Produto.getContentPane().setLayout(Dialog_ProdutoLayout);
+        Dialog_ProdutoLayout.setHorizontalGroup(
+            Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_ProdutoLayout.createSequentialGroup()
+                .addGroup(Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Dialog_ProdutoLayout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Dialog_ProdutoLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_busca_produto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+        Dialog_ProdutoLayout.setVerticalGroup(
+            Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ProdutoLayout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_busca_produto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
+        );
+
+        Dialog_Fornecedor.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Dialog_Fornecedor.setBackground(new java.awt.Color(255, 255, 255));
+        Dialog_Fornecedor.setMinimumSize(new java.awt.Dimension(859, 429));
+        Dialog_Fornecedor.setModal(true);
+        Dialog_Fornecedor.setName("Dialog_Fornecedor"); // NOI18N
+        Dialog_Fornecedor.setResizable(false);
+        Dialog_Fornecedor.addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                Dialog_FornecedorWindowStateChanged(evt);
+            }
+        });
+        Dialog_Fornecedor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                Dialog_FornecedorPropertyChange(evt);
+            }
+        });
+        Dialog_Fornecedor.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                Dialog_FornecedorWindowOpened(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel3.setText("Razão Social");
+
+        txt_buscaFornecedor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_buscaFornecedorKeyPressed(evt);
+            }
+        });
+
+        tbl_fornecedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Razão Social", "CNPJ", "IE"
+            }
+        ));
+        tbl_fornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_fornecedorMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tbl_fornecedor);
+
+        javax.swing.GroupLayout Dialog_FornecedorLayout = new javax.swing.GroupLayout(Dialog_Fornecedor.getContentPane());
+        Dialog_Fornecedor.getContentPane().setLayout(Dialog_FornecedorLayout);
+        Dialog_FornecedorLayout.setHorizontalGroup(
+            Dialog_FornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_FornecedorLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(Dialog_FornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Dialog_FornecedorLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_buscaFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+        Dialog_FornecedorLayout.setVerticalGroup(
+            Dialog_FornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_FornecedorLayout.createSequentialGroup()
+                .addGap(0, 28, Short.MAX_VALUE)
+                .addGroup(Dialog_FornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_buscaFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,22 +353,6 @@ public class EntradaVIEW extends javax.swing.JFrame {
         btnCancelarProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarProdutosActionPerformed(evt);
-            }
-        });
-
-        btnExcluirProdutos.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        btnExcluirProdutos.setText("Excluir");
-        btnExcluirProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirProdutosActionPerformed(evt);
-            }
-        });
-
-        btnAlterarProdutos.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        btnAlterarProdutos.setText("Alterar");
-        btnAlterarProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarProdutosActionPerformed(evt);
             }
         });
 
@@ -157,8 +416,6 @@ public class EntradaVIEW extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAlterarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel19)
@@ -167,9 +424,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
                                 .addComponent(btnSalvarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnCancelarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnExcluirProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(98, 98, 98)
+                                .addGap(211, 211, 211)
                                 .addComponent(jLabel20)))))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -182,8 +437,8 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                            .addComponent(txt_forneceedor))
+                            .addComponent(txt_nomeProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                            .addComponent(txt_Nomeforneceedor))
                         .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_selecionar_fornecedor)
@@ -193,11 +448,11 @@ public class EntradaVIEW extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPrecoUnit1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtValorNota, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtQuantidade1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,12 +478,12 @@ public class EntradaVIEW extends javax.swing.JFrame {
                         .addGap(39, 39, 39)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(txt_forneceedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_Nomeforneceedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_selecionar_fornecedor))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_selecionar_produto))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -239,7 +494,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtQuantidade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -247,7 +502,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
                             .addComponent(txtPrecoUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtPrecoUnit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtValorNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11))
                         .addGap(21, 21, 21)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -265,10 +520,8 @@ public class EntradaVIEW extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAlterarProdutos)
                             .addComponent(btnSalvarProdutos)
-                            .addComponent(btnCancelarProdutos)
-                            .addComponent(btnExcluirProdutos))
+                            .addComponent(btnCancelarProdutos))
                         .addGap(20, 20, 20))))
         );
 
@@ -279,6 +532,11 @@ public class EntradaVIEW extends javax.swing.JFrame {
 
         btnNovo.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -321,15 +579,12 @@ public class EntradaVIEW extends javax.swing.JFrame {
 
     private void btnCancelarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarProdutosActionPerformed
 
+        btnNovo.setEnabled(true);
+        tabelaFornecedores.removeAll();
+        limpaCampos();
+        fechaBotoes();
+        fechaCampos();
     }//GEN-LAST:event_btnCancelarProdutosActionPerformed
-
-    private void btnExcluirProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirProdutosActionPerformed
-
-    }//GEN-LAST:event_btnExcluirProdutosActionPerformed
-
-    private void btnAlterarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarProdutosActionPerformed
-
-    }//GEN-LAST:event_btnAlterarProdutosActionPerformed
 
     private void tabelaFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedoresMouseClicked
 
@@ -340,28 +595,116 @@ public class EntradaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void btn_selecionar_fornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selecionar_fornecedorActionPerformed
-        Dialog_Fornecedor fornecedor = new Dialog_Fornecedor(new javax.swing.JFrame(), true);
-        
-        
-        fornecedor.setLocationRelativeTo(null);
-        fornecedor.setVisible(true);
+        Dialog_Fornecedor.setLocationRelativeTo(null);
+        Dialog_Fornecedor.setVisible(true);
+        listarFornecedores();
     }//GEN-LAST:event_btn_selecionar_fornecedorActionPerformed
 
     private void btn_selecionar_produtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selecionar_produtoActionPerformed
-        Dialog_Produto produto = new Dialog_Produto(new javax.swing.JFrame(), true);
-        
-        
-        produto.setLocationRelativeTo(null);
-        produto.setVisible(true);
-        
+        Dialog_Produto.setLocationRelativeTo(null);
+        Dialog_Produto.setVisible(true);
+        listarProdutos();
     }//GEN-LAST:event_btn_selecionar_produtoActionPerformed
+
+    private void tbl_fornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_fornecedorMouseClicked
+
+        jTabbedPane2.setSelectedIndex(0);
+        /* Pegando os Dados */
+        txt_Nomeforneceedor.setText(tbl_fornecedor.getValueAt(tbl_fornecedor.getSelectedRow(), 1).toString());
+
+        abreCampos();
+        btnNovo.setEnabled(false);
+        btnCancelarProdutos.setEnabled(true);
+    }//GEN-LAST:event_tbl_fornecedorMouseClicked
+
+    private void Dialog_FornecedorWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_FornecedorWindowStateChanged
+
+    }//GEN-LAST:event_Dialog_FornecedorWindowStateChanged
+
+    private void Dialog_FornecedorPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_Dialog_FornecedorPropertyChange
+
+    }//GEN-LAST:event_Dialog_FornecedorPropertyChange
+
+    private void txt_buscaFornecedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscaFornecedorKeyPressed
+
+        String nome = "%" + txt_buscaFornecedor.getText() + "%";
+
+        fornecedorDAO = new FornecedorDAO();
+
+        List<Fornecedor> lista2 = fornecedorDAO.listarFornecedores(nome);
+        DefaultTableModel dados = (DefaultTableModel) tbl_fornecedor.getModel();
+
+        dados.setNumRows(0);
+
+        for (Fornecedor f : lista2) {
+            dados.addRow(new Object[]{
+                f.getCod_fornecedor(),
+                f.getNome(),
+                f.getCnpj(),
+                f.getInscricao_estadual(),});
+        }
+
+        btnNovo.setEnabled(false);
+        btnCancelarProdutos.setEnabled(true);
+    }//GEN-LAST:event_txt_buscaFornecedorKeyPressed
+
+    private void tbl_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_produtoMouseClicked
+        jTabbedPane2.setSelectedIndex(0);
+        /* Pegando os Dados */
+        txt_nomeProduto.setText(tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 1).toString());
+
+        abreCampos();
+        btnNovo.setEnabled(false);
+        btnCancelarProdutos.setEnabled(true);
+
+    }//GEN-LAST:event_tbl_produtoMouseClicked
+
+    private void txt_busca_produtoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_busca_produtoKeyPressed
+        String nome = "%" + txt_busca_produto.getText() + "%";
+
+        produtoDAO = new ProdutoDAO();
+        List<Produto> lista2 = produtoDAO.listaProduto(nome);
+        DefaultTableModel dados2 = (DefaultTableModel) tbl_produto.getModel();
+        dados2.setNumRows(0);
+        for (Produto c : lista2) {
+            dados2.addRow(new Object[]{
+                c.getCod_produto(),
+                c.getDescricao(),
+                c.getCodigo_barras(),
+                c.getCategoria().getNome_categoria(),
+                c.getMarca().getNome_marca(),});
+        }
+        abreCampos();
+        btnNovo.setEnabled(false);
+        btnCancelarProdutos.setEnabled(true);
+    }//GEN-LAST:event_txt_busca_produtoKeyPressed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+
+        btnCancelarProdutos.setEnabled(true);
+        btnSalvarProdutos.setVisible(true);
+        btnSalvarProdutos.setEnabled(true);
+        btnAdicionar.setEnabled(true);
+        btnSubtrair.setEnabled(true);
+        btn_selecionar_fornecedor.setEnabled(true);
+        btn_selecionar_produto.setEnabled(true);
+        abreCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void Dialog_ProdutoWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_ProdutoWindowOpened
+        listarProdutos();
+    }//GEN-LAST:event_Dialog_ProdutoWindowOpened
+
+    private void Dialog_FornecedorWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_FornecedorWindowOpened
+        listarFornecedores();
+    }//GEN-LAST:event_Dialog_FornecedorWindowOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog Dialog_Fornecedor;
+    private javax.swing.JDialog Dialog_Produto;
     private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnAlterarProdutos;
     private javax.swing.JButton btnCancelarProdutos;
-    private javax.swing.JButton btnExcluirProdutos;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvarProdutos;
     private javax.swing.JButton btnSubtrair;
@@ -372,6 +715,8 @@ public class EntradaVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -379,14 +724,20 @@ public class EntradaVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tabelaFornecedores;
+    private javax.swing.JTable tbl_fornecedor;
+    private javax.swing.JTable tbl_produto;
     private javax.swing.JTextField txtPrecoUnit;
-    private javax.swing.JTextField txtPrecoUnit1;
-    private javax.swing.JTextField txtQuantidade1;
+    private javax.swing.JTextField txtQuantidade;
+    private javax.swing.JTextField txtValorNota;
+    private javax.swing.JTextField txt_Nomeforneceedor;
+    private javax.swing.JTextField txt_buscaFornecedor;
+    private javax.swing.JTextField txt_busca_produto;
     private javax.swing.JTextField txt_chavedeacesso;
-    private javax.swing.JTextField txt_forneceedor;
+    private javax.swing.JTextField txt_nomeProduto;
     private javax.swing.JTextField txt_notafiscal;
     // End of variables declaration//GEN-END:variables
 }

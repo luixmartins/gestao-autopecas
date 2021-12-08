@@ -291,7 +291,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mni_sairActionPerformed
 
     private void mni_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_EntradaActionPerformed
-        EntradaVIEW entradaview = new EntradaVIEW();
+        EntradaVIEW entradaview = new EntradaVIEW(user);
         entradaview.setVisible(true);
     }//GEN-LAST:event_mni_EntradaActionPerformed
 
@@ -342,12 +342,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_labelProdutoMouseClicked
 
     private void iconeEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeEntradaMouseClicked
-        EntradaVIEW entradaview = new EntradaVIEW();
+        EntradaVIEW entradaview = new EntradaVIEW(user);
         entradaview.setVisible(true);
     }//GEN-LAST:event_iconeEntradaMouseClicked
 
     private void labelEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelEntradaMouseClicked
-        EntradaVIEW entradaview = new EntradaVIEW();
+        EntradaVIEW entradaview = new EntradaVIEW(user);
         entradaview.setVisible(true);
     }//GEN-LAST:event_labelEntradaMouseClicked
 
