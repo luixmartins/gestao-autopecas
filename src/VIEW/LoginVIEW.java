@@ -155,14 +155,19 @@ public class LoginVIEW extends javax.swing.JFrame {
                     txtSenha.setText("");
                     txtCodigoAutentificacao.requestFocus();
                 } else {
-                    if (user.getStatus() == 1) {
-                        Principal principal = new Principal(user);
-                        principal.setVisible(true);
-                        principal.setLocationRelativeTo(null);
-                        this.dispose();
+                    if (user.getNivel_acesso() <= 3 && user.getNivel_acesso() >= 1) {
+                        if (user.getStatus() == 1) {
+                            Principal principal = new Principal(user);
+                            principal.setVisible(true);
+                            principal.setLocationRelativeTo(null);
+                            this.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Atenção esse usuário está desativado", "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Atenção esse usuário está desativado", "Erro", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Atenção seu nível de acesso não existe", "Erro", JOptionPane.ERROR_MESSAGE);
                     }
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(LoginVIEW.class.getName()).log(Level.SEVERE, null, ex);
