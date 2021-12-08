@@ -49,7 +49,7 @@ public class ProdutoDAO {
         }
         pst.execute();
         /* Salvando Produto */
-        salvaProduto = "INSERT INTO produto VALUES (?,?,?,?,?,?,?,?,?)";
+        salvaProduto = "INSERT INTO produto VALUES (?,?,?,?,?,?,?,?,?,?)";
         pst = Conexao.getInstance().prepareStatement(salvaProduto, Statement.RETURN_GENERATED_KEYS);
         pst.setInt(1, 0);
         pst.setString(2, produto.getDescricao());
@@ -60,6 +60,7 @@ public class ProdutoDAO {
         pst.setString(7, produto.getCodigo_barras());
         pst.setString(8, produto.getValor_custo());
         pst.setString(9, produto.getValor_venda());
+        pst.setString(10, produto.getPorcentagem());
         pst.execute();
         pst.close();
     }
@@ -105,6 +106,7 @@ public class ProdutoDAO {
                 produto.setCodigo_barras(rs.getString("codigo_barras"));
                 produto.setValor_custo(rs.getString("valor_custo"));
                 produto.setValor_venda(rs.getString("valor_venda"));
+                produto.setPorcentagem(rs.getString("pct_lucro"));
                 /* Adicionando dados na Lista */
                 lista.add(produto);
             }
@@ -144,6 +146,7 @@ public class ProdutoDAO {
                 produto.setCodigo_barras(rs.getString("codigo_barras"));
                 produto.setValor_custo(rs.getString("valor_custo"));
                 produto.setValor_venda(rs.getString("valor_venda"));
+                produto.setPorcentagem(rs.getString("pct_lucro"));
                 /* Adicionando dados na Lista */
                 lista.add(produto);
             }
@@ -183,6 +186,7 @@ public class ProdutoDAO {
                 produto.setCodigo_barras(rs.getString("codigo_barras"));
                 produto.setValor_custo(rs.getString("valor_custo"));
                 produto.setValor_venda(rs.getString("valor_venda"));
+                produto.setPorcentagem(rs.getString("pct_lucro"));
                 /* Adicionando dados na Lista */
                 lista.add(produto);
             }
@@ -217,7 +221,7 @@ public class ProdutoDAO {
         }
         pst.execute();
         /* Update Produto */
-        updateProduto = "UPDATE produto SET descricao_produto = ?, FK_marca = ?,  FK_categoria = ?, quantidade = ?, quantidade_minima = ?, codigo_barras = ?, valor_custo = ?, valor_venda = ? where cod_Produto = ? ";
+        updateProduto = "UPDATE produto SET descricao_produto = ?, FK_marca = ?,  FK_categoria = ?, quantidade = ?, quantidade_minima = ?, codigo_barras = ?, valor_custo = ?, valor_venda = ?, pct_lucro = ? where cod_Produto = ? ";
         pst = Conexao.getInstance().prepareStatement(updateProduto);
         pst.setString(1, produto.getDescricao());
         pst.setInt(2, codMarca);
@@ -227,7 +231,8 @@ public class ProdutoDAO {
         pst.setString(6, produto.getCodigo_barras());
         pst.setString(7, produto.getValor_custo());
         pst.setString(8, produto.getValor_venda());
-        pst.setInt(9, produto.getCod_produto());
+        pst.setString(9, produto.getPorcentagem());
+        pst.setInt(10, produto.getCod_produto());
         pst.execute();
         pst.close();
     }

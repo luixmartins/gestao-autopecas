@@ -9,7 +9,7 @@ package MODEL;
  *
  * @author User
  */
-public class Produto{
+public class Produto {
 
     private int cod_produto;
     private String descricao;
@@ -18,7 +18,7 @@ public class Produto{
     private String codigo_barras;
     private String valor_custo;
     private String valor_venda;
-
+    private String porcentagem;
     private MarcaProduto marca;
     private CategoriaProduto categoria;
 
@@ -28,7 +28,7 @@ public class Produto{
         this.categoria = new CategoriaProduto();
     }
 
-    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, String codigo_barras, String valor_custo, String valor_venda) {
+    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, String codigo_barras, String valor_custo, String valor_venda, String porcentagem) {
         this.cod_produto = cod_produto;
         this.descricao = descricao;
         this.quantidade = quantidade;
@@ -38,10 +38,10 @@ public class Produto{
         this.valor_venda = valor_venda;
         this.marca = new MarcaProduto();
         this.categoria = new CategoriaProduto();
-
+        this.porcentagem = porcentagem;
     }
 
-    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, String codigo_barras, String valor_custo, String valor_venda, MarcaProduto marca, CategoriaProduto categoria) {
+    public Produto(int cod_produto, String descricao, int quantidade, int quantidadeMinima, String codigo_barras, String valor_custo, String valor_venda, MarcaProduto marca, CategoriaProduto categoria, String porcentagem) {
         this.cod_produto = cod_produto;
         this.descricao = descricao;
         this.quantidade = quantidade;
@@ -51,10 +51,9 @@ public class Produto{
         this.valor_venda = valor_venda;
         this.marca = marca;
         this.categoria = categoria;
+        this.porcentagem = porcentagem;
     }
 
-    
-    
     public int getCod_produto() {
         return cod_produto;
     }
@@ -125,6 +124,14 @@ public class Produto{
 
     public void setCategoria(CategoriaProduto categoria) {
         this.categoria = categoria;
+    }
+
+    public String getPorcentagem() {
+        return porcentagem;
+    }
+
+    public void setPorcentagem(String porcentagem) {
+        this.porcentagem = porcentagem;
     }
 
 }
