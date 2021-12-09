@@ -36,12 +36,12 @@ public class AutoPecas {
         entrada.setValor_total_nota("8500,20");
         entrada.setData_entrada(date1);
         
-        fornecedor.setCod_fornecedor(4);
-        produto.setCod_produto(1);
+        fornecedor.setCod_fornecedor(1);
+        produto.setCod_produto(2);
         
         List<ItensEntrada> itens = new ArrayList<>();
         
-        itensEntrada.setPreco_unitario("40");
+        itensEntrada.setPreco_unitario("250.00");
         itensEntrada.setProduto(produto);
         itensEntrada.setQuantidade(30);
         
