@@ -90,6 +90,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
         btnSubtrair.setEnabled(false);
         btn_selecionar_fornecedor.setEnabled(false);
         btn_selecionar_produto.setEnabled(false);
+        btnConfirmaNF.setEnabled(false);
     }
 
     public void fechaCampos() {
@@ -407,6 +408,11 @@ public class EntradaVIEW extends javax.swing.JFrame {
 
         btnSubtrair.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnSubtrair.setText("-");
+        btnSubtrair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubtrairActionPerformed(evt);
+            }
+        });
 
         btn_selecionar_fornecedor.setText("Selecionar");
         btn_selecionar_fornecedor.addActionListener(new java.awt.event.ActionListener() {
@@ -525,16 +531,17 @@ public class EntradaVIEW extends javax.swing.JFrame {
                             .addComponent(jLabel13)
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(txt_nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_selecionar_produto)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_notafiscal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(txt_Nomeforneceedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(btn_selecionar_fornecedor)
-                            .addComponent(btnConfirmaNF))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel9)
+                                .addComponent(txt_nomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn_selecionar_produto)
+                                .addComponent(jLabel2)
+                                .addComponent(txt_Nomeforneceedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
+                                .addComponent(btn_selecionar_fornecedor)
+                                .addComponent(btnConfirmaNF)))
                         .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_chavedeacesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -582,7 +589,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -655,7 +662,6 @@ public class EntradaVIEW extends javax.swing.JFrame {
         
         fornecedor.setCod_fornecedor((int) tbl_fornecedor.getValueAt(tbl_fornecedor.getSelectedRow(), 0));
 
-        abreCampos();
         btnNovo.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
         btn_selecionar_fornecedor.setEnabled(false);
@@ -702,7 +708,9 @@ public class EntradaVIEW extends javax.swing.JFrame {
         
         produto.setCod_produto((int) tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 0));
         
-        abreCampos();
+        txtPrecoUnit.setVisible(true);
+        txtQuantidade.setVisible(true);
+       
         btnNovo.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
         
@@ -738,6 +746,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
         btnSubtrair.setEnabled(true);
         btn_selecionar_fornecedor.setEnabled(true);
         btn_selecionar_produto.setEnabled(true);
+        btnConfirmaNF.setEnabled(true);
         abreCampos();
     }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -767,6 +776,10 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 txtPrecoUnit.getText(),
                 
             });
+            
+            txtPrecoUnit.setText("");
+            txtQuantidade.setText("");
+            txt_nomeProduto.setText("");
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
@@ -775,9 +788,23 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 txtValorNota.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Preencha todos os campos", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
+            txt_chavedeacesso.setEnabled(false);
+            txt_notafiscal.setEnabled(false);
+            txtValorNota.setEnabled(false);
             btnConfirmaNF.setEnabled(false);
         }
     }//GEN-LAST:event_btnConfirmaNFActionPerformed
+
+    private void btnSubtrairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubtrairActionPerformed
+        if(tabelaFornecedores.getSelectedRow() != -1){
+            DefaultTableModel model = (DefaultTableModel) tabelaFornecedores.getModel();
+            
+            int[] rows = tabelaFornecedores.getSelectedRows();
+            for(int i = 0; i < rows.length; i++){
+                model.removeRow(rows[i] - i);
+            }
+        }
+    }//GEN-LAST:event_btnSubtrairActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
