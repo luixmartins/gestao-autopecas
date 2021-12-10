@@ -18,9 +18,9 @@ public class AutoPecas {
 
     public static void main(String[] args) throws SQLException, ParseException {
 
-        /*LoginVIEW login = new LoginVIEW();
+        LoginVIEW login = new LoginVIEW();
         login.setVisible(true);
-        login.setLocationRelativeTo(null);*/
+        login.setLocationRelativeTo(null);/*
         EntradaDAO entradadao = new EntradaDAO();
         Entrada entrada = new Entrada();
         ItensEntrada itensEntrada = new ItensEntrada();
@@ -55,6 +55,6 @@ public class AutoPecas {
         
         
         entradadao.SalvarEntrada(entrada);
-        //entradadao.SalvarListaEntrada(itens, 1);
+        //entradadao.SalvarListaEntrada(itens, 1);*/
     }
 }
