@@ -13,8 +13,11 @@ import MODEL.MarcaProduto;
 import MODEL.Produto;
 import MODEL.Usuario;
 import java.awt.Dimension;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -33,7 +36,6 @@ public class EntradaVIEW extends javax.swing.JFrame {
     ItensEntrada itensEntrada;
     Entrada entrada;
     EntradaDAO entradaDao;
-    
 
     Usuario user;
 
@@ -41,15 +43,16 @@ public class EntradaVIEW extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         fornecedorDAO = new FornecedorDAO();
-        
+
         txt_nomeProduto.setEnabled(false);
         txt_Nomeforneceedor.setEnabled(false);
-        
+
         if (user.getNivel_acesso() == 1) {
             this.dispose();
         } else {
 
         }
+
         fechaBotoes();
         fechaCampos();
     }
@@ -107,9 +110,9 @@ public class EntradaVIEW extends javax.swing.JFrame {
         txtPrecoUnit.setEnabled(true);
         txtQuantidade.setEnabled(true);
         txtValorNota.setEnabled(true);
-        
+
         txt_chavedeacesso.setEnabled(true);
-        
+
         txt_notafiscal.setEnabled(true);
     }
 
@@ -641,13 +644,78 @@ public class EntradaVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarProdutosActionPerformed
+        if (tabelaFornecedores.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "A tabela está vazia. Adcione os itens", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int row = tabelaFornecedores.getRowCount();
 
+            produto = new Produto();
+            fornecedor = new Fornecedor();
+
+            entradaDao = new EntradaDAO();
+            entrada = new Entrada();
+
+            entrada.setChave_acesso(txt_chavedeacesso.getText());
+            entrada.setNumero_nota(txt_notafiscal.getText());
+            entrada.setValor_total_nota(txtValorNota.getText());
+
+            int cod_fornecedor = -1;
+            try {
+                cod_fornecedor = entradaDao.buscaFornecedor(txt_Nomeforneceedor.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (cod_fornecedor != -1) {
+                fornecedor.setCod_fornecedor(cod_fornecedor);
+                entrada.setFornecedor(fornecedor);
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível encontrar o fornecedor", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
+            List<ItensEntrada> itens = new ArrayList<>();;
+            for (int i = 0; i < row; i++) {
+                try {
+                    itensEntrada = new ItensEntrada();
+
+                    produto.setCod_produto(entradaDao.buscaProduto((String) tabelaFornecedores.getValueAt(i, 0)));
+                    itensEntrada.setPreco_unitario((String) tabelaFornecedores.getValueAt(i, 2));
+                    itensEntrada.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i, 1)));
+                    itensEntrada.setProduto(produto);
+
+                    itens.add(itensEntrada);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Impossível encontrar o produto.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            entrada.setItens_entrada(itens);
+
+            try {
+                entradaDao.SalvarEntrada(entrada);
+            } catch (SQLException ex) {
+                Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Não foi possível realizar a entrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
+            JOptionPane.showMessageDialog(null, "A entrada foi salva com sucesso!");
+            DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
+
+            table.setRowCount(0);
+            fechaBotoes();
+            limpaCampos();
+
+            btnNovo.setEnabled(true);
+        }
     }//GEN-LAST:event_btnSalvarProdutosActionPerformed
 
     private void btnCancelarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarProdutosActionPerformed
+        DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
 
+        table.setRowCount(0);
         btnNovo.setEnabled(true);
-        tabelaFornecedores.removeAll();
+
         limpaCampos();
         fechaBotoes();
         fechaCampos();
@@ -678,15 +746,15 @@ public class EntradaVIEW extends javax.swing.JFrame {
         jTabbedPane2.setSelectedIndex(0);
         /* Pegando os Dados */
         txt_Nomeforneceedor.setText(tbl_fornecedor.getValueAt(tbl_fornecedor.getSelectedRow(), 1).toString());
-        
+
         fornecedor = new Fornecedor();
-        
+
         fornecedor.setCod_fornecedor((int) tbl_fornecedor.getValueAt(tbl_fornecedor.getSelectedRow(), 0));
 
         btnNovo.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
         btn_selecionar_fornecedor.setEnabled(false);
-        
+
         Dialog_Fornecedor.dispose();
     }//GEN-LAST:event_tbl_fornecedorMouseClicked
 
@@ -726,15 +794,15 @@ public class EntradaVIEW extends javax.swing.JFrame {
         /* Pegando os Dados */
         txt_nomeProduto.setText(tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 1).toString());
         produto = new Produto();
-        
+
         produto.setCod_produto((int) tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 0));
-        
+
         txtPrecoUnit.setVisible(true);
         txtQuantidade.setVisible(true);
-       
+
         btnNovo.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
-        
+
         Dialog_Produto.dispose();
     }//GEN-LAST:event_tbl_produtoMouseClicked
 
@@ -780,24 +848,21 @@ public class EntradaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_Dialog_FornecedorWindowOpened
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        if(txtPrecoUnit.getText().isEmpty() || txtQuantidade.getText().isEmpty() ||
-                txtValorNota.getText().isEmpty() || txt_Nomeforneceedor.getText().isEmpty() ||
-                txt_chavedeacesso.getText().isEmpty() || txt_nomeProduto.getText().isEmpty() ||
-                txt_notafiscal.getText().isEmpty()){
+        if (txtPrecoUnit.getText().isEmpty() || txtQuantidade.getText().isEmpty()
+                || txtValorNota.getText().isEmpty() || txt_Nomeforneceedor.getText().isEmpty()
+                || txt_chavedeacesso.getText().isEmpty() || txt_nomeProduto.getText().isEmpty()
+                || txt_notafiscal.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
             int qtd = Integer.parseInt(txtQuantidade.getText());
-            
+
             DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
-            
+
             table.addRow(new Object[]{
-                
                 txt_nomeProduto.getText(),
-                txtQuantidade.getText(), 
-                txtPrecoUnit.getText(),
-                
-            });
-            
+                txtQuantidade.getText(),
+                txtPrecoUnit.getText(),});
+
             txtPrecoUnit.setText("");
             txtQuantidade.setText("");
             txt_nomeProduto.setText("");
@@ -805,8 +870,8 @@ public class EntradaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnConfirmaNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmaNFActionPerformed
-        if(txt_chavedeacesso.getText().isEmpty() || txt_notafiscal.getText().isEmpty() ||
-                txtValorNota.getText().isEmpty()){
+        if (txt_chavedeacesso.getText().isEmpty() || txt_notafiscal.getText().isEmpty()
+                || txtValorNota.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
             txt_chavedeacesso.setEnabled(false);
@@ -817,11 +882,11 @@ public class EntradaVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmaNFActionPerformed
 
     private void btnSubtrairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubtrairActionPerformed
-        if(tabelaFornecedores.getSelectedRow() != -1){
+        if (tabelaFornecedores.getSelectedRow() != -1) {
             DefaultTableModel model = (DefaultTableModel) tabelaFornecedores.getModel();
-            
+
             int[] rows = tabelaFornecedores.getSelectedRows();
-            for(int i = 0; i < rows.length; i++){
+            for (int i = 0; i < rows.length; i++) {
                 model.removeRow(rows[i] - i);
             }
         }

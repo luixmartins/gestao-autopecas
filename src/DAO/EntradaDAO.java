@@ -98,4 +98,32 @@ public class EntradaDAO {
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
     }
+    
+    public int buscaFornecedor(String nome) throws SQLException{
+        String sql = "select * from fornecedor where razao_social = \"" + nome + "\"";
+        int cod = 0;
+        
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        
+        while(rs.next()){
+            cod = rs.getInt("idFornecedor");
+        } 
+        
+        return cod;
+    }
+    
+    public int buscaProduto(String nome) throws SQLException{
+        String sql = "select * from produto where descricao_produto = \"" + nome + "\"";
+        int cod = 0;
+        
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        
+        while(rs.next()){
+            cod = rs.getInt("cod_Produto");
+        } 
+        
+        return cod;
+    }
 }
