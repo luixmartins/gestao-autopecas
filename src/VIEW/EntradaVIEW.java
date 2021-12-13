@@ -36,17 +36,19 @@ public class EntradaVIEW extends javax.swing.JFrame {
     ItensEntrada itensEntrada;
     Entrada entrada;
     EntradaDAO entradaDao;
-
+    List<Produto> listaProdutos;
+    List<ItensEntrada> itens;
     Usuario user;
 
     public EntradaVIEW(Usuario user) {
         initComponents();
         this.setLocationRelativeTo(null);
         fornecedorDAO = new FornecedorDAO();
-
+        entradaDao = new EntradaDAO();
         txt_nomeProduto.setEnabled(false);
         txt_Nomeforneceedor.setEnabled(false);
-
+        listaProdutos = new ArrayList<>();
+        itens = new ArrayList<>();
         if (user.getNivel_acesso() == 1) {
             this.dispose();
         } else {
@@ -673,16 +675,14 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Não foi possível encontrar o fornecedor", "Erro", JOptionPane.ERROR_MESSAGE);
             }
 
-            List<ItensEntrada> itens = new ArrayList<>();;
             for (int i = 0; i < row; i++) {
                 try {
                     itensEntrada = new ItensEntrada();
-
+                    produto = new Produto();
                     produto.setCod_produto(entradaDao.buscaProduto((String) tabelaFornecedores.getValueAt(i, 0)));
                     itensEntrada.setPreco_unitario((String) tabelaFornecedores.getValueAt(i, 2));
                     itensEntrada.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i, 1)));
                     itensEntrada.setProduto(produto);
-
                     itens.add(itensEntrada);
 
                 } catch (SQLException ex) {
