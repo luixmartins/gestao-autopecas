@@ -7,6 +7,7 @@ package VIEW;
 
 import DAO.UsuarioDAO;
 import MODEL.Usuario;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,6 +67,11 @@ public class LoginVIEW extends javax.swing.JFrame {
                 txtCodigoAutentificacaoActionPerformed(evt);
             }
         });
+        txtCodigoAutentificacao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCodigoAutentificacaoKeyReleased(evt);
+            }
+        });
 
         btnLogin.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnLogin.setText("Entrar");
@@ -81,6 +87,14 @@ public class LoginVIEW extends javax.swing.JFrame {
         txtSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSenhaActionPerformed(evt);
+            }
+        });
+        txtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSenhaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSenhaKeyReleased(evt);
             }
         });
 
@@ -178,6 +192,55 @@ public class LoginVIEW extends javax.swing.JFrame {
     private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSenhaActionPerformed
+
+    private void txtCodigoAutentificacaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoAutentificacaoKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoAutentificacaoKeyReleased
+
+    private void txtSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyReleased
+
+    }//GEN-LAST:event_txtSenhaKeyReleased
+
+    private void txtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txtCodigoAutentificacao.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha o código de autenticação.");
+                txtCodigoAutentificacao.requestFocus();
+            } else if (String.valueOf(txtSenha.getPassword()).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha a senha.");
+                txtSenha.requestFocus();
+            } else {
+                try {
+                    user = dao.buscaLogin(Integer.parseInt(txtCodigoAutentificacao.getText()), String.valueOf(txtSenha.getPassword()));
+
+                    if (user == null) {
+                        JOptionPane.showMessageDialog(null, "Usuário ou senha não encontrado", "Erro", JOptionPane.ERROR_MESSAGE);
+                        txtCodigoAutentificacao.setText("");
+                        txtSenha.setText("");
+                        txtCodigoAutentificacao.requestFocus();
+                    } else {
+                        if (user.getNivel_acesso() <= 3 && user.getNivel_acesso() >= 1) {
+                            if (user.getStatus() == 1) {
+                                Principal principal = new Principal(user);
+                                principal.setVisible(true);
+                                principal.setLocationRelativeTo(null);
+                                this.dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Atenção esse usuário está desativado", "Erro", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Atenção seu nível de acesso não existe", "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoginVIEW.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+        
+        }
+    }//GEN-LAST:event_txtSenhaKeyPressed
 
     /**
      * @param args the command line arguments

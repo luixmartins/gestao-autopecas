@@ -648,6 +648,9 @@ public class EntradaVIEW extends javax.swing.JFrame {
     private void btnSalvarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarProdutosActionPerformed
         if (tabelaFornecedores.getRowCount() == 0) {
             JOptionPane.showMessageDialog(null, "A tabela está vazia. Adcione os itens", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        if (btnConfirmaNF.isEnabled()) {
+            JOptionPane.showMessageDialog(null, "Nota Fiscal não foi cnnfirmada", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
             int row = tabelaFornecedores.getRowCount();
 
@@ -674,7 +677,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Não foi possível encontrar o fornecedor", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-
+            float totalSoma = 0;
             for (int i = 0; i < row; i++) {
                 try {
                     itensEntrada = new ItensEntrada();
@@ -684,29 +687,33 @@ public class EntradaVIEW extends javax.swing.JFrame {
                     itensEntrada.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i, 1)));
                     itensEntrada.setProduto(produto);
                     itens.add(itensEntrada);
-
+                    totalSoma = totalSoma + Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 2));
                 } catch (SQLException ex) {
                     Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Impossível encontrar o produto.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            entrada.setItens_entrada(itens);
+            /* Verificação da Nota Fiscal */
+            if (totalSoma != Float.parseFloat(txtValorNota.getText())) {
+                JOptionPane.showMessageDialog(null, "Valor Total dos Produto não confere com o Valor da Nota Fiscal", "Erro", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    entrada.setItens_entrada(itens);
+                    entradaDao.SalvarEntrada(entrada);
+                } catch (SQLException ex) {
+                    Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Não foi possível realizar a entrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
 
-            try {
-                entradaDao.SalvarEntrada(entrada);
-            } catch (SQLException ex) {
-                Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Não foi possível realizar a entrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "A entrada foi salva com sucesso!");
+                DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
+
+                table.setRowCount(0);
+                fechaBotoes();
+                limpaCampos();
+
+                btnNovo.setEnabled(true);
             }
-
-            JOptionPane.showMessageDialog(null, "A entrada foi salva com sucesso!");
-            DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
-
-            table.setRowCount(0);
-            fechaBotoes();
-            limpaCampos();
-
-            btnNovo.setEnabled(true);
         }
     }//GEN-LAST:event_btnSalvarProdutosActionPerformed
 
