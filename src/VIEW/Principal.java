@@ -16,12 +16,16 @@ public class Principal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         if (user.getNivel_acesso() == 3) {
             mni_funcionarios.setVisible(true);
-
+        } else if (user.getNivel_acesso() == 1) {
+            mni_Entrada.setVisible(false);
+            mni_funcionarios.setVisible(false);
+            iconeEntrada.setEnabled(false);
+            labelEntrada.setEnabled(false);
         } else {
             mni_funcionarios.setVisible(false);
         }
         txtUsuario.setText(user.getNome());
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -337,20 +341,24 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_labelProdutoMouseClicked
 
     private void iconeEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeEntradaMouseClicked
-        EntradaVIEW entradaview = new EntradaVIEW(user);
-        entradaview.setVisible(true);
+        if (labelEntrada.isEnabled()) {
+            EntradaVIEW entradaview = new EntradaVIEW(user);
+            entradaview.setVisible(true);
+        }
     }//GEN-LAST:event_iconeEntradaMouseClicked
 
     private void labelEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelEntradaMouseClicked
-        EntradaVIEW entradaview = new EntradaVIEW(user);
-        entradaview.setVisible(true);
+        if (labelEntrada.isEnabled()) {
+            EntradaVIEW entradaview = new EntradaVIEW(user);
+            entradaview.setVisible(true);
+        }
     }//GEN-LAST:event_labelEntradaMouseClicked
 
     private void mni_funcionariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_funcionariosActionPerformed
         FuncionariosVIEW view;
         try {
             view = new FuncionariosVIEW();
-            
+
             view.setVisible(true);
         } catch (ParseException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -359,7 +367,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void mniLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLogoutActionPerformed
         LoginVIEW login = new LoginVIEW();
-        
+
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_mniLogoutActionPerformed
