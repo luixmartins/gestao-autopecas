@@ -55,9 +55,28 @@ public class EntradaVIEW extends javax.swing.JFrame {
         } else {
 
         }
-
+        labelTotalProduto.setVisible(false);
+        resultadoTotal.setVisible(false);
         fechaBotoes();
         fechaCampos();
+    }
+
+    public void atualizaLabel() {
+        float totalSomaLabel = 0;
+        if (tabelaFornecedores.getRowCount() == 0) {
+            resultadoTotal.setVisible(false);
+            labelTotalProduto.setVisible(false);
+            resultadoTotal.setText("");
+        } else {
+            for (int i2 = 0; i2 < tabelaFornecedores.getRowCount(); i2++) {
+
+                DecimalFormat df = new DecimalFormat("#.00");
+                totalSomaLabel += (Float.parseFloat((String) tabelaFornecedores.getValueAt(i2, 1)) * Float.parseFloat((String) tabelaFornecedores.getValueAt(i2, 2)));
+                resultadoTotal.setVisible(true);
+                resultadoTotal.setText("R$ " + df.format(totalSomaLabel));
+                labelTotalProduto.setVisible(true);
+            }
+        }
     }
 
     public void listarFornecedores() {
@@ -127,6 +146,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
         txt_chavedeacesso.setText("");
         txt_nomeProduto.setText("");
         txt_notafiscal.setText("");
+        resultadoTotal.setText("");
     }
 
     public List<String> getCampos() {
@@ -193,6 +213,8 @@ public class EntradaVIEW extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         btnConfirmaNF = new javax.swing.JButton();
+        labelTotalProduto = new javax.swing.JLabel();
+        resultadoTotal = new javax.swing.JLabel();
         btnNovo = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -457,6 +479,12 @@ public class EntradaVIEW extends javax.swing.JFrame {
             }
         });
 
+        labelTotalProduto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        labelTotalProduto.setForeground(new java.awt.Color(255, 102, 51));
+        labelTotalProduto.setText("Valor Total dos Produtos:");
+
+        resultadoTotal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -466,7 +494,10 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(labelTotalProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(resultadoTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
@@ -575,13 +606,20 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnSalvarProdutos)
-                        .addComponent(btnCancelarProdutos))
-                    .addComponent(jLabel20))
-                .addGap(20, 20, 20))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnSalvarProdutos)
+                                .addComponent(btnCancelarProdutos))
+                            .addComponent(jLabel20)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelTotalProduto)
+                            .addComponent(resultadoTotal))))
+                .addGap(19, 19, 19))
         );
 
         jTabbedPane2.addTab("Dados entrada", jPanel2);
@@ -714,6 +752,9 @@ public class EntradaVIEW extends javax.swing.JFrame {
                 limpaCampos();
 
                 btnNovo.setEnabled(true);
+
+                resultadoTotal.setVisible(false);
+                labelTotalProduto.setVisible(false);
             }
         }
     }//GEN-LAST:event_btnSalvarProdutosActionPerformed
@@ -727,6 +768,9 @@ public class EntradaVIEW extends javax.swing.JFrame {
         limpaCampos();
         fechaBotoes();
         fechaCampos();
+        
+        resultadoTotal.setVisible(false);
+        labelTotalProduto.setVisible(false);
     }//GEN-LAST:event_btnCancelarProdutosActionPerformed
 
     private void tabelaFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedoresMouseClicked
@@ -875,6 +919,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
             txtPrecoUnit.setText("");
             txtQuantidade.setText("");
             txt_nomeProduto.setText("");
+            atualizaLabel();
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
@@ -898,6 +943,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
             for (int i = 0; i < rows.length; i++) {
                 model.removeRow(rows[i] - i);
             }
+            atualizaLabel();
         }
     }//GEN-LAST:event_btnSubtrairActionPerformed
 
@@ -934,6 +980,8 @@ public class EntradaVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JLabel labelTotalProduto;
+    private javax.swing.JLabel resultadoTotal;
     private javax.swing.JTable tabelaFornecedores;
     private javax.swing.JTable tbl_fornecedor;
     private javax.swing.JTable tbl_produto;
