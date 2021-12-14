@@ -651,7 +651,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "A tabela está vazia. Adcione os itens", "Erro", JOptionPane.ERROR_MESSAGE);
         }
         if (btnConfirmaNF.isEnabled()) {
-            JOptionPane.showMessageDialog(null, "Nota Fiscal não foi cnnfirmada", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Nota Fiscal não foi confirmada", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
             int row = tabelaFornecedores.getRowCount();
 
