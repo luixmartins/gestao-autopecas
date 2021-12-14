@@ -14,6 +14,7 @@ import MODEL.Produto;
 import MODEL.Usuario;
 import java.awt.Dimension;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -396,11 +397,11 @@ public class EntradaVIEW extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Produto", "Quantidade", "Preço Unitário"
+                "Produto", "Quantidade", "Preço Unitário", "Preço Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -687,7 +688,7 @@ public class EntradaVIEW extends javax.swing.JFrame {
                     itensEntrada.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i, 1)));
                     itensEntrada.setProduto(produto);
                     itens.add(itensEntrada);
-                    totalSoma = totalSoma + Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 2));
+                    totalSoma = totalSoma + (Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 1)) * Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 2)));
                 } catch (SQLException ex) {
                     Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Impossível encontrar o produto.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -864,11 +865,12 @@ public class EntradaVIEW extends javax.swing.JFrame {
             int qtd = Integer.parseInt(txtQuantidade.getText());
 
             DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
-
+            DecimalFormat df = new DecimalFormat("#.00");
             table.addRow(new Object[]{
                 txt_nomeProduto.getText(),
                 txtQuantidade.getText(),
-                txtPrecoUnit.getText(),});
+                txtPrecoUnit.getText(),
+                df.format(Float.parseFloat((String) txtPrecoUnit.getText()) * Float.parseFloat((String) txtQuantidade.getText())),});
 
             txtPrecoUnit.setText("");
             txtQuantidade.setText("");
