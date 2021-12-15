@@ -82,48 +82,58 @@ public class EntradaDAO {
                 /* Fazendo Calculo de Valor Venda*/
                 int somaQuantidade = itens.getQuantidade() + quantidade;
                 String atualiza;
-                
-                /* Atualizando Quantidade, Preços */
-                atualiza = "UPDATE produto set quantidade = ?, valor_custo = ?, valor_venda = ? WHERE cod_Produto = ?";
-                pst = Conexao.getInstance().prepareStatement(atualiza);
-                pst.setInt(1, somaQuantidade);
-                pst.setString(2, itens.getPreco_unitario());
-                pst.setString(3, df.format(CalculoVenda));
-                pst.setInt(4, itens.getProduto().getCod_produto());
-                pst.execute();
-                pst.close();
+                String somaQuantia;
+                if (Entrada.getAtualizaPreco() == 1) {
+                    /* Atualizando Quantidade, Preços */
+                    atualiza = "UPDATE produto set quantidade = ?, valor_custo = ?, valor_venda = ? WHERE cod_Produto = ?";
+                    pst = Conexao.getInstance().prepareStatement(atualiza);
+                    pst.setInt(1, somaQuantidade);
+                    pst.setString(2, itens.getPreco_unitario());
+                    pst.setString(3, df.format(CalculoVenda));
+                    pst.setInt(4, itens.getProduto().getCod_produto());
+                    pst.execute();
+                    pst.close();
+                } else if(Entrada.getAtualizaPreco() == 0) {
+                    /* Somando Quantidade */
+                    somaQuantia = "UPDATE produto set quantidade = ? WHERE cod_Produto = ?";
+                    pst = Conexao.getInstance().prepareStatement(somaQuantia);
+                    pst.setInt(1, somaQuantidade);
+                    pst.setInt(2, itens.getProduto().getCod_produto());
+                    pst.execute();
+                    pst.close();
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
     }
-    
-    public int buscaFornecedor(String nome) throws SQLException{
+
+    public int buscaFornecedor(String nome) throws SQLException {
         String sql = "select * from fornecedor where razao_social = \"" + nome + "\"";
         int cod = 0;
-        
+
         pst = Conexao.getInstance().prepareStatement(sql);
         ResultSet rs = pst.executeQuery();
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             cod = rs.getInt("idFornecedor");
-        } 
-        
+        }
+
         return cod;
     }
-    
-    public int buscaProduto(String nome) throws SQLException{
+
+    public int buscaProduto(String nome) throws SQLException {
         String sql = "select * from produto where descricao_produto = \"" + nome + "\"";
         int cod = 0;
-        
+
         pst = Conexao.getInstance().prepareStatement(sql);
         ResultSet rs = pst.executeQuery();
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             cod = rs.getInt("cod_Produto");
-        } 
-        
+        }
+
         return cod;
     }
 }

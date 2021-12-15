@@ -21,6 +21,15 @@ public class Entrada {
     private String chave_acesso;
     private String valor_total_nota;
     private Date data_entrada;
+    private static int atualizaPreco = 0;
+
+    public static int getAtualizaPreco() {
+        return atualizaPreco;
+    }
+
+    public static void setAtualizaPreco(int atualizaPreco) {
+        Entrada.atualizaPreco = atualizaPreco;
+    }
 
     public Entrada(int id_entrada, List<ItensEntrada> itens_entrada, Fornecedor fornecedor, String numero_nota, String chave_acesso, String valor_total_nota, Date data_entrada) {
         this.id_entrada = id_entrada;
