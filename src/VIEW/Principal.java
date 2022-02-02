@@ -45,6 +45,8 @@ public class Principal extends javax.swing.JFrame {
         labelFornecedor = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JLabel();
+        iconeVenda = new javax.swing.JLabel();
+        labelVenda = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mni_cliente = new javax.swing.JMenu();
         mni_Cliente = new javax.swing.JMenuItem();
@@ -128,6 +130,21 @@ public class Principal extends javax.swing.JFrame {
 
         txtUsuario.setText("jLabel4");
 
+        iconeVenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/venda-rapida.png"))); // NOI18N
+        iconeVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iconeVendaMouseClicked(evt);
+            }
+        });
+
+        labelVenda.setFont(new java.awt.Font("Myanmar Text", 0, 14)); // NOI18N
+        labelVenda.setText("Venda");
+        labelVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelVendaMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout iconeMarcaLayout = new javax.swing.GroupLayout(iconeMarca);
         iconeMarca.setLayout(iconeMarcaLayout);
         iconeMarcaLayout.setHorizontalGroup(
@@ -152,9 +169,15 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(iconeProdutos)
                         .addGap(45, 45, 45)
                         .addComponent(iconeEntrada)))
-                .addGap(0, 104, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
+                .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
+                        .addComponent(labelVenda)
+                        .addGap(38, 38, 38))
+                    .addComponent(iconeVenda, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
-                .addContainerGap(698, Short.MAX_VALUE)
+                .addContainerGap(909, Short.MAX_VALUE)
                 .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, iconeMarcaLayout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -192,7 +215,11 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(labelProduto)
                             .addGroup(iconeMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(labelFornecedor)
-                                .addComponent(labelEntrada)))))
+                                .addComponent(labelEntrada))))
+                    .addComponent(iconeVenda)
+                    .addGroup(iconeMarcaLayout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(labelVenda)))
                 .addGap(88, 88, 88)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -372,6 +399,20 @@ public class Principal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_mniLogoutActionPerformed
 
+    private void iconeVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeVendaMouseClicked
+        VendasVIEW vendas = new VendasVIEW(user);
+
+        vendas.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_iconeVendaMouseClicked
+
+    private void labelVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelVendaMouseClicked
+        VendasVIEW vendas = new VendasVIEW(user);
+
+        vendas.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelVendaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconeCliente;
@@ -379,6 +420,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel iconeFornecedor;
     private javax.swing.JPanel iconeMarca;
     private javax.swing.JLabel iconeProdutos;
+    private javax.swing.JLabel iconeVenda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -387,6 +429,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel labelEntrada;
     private javax.swing.JLabel labelFornecedor;
     private javax.swing.JLabel labelProduto;
+    private javax.swing.JLabel labelVenda;
     private javax.swing.JMenuItem mniLogout;
     private javax.swing.JMenuItem mni_Cliente;
     private javax.swing.JMenuItem mni_Entrada;
