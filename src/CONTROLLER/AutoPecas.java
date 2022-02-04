@@ -8,7 +8,6 @@ import MODEL.Funcionario;
 import MODEL.ItensVenda;
 import MODEL.Produto;
 import MODEL.Venda;
-import com.sun.security.ntlm.Client;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +39,7 @@ public class AutoPecas {
         funcionario.setCod_funcionario(2);
         venda.setVendedor(funcionario);
 
-        produto.setCod_produto(2);
+        produto.setCod_produto(4);
         List<ItensVenda> itens = new ArrayList<>();
         itensVenda.setQuantidade(2);
         itensVenda.setProduto(produto);
