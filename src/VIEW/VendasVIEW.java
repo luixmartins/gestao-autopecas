@@ -281,7 +281,7 @@ public class VendasVIEW extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "Cod. Barras", "Categoria", "Marca", "Valor Custo"
+                "ID", "Nome", "Cod. Barras", "Categoria", "Marca", "Valor Venda"
             }
         ) {
             boolean[] canEdit = new boolean [] {

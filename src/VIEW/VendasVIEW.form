@@ -81,7 +81,7 @@
                     <Column editable="false" title="Cod. Barras" type="java.lang.Object"/>
                     <Column editable="false" title="Categoria" type="java.lang.Object"/>
                     <Column editable="false" title="Marca" type="java.lang.Object"/>
-                    <Column editable="false" title="Valor Custo" type="java.lang.Object"/>
+                    <Column editable="false" title="Valor Venda" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>
