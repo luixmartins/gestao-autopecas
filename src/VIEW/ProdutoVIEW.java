@@ -12,8 +12,10 @@ import MODEL.Usuario;
 /* Importações do JAVA */
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -932,9 +934,9 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         if (txtValorCustoProd.getText().isEmpty() || txt_porcentagem.getText().isEmpty()) {
 
         } else {
-
+            NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US); 
             float porcentagem = (Float.parseFloat(txtValorCustoProd.getText()) * (Float.parseFloat(txt_porcentagem.getText()) / 100)) + Float.parseFloat(txtValorCustoProd.getText());
-            DecimalFormat df = new DecimalFormat("#.00");
+            ((DecimalFormat)df).applyPattern("0.00");
             txtValorVenda.setText(df.format(porcentagem));
 
         }

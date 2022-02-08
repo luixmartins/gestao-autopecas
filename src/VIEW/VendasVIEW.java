@@ -107,7 +107,7 @@ public class VendasVIEW extends javax.swing.JFrame {
                 c.getCodigo_barras(),
                 c.getCategoria().getNome_categoria(),
                 c.getMarca().getNome_marca(),
-                c.getValor_custo()
+                c.getValor_venda()
             });
         }
     }
