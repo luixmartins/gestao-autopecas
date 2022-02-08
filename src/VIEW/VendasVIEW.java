@@ -1,20 +1,23 @@
 package VIEW;
 
 import DAO.CategoriaDAO;
+import DAO.ClienteDAO;
 import DAO.EntradaDAO;
 import DAO.FornecedorDAO;
+import DAO.FuncionarioDAO;
 import DAO.MarcaProduto_DAO;
 import DAO.ProdutoDAO;
 import MODEL.CategoriaProduto;
+import MODEL.Cliente;
 import MODEL.Entrada;
 import MODEL.Fornecedor;
+import MODEL.Funcionario;
 import MODEL.ItensEntrada;
 import MODEL.MarcaProduto;
 import MODEL.Produto;
 import MODEL.Usuario;
-import java.awt.Dimension;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,8 +33,10 @@ public class VendasVIEW extends javax.swing.JFrame {
     Produto produto;
     CategoriaProduto categoria;
     MarcaProduto marca;
-
     ProdutoDAO produtoDAO;
+    
+    ClienteDAO clienteDAO;
+    FuncionarioDAO funcionarioDAO;
     MarcaProduto_DAO marcaDAO;
     CategoriaDAO categoriaDAO;
     ItensEntrada itensEntrada;
@@ -94,6 +99,46 @@ public class VendasVIEW extends javax.swing.JFrame {
                 c.getCategoria().getNome_categoria(),
                 c.getMarca().getNome_marca(),
                 c.getValor_custo()
+            });
+        }
+    }
+    
+    public void listarVendedor() throws ParseException{
+        funcionarioDAO = new FuncionarioDAO();
+        List<Funcionario> lista = funcionarioDAO.listarFuncionarios();
+        DefaultTableModel dados = (DefaultTableModel) tbl_vendedor.getModel();
+        dados.setNumRows(0);
+        
+        lista.forEach((Funcionario f) -> {
+            dados.addRow(new Object[]{
+                f.getCod_funcionario(),
+                f.getNome_funcionario(),
+            });
+        });
+    }
+    
+    public void listarFisica(){
+        clienteDAO = new ClienteDAO();
+        List<Cliente> lista = clienteDAO.listarClientesFisica();
+        DefaultTableModel dados = (DefaultTableModel) tbl_Cliente.getModel();
+        dados.setNumRows(0);
+        for (Cliente c : lista) {
+            dados.addRow(new Object[]{
+                c.getCod_cliente(),
+                c.getNome_cliente(),
+            });
+        }
+    }
+    
+    public void listarJuridica(){
+        clienteDAO = new ClienteDAO();
+        List<Cliente> lista = clienteDAO.ListarClienteJuridica();
+        DefaultTableModel dados = (DefaultTableModel) tbl_Cliente.getModel();
+        dados.setNumRows(0);
+        for (Cliente c : lista) {
+            dados.addRow(new Object[]{
+                c.getCod_cliente(),
+                c.getNome_cliente(),
             });
         }
     }
@@ -171,6 +216,8 @@ public class VendasVIEW extends javax.swing.JFrame {
         txt_buscaCliente = new javax.swing.JTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
         tbl_Cliente = new javax.swing.JTable();
+        rbn_fisica = new javax.swing.JRadioButton();
+        rbn_juridica = new javax.swing.JRadioButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -400,7 +447,26 @@ public class VendasVIEW extends javax.swing.JFrame {
                 tbl_ClienteMouseClicked(evt);
             }
         });
+        tbl_Cliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbl_ClienteKeyPressed(evt);
+            }
+        });
         jScrollPane5.setViewportView(tbl_Cliente);
+
+        rbn_fisica.setText("Física ");
+        rbn_fisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbn_fisicaActionPerformed(evt);
+            }
+        });
+
+        rbn_juridica.setText("Jurídica ");
+        rbn_juridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbn_juridicaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Dialog_ClienteLayout = new javax.swing.GroupLayout(Dialog_Cliente.getContentPane());
         Dialog_Cliente.getContentPane().setLayout(Dialog_ClienteLayout);
@@ -408,20 +474,27 @@ public class VendasVIEW extends javax.swing.JFrame {
             Dialog_ClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Dialog_ClienteLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(Dialog_ClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(Dialog_ClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(Dialog_ClienteLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_buscaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_buscaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rbn_fisica)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbn_juridica)))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         Dialog_ClienteLayout.setVerticalGroup(
             Dialog_ClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ClienteLayout.createSequentialGroup()
-                .addGap(0, 28, Short.MAX_VALUE)
+                .addGap(0, 25, Short.MAX_VALUE)
                 .addGroup(Dialog_ClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txt_buscaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Dialog_ClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_buscaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rbn_fisica)
+                        .addComponent(rbn_juridica))
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -781,11 +854,11 @@ public class VendasVIEW extends javax.swing.JFrame {
 
         jTabbedPane2.setSelectedIndex(0);
         /* Pegando os Dados */
-        txt_NomeCliente.setText(tbl_vendedor.getValueAt(tbl_vendedor.getSelectedRow(), 1).toString());
+        txt_vendedor.setText(tbl_vendedor.getValueAt(tbl_vendedor.getSelectedRow(), 1).toString());
 
-        fornecedor = new Fornecedor();
-
-        fornecedor.setCod_fornecedor((int) tbl_vendedor.getValueAt(tbl_vendedor.getSelectedRow(), 0));
+        Funcionario funcionario = new Funcionario();
+        
+        funcionario.setCod_funcionario((int) tbl_vendedor.getValueAt(tbl_vendedor.getSelectedRow(), 0));
 
         btnNovo.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
@@ -864,7 +937,11 @@ public class VendasVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_Dialog_ProdutoWindowOpened
 
     private void Dialog_VendedorWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_VendedorWindowOpened
-        
+        try {
+            listarVendedor();
+        } catch (ParseException ex) {
+            Logger.getLogger(VendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_Dialog_VendedorWindowOpened
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
@@ -893,7 +970,7 @@ public class VendasVIEW extends javax.swing.JFrame {
 
     private void btnSelecionarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarVendedorActionPerformed
         Dialog_Vendedor.setLocationRelativeTo(null);
-        Dialog_Vendedor.setVisible(true);        
+        Dialog_Vendedor.setVisible(true); 
     }//GEN-LAST:event_btnSelecionarVendedorActionPerformed
 
     private void btnSubtrairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubtrairActionPerformed
@@ -921,7 +998,17 @@ public class VendasVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_buscaClienteKeyPressed
 
     private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked
-        // TODO add your handling code here:
+        jTabbedPane2.setSelectedIndex(0);
+        /* Pegando os Dados */
+        txt_NomeCliente.setText(tbl_Cliente.getValueAt(tbl_Cliente.getSelectedRow(), 1).toString());
+        Cliente cliente = new Cliente();
+
+        cliente.setCod_cliente((int) tbl_Cliente.getValueAt(tbl_Cliente.getSelectedRow(), 0));
+
+        btnNovo.setEnabled(false);
+        btnCancelarProdutos.setEnabled(true);
+
+        Dialog_Cliente.dispose();
     }//GEN-LAST:event_tbl_ClienteMouseClicked
 
     private void Dialog_ClienteWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_ClienteWindowStateChanged
@@ -935,6 +1022,20 @@ public class VendasVIEW extends javax.swing.JFrame {
     private void Dialog_ClienteWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_ClienteWindowOpened
         // TODO add your handling code here:
     }//GEN-LAST:event_Dialog_ClienteWindowOpened
+
+    private void rbn_juridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbn_juridicaActionPerformed
+        rbn_fisica.setSelected(false);
+        listarJuridica();
+    }//GEN-LAST:event_rbn_juridicaActionPerformed
+
+    private void rbn_fisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbn_fisicaActionPerformed
+        rbn_juridica.setSelected(false);
+        listarFisica();
+    }//GEN-LAST:event_rbn_fisicaActionPerformed
+
+    private void tbl_ClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_ClienteKeyPressed
+        
+    }//GEN-LAST:event_tbl_ClienteKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -971,6 +1072,8 @@ public class VendasVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JLabel labelTotalProduto;
+    private javax.swing.JRadioButton rbn_fisica;
+    private javax.swing.JRadioButton rbn_juridica;
     private javax.swing.JLabel resultadoTotal;
     private javax.swing.JTable tabelaFornecedores;
     private javax.swing.JTable tbl_Cliente;
@@ -985,4 +1088,6 @@ public class VendasVIEW extends javax.swing.JFrame {
     private javax.swing.JTextField txt_nomeProduto;
     private javax.swing.JTextField txt_vendedor;
     // End of variables declaration//GEN-END:variables
+
+    
 }

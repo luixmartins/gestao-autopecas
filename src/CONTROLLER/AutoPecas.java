@@ -2,6 +2,7 @@ package CONTROLLER;
 
 import VIEW.LoginVIEW;
 import java.sql.SQLException;
+/*
 import DAO.VendaDAO;
 import MODEL.Cliente;
 import MODEL.Funcionario;
@@ -14,15 +15,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+*/
 public class AutoPecas {
 
-    public static void main(String[] args) throws SQLException, ParseException {
+    public static void main(String[] args) throws SQLException {
 
-        /* LoginVIEW login = new LoginVIEW();
+        LoginVIEW login = new LoginVIEW();
         login.setVisible(true);
-        login.setLocationRelativeTo(null);*/
-        
+        login.setLocationRelativeTo(null);
+        /*
         VendaDAO vendadao = new VendaDAO();
         Venda venda = new Venda();
         ItensVenda itensVenda = new ItensVenda();
