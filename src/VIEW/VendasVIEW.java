@@ -7,15 +7,18 @@ import DAO.FornecedorDAO;
 import DAO.FuncionarioDAO;
 import DAO.MarcaProduto_DAO;
 import DAO.ProdutoDAO;
+import DAO.VendaDAO;
 import MODEL.CategoriaProduto;
 import MODEL.Cliente;
 import MODEL.Entrada;
 import MODEL.Fornecedor;
 import MODEL.Funcionario;
-import MODEL.ItensEntrada;
+import MODEL.ItensVenda;
 import MODEL.MarcaProduto;
 import MODEL.Produto;
 import MODEL.Usuario;
+import MODEL.Venda;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -34,16 +37,23 @@ public class VendasVIEW extends javax.swing.JFrame {
     CategoriaProduto categoria;
     MarcaProduto marca;
     ProdutoDAO produtoDAO;
-    
-    ClienteDAO clienteDAO;
+
+    Venda venda;
+    VendaDAO vendaDAO;
+
     FuncionarioDAO funcionarioDAO;
+    Funcionario funcionario;
+
+    ClienteDAO clienteDAO;
+    Cliente cliente;
+
     MarcaProduto_DAO marcaDAO;
     CategoriaDAO categoriaDAO;
-    ItensEntrada itensEntrada;
+    ItensVenda itensVenda;
     Entrada entrada;
     EntradaDAO entradaDao;
     List<Produto> listaProdutos;
-    List<ItensEntrada> itens;
+    List<ItensVenda> itens;
     Usuario user;
 
     public VendasVIEW(Usuario user) {
@@ -85,7 +95,6 @@ public class VendasVIEW extends javax.swing.JFrame {
         }
     }
 
-
     public void listarProdutos() {
         produtoDAO = new ProdutoDAO();
         List<Produto> lista = produtoDAO.listaProduto();
@@ -102,22 +111,21 @@ public class VendasVIEW extends javax.swing.JFrame {
             });
         }
     }
-    
-    public void listarVendedor() throws ParseException{
+
+    public void listarVendedor() throws ParseException {
         funcionarioDAO = new FuncionarioDAO();
         List<Funcionario> lista = funcionarioDAO.listarFuncionarios();
         DefaultTableModel dados = (DefaultTableModel) tbl_vendedor.getModel();
         dados.setNumRows(0);
-        
+
         lista.forEach((Funcionario f) -> {
             dados.addRow(new Object[]{
                 f.getCod_funcionario(),
-                f.getNome_funcionario(),
-            });
+                f.getNome_funcionario(),});
         });
     }
-    
-    public void listarFisica(){
+
+    public void listarFisica() {
         clienteDAO = new ClienteDAO();
         List<Cliente> lista = clienteDAO.listarClientesFisica();
         DefaultTableModel dados = (DefaultTableModel) tbl_Cliente.getModel();
@@ -125,12 +133,11 @@ public class VendasVIEW extends javax.swing.JFrame {
         for (Cliente c : lista) {
             dados.addRow(new Object[]{
                 c.getCod_cliente(),
-                c.getNome_cliente(),
-            });
+                c.getNome_cliente(),});
         }
     }
-    
-    public void listarJuridica(){
+
+    public void listarJuridica() {
         clienteDAO = new ClienteDAO();
         List<Cliente> lista = clienteDAO.ListarClienteJuridica();
         DefaultTableModel dados = (DefaultTableModel) tbl_Cliente.getModel();
@@ -138,13 +145,12 @@ public class VendasVIEW extends javax.swing.JFrame {
         for (Cliente c : lista) {
             dados.addRow(new Object[]{
                 c.getCod_cliente(),
-                c.getNome_cliente(),
-            });
+                c.getNome_cliente(),});
         }
     }
 
     public void fechaBotoes() {
-        btnSalvarProdutos.setEnabled(false);
+        btnSalvarVenda.setEnabled(false);
         btnCancelarProdutos.setEnabled(false);
         btnAdicionar.setEnabled(false);
         btnSubtrair.setEnabled(false);
@@ -182,8 +188,8 @@ public class VendasVIEW extends javax.swing.JFrame {
     public List<String> getCampos() {
         List<String> listaCampos = new ArrayList<>();
 
-        if (txtPrecoUnit.getText().isEmpty() || txtQuantidade.getText().isEmpty() 
-                || txt_NomeCliente.getText().isEmpty() 
+        if (txtPrecoUnit.getText().isEmpty() || txtQuantidade.getText().isEmpty()
+                || txt_NomeCliente.getText().isEmpty()
                 || txt_nomeProduto.getText().isEmpty() || txt_vendedor.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
         } else {
@@ -226,7 +232,7 @@ public class VendasVIEW extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        btnSalvarProdutos = new javax.swing.JButton();
+        btnSalvarVenda = new javax.swing.JButton();
         btnCancelarProdutos = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
         txtPrecoUnit = new javax.swing.JTextField();
@@ -526,11 +532,11 @@ public class VendasVIEW extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel20.setText("Barcelos");
 
-        btnSalvarProdutos.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        btnSalvarProdutos.setText("Salvar");
-        btnSalvarProdutos.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvarVenda.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        btnSalvarVenda.setText("Salvar");
+        btnSalvarVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarProdutosActionPerformed(evt);
+                btnSalvarVendaActionPerformed(evt);
             }
         });
 
@@ -675,7 +681,7 @@ public class VendasVIEW extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel5)
-                                            .addComponent(btnSalvarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(btnSalvarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(btnCancelarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -740,7 +746,7 @@ public class VendasVIEW extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnSalvarProdutos)
+                                .addComponent(btnSalvarVenda)
                                 .addComponent(btnCancelarProdutos))
                             .addComponent(jLabel20)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -813,9 +819,72 @@ public class VendasVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSalvarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarProdutosActionPerformed
+    private void btnSalvarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarVendaActionPerformed
+        if (tabelaFornecedores.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "A tabela está vazia. Adcione os itens", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int row = tabelaFornecedores.getRowCount();
 
-    }//GEN-LAST:event_btnSalvarProdutosActionPerformed
+            produto = new Produto();
+            funcionario = new Funcionario();
+            vendaDAO = new VendaDAO();
+            venda = new Venda();
+            cliente = new Cliente();
+
+            int cod_funcionario = -1, cod_cliente = -1;
+            try {
+                cod_funcionario = vendaDAO.buscaVendedor(txt_vendedor.getText());
+                cod_cliente = vendaDAO.buscaCliente(txt_NomeCliente.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(VendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (cod_funcionario != -1 && cod_cliente != -1) {
+                funcionario.setCod_funcionario(cod_funcionario);
+                cliente.setCod_cliente(cod_cliente);
+                venda.setVendedor(funcionario);
+                venda.setCliente(cliente);
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível encontrar o vendedor", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+            float total_venda = 0;
+            for (int i = 0; i < row; i++) {
+                try {
+                    itensVenda = new ItensVenda();
+                    produto = new Produto();
+                    produto.setCod_produto(vendaDAO.buscaProduto((String) tabelaFornecedores.getValueAt(i, 0)));
+                    itensVenda.setPreco_unitario((String) tabelaFornecedores.getValueAt(i, 3));
+                    itensVenda.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i,1)));
+                    itensVenda.setProduto(produto);
+                    itens.add(itensVenda);
+                    total_venda = total_venda + (Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 1))
+                            * Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 2)));
+                } catch (SQLException ex) {
+                    Logger.getLogger(VendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Impossível encontrar o produto.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            try {
+                venda.setItens_venda(itens);
+                venda.setValor_total(String.valueOf(total_venda));
+                vendaDAO.SalvarVenda(venda);
+
+            } catch (SQLException e) {
+                Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, e);
+                JOptionPane.showMessageDialog(null, "Não foi possível realizar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+            JOptionPane.showMessageDialog(null, "A venda foi salva com sucesso!");
+            DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
+
+            table.setRowCount(0);
+            fechaBotoes();
+            limpaCampos();
+
+            btnNovo.setEnabled(true);
+
+            resultadoTotal.setVisible(false);
+            labelTotalProduto.setVisible(false);
+        }
+    }//GEN-LAST:event_btnSalvarVendaActionPerformed
 
     private void btnCancelarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarProdutosActionPerformed
         DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
@@ -857,7 +926,7 @@ public class VendasVIEW extends javax.swing.JFrame {
         txt_vendedor.setText(tbl_vendedor.getValueAt(tbl_vendedor.getSelectedRow(), 1).toString());
 
         Funcionario funcionario = new Funcionario();
-        
+
         funcionario.setCod_funcionario((int) tbl_vendedor.getValueAt(tbl_vendedor.getSelectedRow(), 0));
 
         btnNovo.setEnabled(false);
@@ -922,8 +991,8 @@ public class VendasVIEW extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
 
         btnCancelarProdutos.setEnabled(true);
-        btnSalvarProdutos.setVisible(true);
-        btnSalvarProdutos.setEnabled(true);
+        btnSalvarVenda.setVisible(true);
+        btnSalvarVenda.setEnabled(true);
         btnAdicionar.setEnabled(true);
         btnSubtrair.setEnabled(true);
         btn_selecionar_cliente.setEnabled(true);
@@ -970,7 +1039,7 @@ public class VendasVIEW extends javax.swing.JFrame {
 
     private void btnSelecionarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarVendedorActionPerformed
         Dialog_Vendedor.setLocationRelativeTo(null);
-        Dialog_Vendedor.setVisible(true); 
+        Dialog_Vendedor.setVisible(true);
     }//GEN-LAST:event_btnSelecionarVendedorActionPerformed
 
     private void btnSubtrairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubtrairActionPerformed
@@ -1034,7 +1103,7 @@ public class VendasVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_rbn_fisicaActionPerformed
 
     private void tbl_ClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_ClienteKeyPressed
-        
+
     }//GEN-LAST:event_tbl_ClienteKeyPressed
 
 
@@ -1045,7 +1114,7 @@ public class VendasVIEW extends javax.swing.JFrame {
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnCancelarProdutos;
     private javax.swing.JButton btnNovo;
-    private javax.swing.JButton btnSalvarProdutos;
+    private javax.swing.JButton btnSalvarVenda;
     private javax.swing.JButton btnSelecionarVendedor;
     private javax.swing.JButton btnSubtrair;
     private javax.swing.JButton btn_selecionar_cliente;
@@ -1089,5 +1158,4 @@ public class VendasVIEW extends javax.swing.JFrame {
     private javax.swing.JTextField txt_vendedor;
     // End of variables declaration//GEN-END:variables
 
-    
 }
