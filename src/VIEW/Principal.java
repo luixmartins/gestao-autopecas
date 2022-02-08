@@ -401,16 +401,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void iconeVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconeVendaMouseClicked
         VendasVIEW vendas = new VendasVIEW(user);
-
         vendas.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_iconeVendaMouseClicked
 
     private void labelVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelVendaMouseClicked
         VendasVIEW vendas = new VendasVIEW(user);
-
         vendas.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_labelVendaMouseClicked
 
 
