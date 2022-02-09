@@ -124,7 +124,7 @@ public class VendaDAO {
     }
 
     public int buscaProduto(String nome) throws SQLException {
-        String sql = "select * from produto where descricao_produto = \"" + nome + "\"and quantidade >= quantidade_minima";
+        String sql = "select * from produto where descricao_produto = \"" + nome + "\"";
         
         int cod = 0;
 

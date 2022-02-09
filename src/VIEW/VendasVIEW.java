@@ -830,7 +830,7 @@ public class VendasVIEW extends javax.swing.JFrame {
             vendaDAO = new VendaDAO();
             venda = new Venda();
             cliente = new Cliente();
-
+            List<ItensVenda> itens = new ArrayList<>();
             int cod_funcionario = -1, cod_cliente = -1;
             try {
                 cod_funcionario = vendaDAO.buscaVendedor(txt_vendedor.getText());
