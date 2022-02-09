@@ -1,6 +1,5 @@
 package DAO;
 
-
 import MODEL.ItensVenda;
 import MODEL.Venda;
 import java.sql.PreparedStatement;
@@ -62,32 +61,33 @@ public class VendaDAO {
 
                 pst.execute();
                 /* Realizando o Update da Quantidade */
-                
+
                 String busca = "select * from produto where cod_produto = " + itens.getProduto().getCod_produto();
 
                 ResultSet rs = pst.executeQuery(busca);
 
                 int quantidade = 0;
-                
+
                 while (rs.next()) {
                     quantidade = rs.getInt("quantidade");
-                    
+
                 }
 
-
-                /* Subtraindo a quantidade*/
-                
-                
-                int subQuantidade = quantidade - itens.getQuantidade() ;
-                String atualiza;
-                /* Atualizando Quantidade */
-                atualiza = "UPDATE produto set quantidade = ? WHERE cod_Produto = ?";
-                pst = Conexao.getInstance().prepareStatement(atualiza);
-                pst.setInt(1, subQuantidade);
-                pst.setInt(2, itens.getProduto().getCod_produto());
-                pst.execute();
-                pst.close();
-
+                if (itens.getQuantidade() <= quantidade) {
+                    /* Subtraindo a quantidade*/
+                    int subQuantidade = quantidade - itens.getQuantidade();
+                    String atualiza;
+                    /* Atualizando Quantidade */
+                    atualiza = "UPDATE produto set quantidade = ? WHERE cod_Produto = ?";
+                    pst = Conexao.getInstance().prepareStatement(atualiza);
+                    pst.setInt(1, subQuantidade);
+                    pst.setInt(2, itens.getProduto().getCod_produto());
+                    pst.execute();
+                    pst.close();
+                    JOptionPane.showMessageDialog(null, "A venda foi salva com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Um dos produtos não contém a quantidade necessária de estoque para realizar a venda !", "Atenção", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -125,7 +125,7 @@ public class VendaDAO {
 
     public int buscaProduto(String nome) throws SQLException {
         String sql = "select * from produto where descricao_produto = \"" + nome + "\"";
-        
+
         int cod = 0;
 
         pst = Conexao.getInstance().prepareStatement(sql);

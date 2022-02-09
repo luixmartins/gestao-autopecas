@@ -853,7 +853,7 @@ public class VendasVIEW extends javax.swing.JFrame {
                     produto = new Produto();
                     produto.setCod_produto(vendaDAO.buscaProduto((String) tabelaFornecedores.getValueAt(i, 0)));
                     itensVenda.setPreco_unitario((String) tabelaFornecedores.getValueAt(i, 3));
-                    itensVenda.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i,1)));
+                    itensVenda.setQuantidade(Integer.parseInt((String) tabelaFornecedores.getValueAt(i, 1)));
                     itensVenda.setProduto(produto);
                     itens.add(itensVenda);
                     total_venda = total_venda + (Float.parseFloat((String) tabelaFornecedores.getValueAt(i, 1))
@@ -867,12 +867,10 @@ public class VendasVIEW extends javax.swing.JFrame {
                 venda.setItens_venda(itens);
                 venda.setValor_total(String.valueOf(total_venda));
                 vendaDAO.SalvarVenda(venda);
-
             } catch (SQLException e) {
                 Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, e);
                 JOptionPane.showMessageDialog(null, "Não foi possível realizar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(null, "A venda foi salva com sucesso!");
             DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
 
             table.setRowCount(0);
