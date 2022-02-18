@@ -12,9 +12,23 @@ public class Venda {
     private Funcionario vendedor;
     private String valor_total;
     private Date data_venda;
+    private Produto produto;
+    private ItensVenda itensVenda;
+    
 
     public Venda() {
         this.itens_venda = new ArrayList<>();
+    }
+
+    public Venda(int id_entrada, List<ItensVenda> itens_venda, Cliente cliente, Funcionario vendedor, String valor_total, Date data_venda, Produto produto, ItensVenda itensVenda) {
+        this.id_entrada = id_entrada;
+        this.itens_venda = itens_venda;
+        this.cliente = cliente;
+        this.vendedor = vendedor;
+        this.valor_total = valor_total;
+        this.data_venda = data_venda;
+        this.produto = produto;
+        this.itensVenda = itensVenda;
     }
 
     public Venda(int id_entrada, List<ItensVenda> itens_venda, Cliente cliente, Funcionario vendedor, String valor_total, Date data_venda) {
@@ -24,6 +38,22 @@ public class Venda {
         this.vendedor = vendedor;
         this.valor_total = valor_total;
         this.data_venda = data_venda;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public ItensVenda getItensVenda() {
+        return itensVenda;
+    }
+
+    public void setItensVenda(ItensVenda itensVenda) {
+        this.itensVenda = itensVenda;
     }
 
     public int getId_entrada() {

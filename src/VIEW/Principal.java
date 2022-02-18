@@ -54,6 +54,8 @@ public class Principal extends javax.swing.JFrame {
         mni_Produto = new javax.swing.JMenuItem();
         mni_Entrada = new javax.swing.JMenuItem();
         mni_funcionarios = new javax.swing.JMenuItem();
+        mnu_relatorios = new javax.swing.JMenu();
+        mni_relvendas = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
         mniLogout = new javax.swing.JMenuItem();
         mni_sair = new javax.swing.JMenuItem();
@@ -271,6 +273,18 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(mni_cliente);
 
+        mnu_relatorios.setText("Relatórios");
+
+        mni_relvendas.setText("Vendas");
+        mni_relvendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_relvendasActionPerformed(evt);
+            }
+        });
+        mnu_relatorios.add(mni_relvendas);
+
+        jMenuBar1.add(mnu_relatorios);
+
         mnu_sair.setText("Sair");
 
         mniLogout.setText("Trocar Usuário");
@@ -409,6 +423,12 @@ public class Principal extends javax.swing.JFrame {
         vendas.setVisible(true);
     }//GEN-LAST:event_labelVendaMouseClicked
 
+    private void mni_relvendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_relvendasActionPerformed
+        RelVendas_VIEW relVendas;
+        relVendas = new RelVendas_VIEW(user);
+        relVendas.setVisible(true);
+    }//GEN-LAST:event_mni_relvendasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconeCliente;
@@ -433,7 +453,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mni_Produto;
     private javax.swing.JMenu mni_cliente;
     private javax.swing.JMenuItem mni_funcionarios;
+    private javax.swing.JMenuItem mni_relvendas;
     private javax.swing.JMenuItem mni_sair;
+    private javax.swing.JMenu mnu_relatorios;
     private javax.swing.JMenu mnu_sair;
     private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables

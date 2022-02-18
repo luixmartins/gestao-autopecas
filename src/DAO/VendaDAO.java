@@ -1,12 +1,16 @@
 package DAO;
 
+import MODEL.Cliente;
+import MODEL.Funcionario;
 import MODEL.ItensVenda;
+import MODEL.Produto;
 import MODEL.Venda;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -136,5 +140,64 @@ public class VendaDAO {
         }
 
         return cod;
+    }
+
+    public List<Venda> listarVendas() {
+        try {
+            List<Venda> lista = new ArrayList<>();
+
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Funcionario funcionario = new Funcionario();
+                Produto produto = new Produto();
+                Cliente cliente = new Cliente();
+                ItensVenda itensVenda = new ItensVenda();
+                Venda venda = new Venda();
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando Atributos Funcionário */
+                funcionario.setCod_funcionario(rs.getInt("idFuncionario"));
+                funcionario.setNome_funcionario(rs.getString("nome_funcionario"));
+                /* Setando Produto */
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                /* Setando Atributos ItensVenda */
+                itensVenda.setPreco_unitario(rs.getString("preco_total_itens"));
+                itensVenda.setQuantidade(rs.getInt("quantidade_itens"));
+                /* Setando Atributos Venda */
+                venda.setData_venda(rs.getDate("data_venda"));
+                venda.setCliente(cliente);
+                venda.setVendedor(funcionario);
+                venda.setProduto(produto);
+                venda.setItensVenda(itensVenda);
+                //venda.setItens_venda((List<ItensVenda>) itensVenda);
+                venda.setValor_total(rs.getString("valor_total_venda"));
+                /* Adicionando dados na Lista */
+                lista.add(venda);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+    public void gerarDocumento() {
+        try {
+
+        } catch (Exception e) {
+        }
     }
 }
