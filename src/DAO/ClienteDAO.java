@@ -27,7 +27,7 @@ public class ClienteDAO {
     Contato cliContato;
     ClienteJuridica cliJuridica;
     ClienteFisica cliFisica;
-
+    
     /* Método para Salvar Pessoa Fisica */
     public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, Endereco cliEnd, Contato cliContato) throws SQLException {
         /* Inserindo o Endereço */
@@ -332,8 +332,8 @@ public class ClienteDAO {
             List<Cliente> lista = new ArrayList<>();
 
             String sql = "select * from cliente"
-                    + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
-                    + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
+                    + " inner join contato on contato.cod_contato = cliente.cod_cliente"
+                    + " inner join endereco on endereco.cod_endereco = cliente.cod_cliente"
                     + " inner join clientefisica on clientefisica.Cliente_cod_cliente = cliente.cod_cliente where nome_cliente like \"" + nome + "\"";
 
             pst = Conexao.getInstance().prepareStatement(sql);
@@ -391,8 +391,8 @@ public class ClienteDAO {
             List<Cliente> lista = new ArrayList<>();
 
             String sql = "select * from cliente"
-                    + " inner join clientecontato on clientecontato.Cliente_cod_cliente = cliente.cod_cliente"
-                    + " inner join clienteendereco on clienteendereco.Cliente_cod_cliente = cliente.cod_cliente"
+                    + " inner join contato on contato.cod_contato = cliente.cod_cliente"
+                    + " inner join endereco on endereco.cod_endereco = cliente.cod_cliente"
                     + " inner join clientejuridica on clientejuridica.Cliente_cod_cliente = cliente.cod_cliente where nome_cliente like \"" + nome + "\"";
 
             pst = Conexao.getInstance().prepareStatement(sql);

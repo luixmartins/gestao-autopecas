@@ -9,6 +9,19 @@ import MODEL.CategoriaProduto;
 import MODEL.MarcaProduto;
 import MODEL.Produto;
 import MODEL.Usuario;
+import MODEL.Venda;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 /* Importações do JAVA */
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -206,6 +219,12 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Dialog_Produto = new javax.swing.JDialog();
+        jLabel12 = new javax.swing.JLabel();
+        txt_relCategoria = new javax.swing.JTextField();
+        btn_RelCategoria = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_produto = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -244,7 +263,96 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaConsultaProdutos = new javax.swing.JTable();
         rbt_quantidaMinima = new javax.swing.JRadioButton();
+        btn_relproduto = new javax.swing.JToggleButton();
+        opc_Categoria = new javax.swing.JRadioButton();
         btnNovoProdutos = new javax.swing.JButton();
+
+        Dialog_Produto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Dialog_Produto.setMinimumSize(new java.awt.Dimension(859, 429));
+        Dialog_Produto.setModal(true);
+        Dialog_Produto.setName("Dialog_Produto"); // NOI18N
+        Dialog_Produto.setResizable(false);
+        Dialog_Produto.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                Dialog_ProdutoWindowOpened(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel12.setText("Buscar");
+
+        txt_relCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_relCategoriaActionPerformed(evt);
+            }
+        });
+        txt_relCategoria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_relCategoriaKeyPressed(evt);
+            }
+        });
+
+        btn_RelCategoria.setText("Relatório Categoria");
+        btn_RelCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_RelCategoriaActionPerformed(evt);
+            }
+        });
+
+        tbl_produto.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Categoria", "Marca"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_produto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_produtoMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbl_produto);
+
+        javax.swing.GroupLayout Dialog_ProdutoLayout = new javax.swing.GroupLayout(Dialog_Produto.getContentPane());
+        Dialog_Produto.getContentPane().setLayout(Dialog_ProdutoLayout);
+        Dialog_ProdutoLayout.setHorizontalGroup(
+            Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_ProdutoLayout.createSequentialGroup()
+                .addGroup(Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Dialog_ProdutoLayout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Dialog_ProdutoLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_relCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(btn_RelCategoria)))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+        Dialog_ProdutoLayout.setVerticalGroup(
+            Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ProdutoLayout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ProdutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_relCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel12))
+                    .addComponent(btn_RelCategoria, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -595,6 +703,20 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             }
         });
 
+        btn_relproduto.setText("Relatório de Estoque");
+        btn_relproduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_relprodutoActionPerformed(evt);
+            }
+        });
+
+        opc_Categoria.setText("Categoria");
+        opc_Categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opc_CategoriaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_consultaprodutoLayout = new javax.swing.GroupLayout(pnl_consultaproduto);
         pnl_consultaproduto.setLayout(pnl_consultaprodutoLayout);
         pnl_consultaprodutoLayout.setHorizontalGroup(
@@ -606,7 +728,11 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addComponent(txtBuscaProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(rbt_quantidaMinima)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(opc_Categoria)
+                .addGap(18, 18, 18)
+                .addComponent(btn_relproduto)
+                .addContainerGap(330, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         pnl_consultaprodutoLayout.setVerticalGroup(
@@ -616,9 +742,11 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addGroup(pnl_consultaprodutoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(txtBuscaProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbt_quantidaMinima))
+                    .addComponent(rbt_quantidaMinima)
+                    .addComponent(btn_relproduto)
+                    .addComponent(opc_Categoria))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta de produtos", pnl_consultaproduto);
@@ -662,7 +790,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoProdutosActionPerformed
-        
+
         txtBuscaProdutos.setEnabled(true);
         //btnBuscar.setEnabled(false);
         btnNovoProdutos.setEnabled(false);
@@ -888,10 +1016,12 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private void rbt_quantidaMinimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbt_quantidaMinimaActionPerformed
         if (rbt_quantidaMinima.isSelected()) {
             txtBuscaProdutos.setEnabled(false);
+            btn_relproduto.setVisible(false);
             listaQuantidade();
             txtBuscaProdutos.setText("");
         } else {
             txtBuscaProdutos.setEnabled(true);
+            btn_relproduto.setVisible(true);
             txtBuscaProdutos.setText("");
             listarProdutos();
         }
@@ -934,16 +1064,101 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         if (txtValorCustoProd.getText().isEmpty() || txt_porcentagem.getText().isEmpty()) {
 
         } else {
-            NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US); 
+            NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US);
             float porcentagem = (Float.parseFloat(txtValorCustoProd.getText()) * (Float.parseFloat(txt_porcentagem.getText()) / 100)) + Float.parseFloat(txtValorCustoProd.getText());
-            ((DecimalFormat)df).applyPattern("0.00");
+            ((DecimalFormat) df).applyPattern("0.00");
             txtValorVenda.setText(df.format(porcentagem));
 
         }
     }//GEN-LAST:event_txt_porcentagemCaretUpdate
 
 
+    private void btn_relprodutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relprodutoActionPerformed
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
+            produtoDAO.gerarDocumentoCompletoProdutos();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_relprodutoActionPerformed
+
+    private void txt_relCategoriaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_relCategoriaKeyPressed
+        String nome = "%" + txt_relCategoria.getText() + "%";
+
+        produtoDAO = new ProdutoDAO();
+        List<Produto> lista2 = produtoDAO.listaProduto(nome);
+        DefaultTableModel dados2 = (DefaultTableModel) tbl_produto.getModel();
+        dados2.setNumRows(0);
+        for (Produto c : lista2) {
+            dados2.addRow(new Object[]{
+                c.getCod_produto(),
+                c.getCategoria().getNome_categoria(),
+                c.getMarca().getNome_marca(),});
+        }
+        abreCampos();
+        btn_relproduto.setVisible(false);
+        btn_RelCategoria.setVisible(true);
+        
+        
+    }//GEN-LAST:event_txt_relCategoriaKeyPressed
+
+    private void tbl_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_produtoMouseClicked
+        /* Pegando os Dados */
+       
+        txtCodProdutos.setText(tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 0).toString());
+        txt_relCategoria.setText(tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 1).toString());
+      
+    }//GEN-LAST:event_tbl_produtoMouseClicked
+
+    private void Dialog_ProdutoWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_ProdutoWindowOpened
+        listarProdutos();
+    }//GEN-LAST:event_Dialog_ProdutoWindowOpened
+
+    private void opc_CategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opc_CategoriaActionPerformed
+        
+        if (opc_Categoria.isSelected() == true) {
+            Dialog_Produto.setLocationRelativeTo(null);
+            Dialog_Produto.setVisible(true);
+        }
+    }//GEN-LAST:event_opc_CategoriaActionPerformed
+
+    private void btn_RelCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RelCategoriaActionPerformed
+         String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
+            produtoDAO.gerarRelatorioCategoria(txt_relCategoria.getText());
+            Dialog_Produto.setEnabled(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_RelCategoriaActionPerformed
+
+    private void txt_relCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_relCategoriaActionPerformed
+         try {
+            produtoDAO.gerarRelatorioCategoria(txt_relCategoria.getText());
+            Dialog_Produto.dispose();
+        } catch (DocumentException ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro, código invalido ou inexistente !");
+
+        }
+    }//GEN-LAST:event_txt_relCategoriaActionPerformed
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog Dialog_Produto;
     private javax.swing.JButton btnAlterarProdutos;
     private javax.swing.JButton btnCancelarProdutos;
     private javax.swing.JToggleButton btnCategoria;
@@ -951,9 +1166,12 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private javax.swing.JToggleButton btnMarca;
     private javax.swing.JButton btnNovoProdutos;
     private javax.swing.JButton btnSalvarProdutos;
+    private javax.swing.JButton btn_RelCategoria;
+    private javax.swing.JToggleButton btn_relproduto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -967,13 +1185,16 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox<String> jcbCategoria;
     private javax.swing.JComboBox<String> jcbMarca;
+    private javax.swing.JRadioButton opc_Categoria;
     private javax.swing.JPanel pnl_cadastraprodutos;
     private javax.swing.JPanel pnl_consultaproduto;
     private javax.swing.JRadioButton rbt_quantidaMinima;
     private javax.swing.JTable tabelaConsultaProdutos;
+    private javax.swing.JTable tbl_produto;
     private javax.swing.JTextField txtBuscaProdutos;
     private javax.swing.JTextField txtCodProdutos;
     private javax.swing.JTextField txtCodigoBarras;
@@ -983,5 +1204,6 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private javax.swing.JTextField txtValorCustoProd;
     private javax.swing.JTextField txtValorVenda;
     private javax.swing.JTextField txt_porcentagem;
+    private javax.swing.JTextField txt_relCategoria;
     // End of variables declaration//GEN-END:variables
 }

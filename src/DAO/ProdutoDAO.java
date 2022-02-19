@@ -6,12 +6,27 @@ import MODEL.CategoriaProduto;
 import MODEL.Fornecedor;
 import MODEL.MarcaProduto;
 import MODEL.Produto;
+import MODEL.Venda;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 /* Importações do SQL */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -159,6 +174,46 @@ public class ProdutoDAO {
         return null;
     }
 
+    public List<Produto> listaCategoria(String nome) {
+        try {
+            List<Produto> lista = new ArrayList<>();
+            String sqlBuscaProduto2;
+            sqlBuscaProduto2 = "select * from produto inner join marca on marca.cod_marca = produto.FK_marca inner join categoria on categoria.cod_categoria = produto.FK_categoria where categoria.nome_categoria like \"" + nome + "\" ";
+            pst = Conexao.getInstance().prepareStatement(sqlBuscaProduto2);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                /* Instanciando Classes */
+                Produto produto = new Produto();
+                MarcaProduto marca = new MarcaProduto();
+                CategoriaProduto categoria = new CategoriaProduto();
+                /* Setando Atributos Produto */
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                /* Setando Marca */
+                produto.setMarca(marca);
+                marca.setNome_marca(rs.getString("nome_marca"));
+                /* Setando Categoria */
+                produto.setCategoria(categoria);
+                categoria.setNome_categoria(rs.getString("nome_categoria"));
+                /* Continuação Produto */
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setQuantidadeMinima(rs.getInt("quantidade_minima"));
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setValor_custo(rs.getString("valor_custo"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                produto.setPorcentagem(rs.getString("pct_lucro"));
+                /* Adicionando dados na Lista */
+                lista.add(produto);
+            }
+
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+        return null;
+    }
+
     public List<Produto> listaQuantidade() {
         try {
             List<Produto> lista = new ArrayList<>();
@@ -197,6 +252,192 @@ public class ProdutoDAO {
             JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
         }
         return null;
+    }
+
+    public void gerarDocumentoCompletoProdutos() {
+        try {
+            List<Produto> lista = new ArrayList<>();
+            lista = listaProduto();
+
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioProdutosCompleto" + ".pdf"));
+            // Abrindo o Arquivo
+            doc.open();
+            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            String nomeproduto = null;
+            String qtd_produto = null;
+
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO ESTOQUE", f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+
+            PdfPTable tabela = new PdfPTable(6);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1, 1});
+            PdfPCell cabecalho0 = new PdfPCell(new Paragraph("CODIGO", f5));
+            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("DESCRIÇÃO", f5));
+            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("QUANTIDADE", f5));
+            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("QUANTIDADE MINIMA", f5));
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("MARCA", f5));
+            PdfPCell cabecalho5 = new PdfPCell(new Paragraph("CATEGORIA", f5));
+
+            tabela.addCell(cabecalho0);
+            tabela.addCell(cabecalho1);
+            tabela.addCell(cabecalho2);
+            tabela.addCell(cabecalho3);
+            tabela.addCell(cabecalho4);
+            tabela.addCell(cabecalho5);
+
+            for (Produto produto : lista) {
+                Paragraph p0 = new Paragraph(Integer.toString(produto.getCod_produto()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p1 = new Paragraph(produto.getDescricao(), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+
+                Paragraph p2 = new Paragraph(Integer.toString(produto.getQuantidade()) + " UN", f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+
+                Paragraph p3 = new Paragraph(Integer.toString(produto.getQuantidadeMinima()) + " UN", f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+
+                Paragraph p4 = new Paragraph(produto.getMarca().getNome_marca(), f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+                
+                Paragraph p5 = new Paragraph(produto.getCategoria().getNome_categoria(), f5);
+                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col5 = new PdfPCell(p5);
+
+
+                tabela.addCell(col0);
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+                tabela.addCell(col4);
+                tabela.addCell(col5);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho;
+            caminho = "C:/SRS/RelatorioProdutosCompleto.pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
+    }
+
+    public void gerarRelatorioCategoria(String categoria) throws DocumentException {
+        try {
+
+            List<Produto> lista = new ArrayList();
+            lista = listaCategoria(categoria);
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioCategoria.pdf"));
+            // Abrindo o Arquivo
+            doc.open();            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            String nomeCliente = null;
+            String valorTotal = null;
+            Date dataVenda = null;
+
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO PRODUTOS - " + categoria, f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+            
+
+            PdfPTable tabela = new PdfPTable(5);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1});
+            PdfPCell cabecalho0 = new PdfPCell(new Paragraph("CODIGO", f5));
+            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("DESCRIÇÃO", f5));
+            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("QUANTIDADE", f5));
+            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("QUANTIDADE MINIMA", f5));
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("MARCA", f5));
+
+            tabela.addCell(cabecalho0);
+            tabela.addCell(cabecalho1);
+            tabela.addCell(cabecalho2);
+            tabela.addCell(cabecalho3);
+            tabela.addCell(cabecalho4);
+
+            for (Produto produto : lista) {
+                Paragraph p0 = new Paragraph(Integer.toString(produto.getCod_produto()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p1 = new Paragraph(produto.getDescricao(), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+
+                Paragraph p2 = new Paragraph(Integer.toString(produto.getQuantidade()) + " UN", f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+
+                Paragraph p3 = new Paragraph(Integer.toString(produto.getQuantidadeMinima()) + " UN", f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+
+                Paragraph p4 = new Paragraph(produto.getMarca().getNome_marca(), f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+
+                tabela.addCell(col0);
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+                tabela.addCell(col4);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho;
+            caminho = "C:/SRS/RelatorioCategoria.pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
+
     }
 
     /* Alterar Produto */

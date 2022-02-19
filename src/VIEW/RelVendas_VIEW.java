@@ -112,6 +112,11 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel4.setText("COD Venda: ");
 
+        txt_cod_venda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_cod_vendaActionPerformed(evt);
+            }
+        });
         txt_cod_venda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_cod_vendaKeyPressed(evt);
@@ -231,12 +236,13 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(Dialog_FiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(btn_filtrar)
-                    .addComponent(txt_data_inicial)
-                    .addComponent(jLabel6)
-                    .addComponent(txt_data_final))
+                .addGroup(Dialog_FiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_data_inicial, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(Dialog_FiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(btn_filtrar)
+                        .addComponent(jLabel6)
+                        .addComponent(txt_data_final)))
                 .addGap(38, 38, 38))
         );
 
@@ -527,6 +533,10 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
             btn_relFiltrado.setVisible(false);
         }
     }//GEN-LAST:event_formWindowStateChanged
+
+    private void txt_cod_vendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cod_vendaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_cod_vendaActionPerformed
 
     /**
      * @param args the command line arguments

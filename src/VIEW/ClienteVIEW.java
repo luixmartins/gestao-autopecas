@@ -257,6 +257,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
         tabelaClientes = new javax.swing.JTable();
         rbnBuscaFisica = new javax.swing.JRadioButton();
         rbnBuscaJuridica = new javax.swing.JRadioButton();
+        btn_RelCliente = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -671,6 +672,13 @@ public class ClienteVIEW extends javax.swing.JFrame {
             }
         });
 
+        btn_RelCliente.setText("Relatório Clientes");
+        btn_RelCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_RelClienteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -680,7 +688,9 @@ public class ClienteVIEW extends javax.swing.JFrame {
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                .addComponent(btn_RelCliente)
+                .addGap(79, 79, 79)
                 .addComponent(rbnBuscaFisica)
                 .addGap(18, 18, 18)
                 .addComponent(rbnBuscaJuridica)
@@ -695,9 +705,10 @@ public class ClienteVIEW extends javax.swing.JFrame {
                     .addComponent(jLabel21)
                     .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbnBuscaFisica)
-                    .addComponent(rbnBuscaJuridica))
+                    .addComponent(rbnBuscaJuridica)
+                    .addComponent(btn_RelCliente))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consulta de clientes", jPanel3);
@@ -1109,6 +1120,10 @@ public class ClienteVIEW extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtCepKeyPressed
 
+    private void btn_RelClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RelClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_RelClienteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
@@ -1116,6 +1131,7 @@ public class ClienteVIEW extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btn_RelCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
