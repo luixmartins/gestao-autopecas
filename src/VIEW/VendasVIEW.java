@@ -18,11 +18,16 @@ import MODEL.MarcaProduto;
 import MODEL.Produto;
 import MODEL.Usuario;
 import MODEL.Venda;
+import com.lowagie.text.DocumentException;
+import java.io.File;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -86,8 +91,9 @@ public class VendasVIEW extends javax.swing.JFrame {
         } else {
             for (int i2 = 0; i2 < tabelaFornecedores.getRowCount(); i2++) {
 
-                DecimalFormat df = new DecimalFormat("#.00");
+                NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US);
                 totalSomaLabel += (Float.parseFloat((String) tabelaFornecedores.getValueAt(i2, 1)) * Float.parseFloat((String) tabelaFornecedores.getValueAt(i2, 2)));
+                ((DecimalFormat) df).applyPattern("0.00");
                 resultadoTotal.setVisible(true);
                 resultadoTotal.setText("R$ " + df.format(totalSomaLabel));
                 labelTotalProduto.setVisible(true);
@@ -865,8 +871,25 @@ public class VendasVIEW extends javax.swing.JFrame {
             }
             try {
                 venda.setItens_venda(itens);
-                venda.setValor_total(String.valueOf(total_venda));
+                DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+                decimalFormat.setRoundingMode(RoundingMode.DOWN);
+
+                venda.setValor_total(String.valueOf(decimalFormat.format(total_venda)));
                 vendaDAO.SalvarVenda(venda);
+                String nomediretorio = null;
+                String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+                String separador = java.io.File.separator;
+                try {
+                    nomediretorio = "C:" + separador + nomepasta;
+                    if (!new File(nomediretorio).exists()) {
+                        (new File(nomediretorio)).mkdir();
+                    }
+                    vendaDAO.gerarDocumentoVenda();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             } catch (SQLException e) {
                 Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, e);
                 JOptionPane.showMessageDialog(null, "Não foi possível realizar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -1021,7 +1044,8 @@ public class VendasVIEW extends javax.swing.JFrame {
             int qtd = Integer.parseInt(txtQuantidade.getText());
 
             DefaultTableModel table = (DefaultTableModel) tabelaFornecedores.getModel();
-            DecimalFormat df = new DecimalFormat("#.00");
+            NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US);
+            ((DecimalFormat) df).applyPattern("0.00");
             table.addRow(new Object[]{
                 txt_nomeProduto.getText(),
                 txtQuantidade.getText(),
