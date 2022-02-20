@@ -12,8 +12,10 @@ import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
 import MODEL.Usuario;
+import com.lowagie.text.DocumentException;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -1121,7 +1123,19 @@ public class ClienteVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCepKeyPressed
 
     private void btn_RelClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RelClienteActionPerformed
-        // TODO add your handling code here:
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
+            clienteDAO.gerarDocumentoCompletoPClientes();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btn_RelClienteActionPerformed
 
 

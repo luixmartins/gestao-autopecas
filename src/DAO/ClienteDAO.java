@@ -7,6 +7,18 @@ import MODEL.Contato;
 import MODEL.Endereco;
 import MODEL.ClienteFisica;
 import MODEL.ClienteJuridica;
+import MODEL.Produto;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 /* Importações do SQL */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +39,7 @@ public class ClienteDAO {
     Contato cliContato;
     ClienteJuridica cliJuridica;
     ClienteFisica cliFisica;
-    
+
     /* Método para Salvar Pessoa Fisica */
     public void salvarFisica(Cliente cliente, ClienteFisica cliFisica, Endereco cliEnd, Contato cliContato) throws SQLException {
         /* Inserindo o Endereço */
@@ -441,5 +453,112 @@ public class ClienteDAO {
         }
 
         return null;
+    }
+
+    public void gerarDocumentoCompletoPClientes() {
+
+        try {
+            // Chamando a função de listar Cliente Física
+            List<Cliente> lista = new ArrayList<>();
+            lista = listarClientesFisica();
+            // Chamando a função de listar Cliente Jurídica
+            List<Cliente> lista2 = new ArrayList<>();
+            lista2 = ListarClienteJuridica();
+
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioClientesCompleto" + ".pdf"));
+            // Abrindo o Arquivo
+            doc.open();
+            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO CLIENTES", f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+
+            PdfPTable tabela = new PdfPTable(4);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1, 1, 1, 1});
+            PdfPCell cabecalho0 = new PdfPCell(new Paragraph("CODIGO", f5));
+            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("NOME", f5));
+            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("CPF / CNPJ", f5));
+            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("TEL / CEL", f5));
+
+
+            tabela.addCell(cabecalho0);
+            tabela.addCell(cabecalho1);
+            tabela.addCell(cabecalho2);
+            tabela.addCell(cabecalho3);
+            for (Cliente cliente : lista) {
+                Paragraph p0 = new Paragraph(Integer.toString(cliente.getCod_cliente()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p1 = new Paragraph(cliente.getNome_cliente(), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+
+                Paragraph p2 = new Paragraph(cliente.getCliFisica().getCpf(), f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+
+                Paragraph p3 = new Paragraph(cliente.getCliContato().getCelular_cliente(), f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+                
+
+                tabela.addCell(col0);
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+            }
+            for (Cliente cliente : lista2) {
+                Paragraph p0 = new Paragraph(Integer.toString(cliente.getCod_cliente()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p1 = new Paragraph(cliente.getNome_cliente(), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+
+                Paragraph p2 = new Paragraph(cliente.getCliJuridica().getCnpj(), f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+
+                Paragraph p3 = new Paragraph(cliente.getCliContato().getTelefone_cliente(), f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+
+                tabela.addCell(col0);
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho;
+            caminho = "C:/SRS/RelatorioClientesCompleto.pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
+
     }
 }

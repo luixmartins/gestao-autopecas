@@ -1017,11 +1017,13 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         if (rbt_quantidaMinima.isSelected()) {
             txtBuscaProdutos.setEnabled(false);
             btn_relproduto.setVisible(false);
+            opc_Categoria.setVisible(false);
             listaQuantidade();
             txtBuscaProdutos.setText("");
         } else {
             txtBuscaProdutos.setEnabled(true);
             btn_relproduto.setVisible(true);
+            opc_Categoria.setVisible(true);
             txtBuscaProdutos.setText("");
             listarProdutos();
         }
@@ -1105,16 +1107,16 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         abreCampos();
         btn_relproduto.setVisible(false);
         btn_RelCategoria.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_txt_relCategoriaKeyPressed
 
     private void tbl_produtoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_produtoMouseClicked
         /* Pegando os Dados */
-       
+
         txtCodProdutos.setText(tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 0).toString());
         txt_relCategoria.setText(tbl_produto.getValueAt(tbl_produto.getSelectedRow(), 1).toString());
-      
+
     }//GEN-LAST:event_tbl_produtoMouseClicked
 
     private void Dialog_ProdutoWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_ProdutoWindowOpened
@@ -1122,7 +1124,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_Dialog_ProdutoWindowOpened
 
     private void opc_CategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opc_CategoriaActionPerformed
-        
+
         if (opc_Categoria.isSelected() == true) {
             Dialog_Produto.setLocationRelativeTo(null);
             Dialog_Produto.setVisible(true);
@@ -1130,7 +1132,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_opc_CategoriaActionPerformed
 
     private void btn_RelCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RelCategoriaActionPerformed
-         String nomediretorio = null;
+        String nomediretorio = null;
         String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
         String separador = java.io.File.separator;
         try {
@@ -1140,6 +1142,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             }
             produtoDAO.gerarRelatorioCategoria(txt_relCategoria.getText());
             Dialog_Produto.setEnabled(true);
+            Dialog_Produto.setVisible(false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1147,7 +1150,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_RelCategoriaActionPerformed
 
     private void txt_relCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_relCategoriaActionPerformed
-         try {
+        try {
             produtoDAO.gerarRelatorioCategoria(txt_relCategoria.getText());
             Dialog_Produto.dispose();
         } catch (DocumentException ex) {
