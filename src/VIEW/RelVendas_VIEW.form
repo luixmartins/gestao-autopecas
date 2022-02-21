@@ -308,7 +308,9 @@
                               <Component id="opcao_periodo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="btn_relCompleto" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btn_relTOP10" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="btn_relFiltrado" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -327,6 +329,7 @@
                           <Component id="opcao_periodo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btn_relCompleto" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btn_relFiltrado" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_relTOP10" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" pref="387" max="32767" attributes="0"/>
@@ -408,6 +411,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_relFiltradoActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btn_relTOP10">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="TOP 10 Vendidos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_relTOP10ActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

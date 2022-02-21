@@ -1,8 +1,10 @@
 package DAO;
 
+import MODEL.CategoriaProduto;
 import MODEL.Cliente;
 import MODEL.Funcionario;
 import MODEL.ItensVenda;
+import MODEL.MarcaProduto;
 import MODEL.Produto;
 import MODEL.Venda;
 import com.lowagie.text.Document;
@@ -256,6 +258,53 @@ public class VendaDAO {
                 //venda.setItens_venda((List<ItensVenda>) itensVenda);
                 venda.setValor_total(rs.getString("valor_total_venda"));
 
+                /* Adicionando dados na Lista */
+                lista.add(venda);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+    public List<Venda> listarTOP10Vendas() {
+        try {
+            List<Venda> lista = new ArrayList<>();
+
+            String sql = "SELECT produto.cod_Produto, produto.descricao_produto, produto.codigo_barras, SUM(itensvenda.quantidade_itens)  AS quantiaVendida , marca.nome_marca , categoria.nome_categoria FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda \n"
+                    + "INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN marca on produto.FK_marca = marca.cod_marca\n"
+                    + "INNER JOIN categoria on produto.FK_categoria = categoria.cod_categoria INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente GROUP BY produto.cod_Produto ORDER BY quantiaVendida DESC LIMIT 10; ";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Produto produto = new Produto();
+                ItensVenda itensVenda = new ItensVenda();
+                Venda venda = new Venda();
+                CategoriaProduto categoria = new CategoriaProduto();
+                MarcaProduto marca = new MarcaProduto();
+                /* Setando Produto */
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                /* Setando Marca e Categoria */
+                marca.setNome_marca(rs.getString("nome_marca"));
+                categoria.setNome_categoria(rs.getString("nome_categoria"));
+                /* Setando Atributos ItensVenda */
+                itensVenda.setQuantidade(rs.getInt("quantiaVendida"));
+                /* Setando Marca e Categoria em Produto */
+                produto.setCategoria(categoria);
+                produto.setMarca(marca);
+                /* Setando Atributos Venda */
+                venda.setProduto(produto);
+                venda.setItensVenda(itensVenda);
                 /* Adicionando dados na Lista */
                 lista.add(venda);
             }
@@ -799,6 +848,124 @@ public class VendaDAO {
             exx.printStackTrace();
             JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
         }
+    }
+    
+    public void gerarRelatorioTOP10() throws DocumentException {
+        try {
+
+            List<Venda> lista = new ArrayList();
+            lista = listarTOP10Vendas();
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioTOP10" + ".pdf"));
+            // Abrindo o Arquivo
+            doc.open();
+            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO TOP 10 VENDIDOS");
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+
+            
+            PdfPTable tabela = new PdfPTable(6);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1, 1});
+            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("COD PRODUTO", f3));
+            //cabecalho1.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho1.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho1.setBorder(0);
+
+            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("DESCRIÇÃO", f3));
+
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho2.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho2.setBorder(0);
+            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("COD BARRA", f3));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho3.setBorder(0);
+
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("QUANT VENDIDA", f3));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho4.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho4.setBorder(0);
+
+            PdfPCell cabecalho5 = new PdfPCell(new Paragraph("MARCA", f3));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+            
+             PdfPCell cabecalho6 = new PdfPCell(new Paragraph("CATEGORIA", f3));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+
+            tabela.addCell(cabecalho1);
+            tabela.addCell(cabecalho2);
+            tabela.addCell(cabecalho3);
+            tabela.addCell(cabecalho4);
+            tabela.addCell(cabecalho5);
+            tabela.addCell(cabecalho6);
+
+            for (Venda venda : lista) {
+                Paragraph p1 = new Paragraph(Integer.toString(venda.getProduto().getCod_produto()), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+                //col1.setBorder(0);
+                Paragraph p2 = new Paragraph(venda.getProduto().getDescricao(), f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+                //col2.setBorder(0);
+                Paragraph p3 = new Paragraph(venda.getProduto().getCodigo_barras(), f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+                //col3.setBorder(0);
+                Paragraph p4 = new Paragraph(Integer.toString(venda.getItensVenda().getQuantidade()) + " UN", f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+                //col4.setBorder(0);
+                Paragraph p5 = new Paragraph(venda.getProduto().getMarca().getNome_marca(), f5);
+                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col5 = new PdfPCell(p5);
+                
+                Paragraph p6 = new Paragraph(venda.getProduto().getCategoria().getNome_categoria(), f5);
+                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col6 = new PdfPCell(p5);
+                
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+                tabela.addCell(col4);
+                tabela.addCell(col5);
+                tabela.addCell(col6);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho = "C:/SRS/RelatorioTOP10.pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (IOException exx) {
+            exx.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+
+        }
+
     }
 
     public void ReimprimirComprovante(int idVendaImprime) throws DocumentException {

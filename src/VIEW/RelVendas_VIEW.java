@@ -96,6 +96,7 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         opcao_periodo = new javax.swing.JRadioButton();
         btn_relCompleto = new javax.swing.JButton();
         btn_relFiltrado = new javax.swing.JButton();
+        btn_relTOP10 = new javax.swing.JButton();
         lbl_periodo = new javax.swing.JLabel();
 
         Dialog_Reimprimir.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -321,6 +322,13 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
             }
         });
 
+        btn_relTOP10.setText("TOP 10 Vendidos");
+        btn_relTOP10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_relTOP10ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -337,7 +345,9 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                         .addComponent(opcao_periodo)
                         .addGap(30, 30, 30)
                         .addComponent(btn_relCompleto)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_relTOP10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_relFiltrado)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -351,7 +361,8 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                     .addComponent(opcao_reimprimir)
                     .addComponent(opcao_periodo)
                     .addComponent(btn_relCompleto)
-                    .addComponent(btn_relFiltrado))
+                    .addComponent(btn_relFiltrado)
+                    .addComponent(btn_relTOP10))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
         );
@@ -418,7 +429,6 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                 (new File(nomediretorio)).mkdir();
             }
             vendaDAO.gerarDocumentoVendaCompleto();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -462,46 +472,54 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_Dialog_ReimprimirWindowOpened
 
     private void btn_reimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reimprimirActionPerformed
-        try {
-            vendaDAO.ReimprimirComprovante(Integer.parseInt(txt_cod_venda.getText()));
-            Dialog_Reimprimir.dispose();
-        } catch (DocumentException ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro, código invalido ou inexistente !");
-
+        if (txt_cod_venda.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha o campo COD Venda");
+        } else {
+            try {
+                vendaDAO.ReimprimirComprovante(Integer.parseInt(txt_cod_venda.getText()));
+                Dialog_Reimprimir.dispose();
+            } catch (DocumentException ex) {
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro, código invalido ou inexistente !");
+            }
         }
     }//GEN-LAST:event_btn_reimprimirActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
+        if (txt_data_inicial.getText().matches(".*\\d.*") == false
+                || txt_data_final.getText().matches(".*\\d.*") == false) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos DATA INICIO e DATA FINAL");
+        } else {
+            try {
+                vendaDAO = new VendaDAO();
+                produto = new Produto();
+                itensVenda = new ItensVenda();
+                List<Venda> lista = vendaDAO.listarVendasPeriodo(txt_data_inicial.getText(), txt_data_final.getText());
 
-        try {
-            vendaDAO = new VendaDAO();
-            produto = new Produto();
-            itensVenda = new ItensVenda();
-            List<Venda> lista = vendaDAO.listarVendasPeriodo(txt_data_inicial.getText(), txt_data_final.getText());
+                DefaultTableModel dadosTable = (DefaultTableModel) tabelaVendas.getModel();
+                dadosTable.setNumRows(0);
 
-            DefaultTableModel dadosTable = (DefaultTableModel) tabelaVendas.getModel();
-            dadosTable.setNumRows(0);
-
-            for (Venda ven : lista) {
-                dadosTable.addRow(new Object[]{
-                    ven.getItensVenda().getIdItens_venda(),
-                    ven.getProduto().getCodigo_barras(),
-                    ven.getProduto().getDescricao(),
-                    ven.getItensVenda().getQuantidade(),
-                    ven.getProduto().getValor_venda(),
-                    ven.getItensVenda().getPreco_unitario(),
-                    ven.getVendedor().getNome_funcionario(),
-                    ven.getCliente().getNome_cliente(),
-                    ven.getData_venda(),});
+                for (Venda ven : lista) {
+                    dadosTable.addRow(new Object[]{
+                        ven.getItensVenda().getIdItens_venda(),
+                        ven.getProduto().getCodigo_barras(),
+                        ven.getProduto().getDescricao(),
+                        ven.getItensVenda().getQuantidade(),
+                        ven.getProduto().getValor_venda(),
+                        ven.getItensVenda().getPreco_unitario(),
+                        ven.getVendedor().getNome_funcionario(),
+                        ven.getCliente().getNome_cliente(),
+                        ven.getData_venda(),});
+                }
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
-        }
-        btn_relCompleto.setVisible(false);
-        btn_relFiltrado.setVisible(true);
-        lbl_periodo.setVisible(true);
-        lbl_periodo.setText("Filtrando por Período : Início: " + txt_data_inicial.getText() + " Final " + txt_data_final.getText());
+            btn_relTOP10.setVisible(false);
+            btn_relCompleto.setVisible(false);
+            btn_relFiltrado.setVisible(true);
+            lbl_periodo.setVisible(true);
+            lbl_periodo.setText("Filtrando por Período : Início: " + txt_data_inicial.getText() + " Final " + txt_data_final.getText());
 
-        Dialog_Filtro.dispose();
+            Dialog_Filtro.dispose();
+        }
     }//GEN-LAST:event_btn_filtrarActionPerformed
 
     private void Dialog_FiltroWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_FiltroWindowOpened
@@ -513,23 +531,28 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_data_inicialActionPerformed
 
     private void btn_relFiltradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relFiltradoActionPerformed
+
         try {
             vendaDAO.gerarRelatorioPeriodo(txt_data_inicial.getText(), txt_data_final.getText());
             btn_relCompleto.setVisible(true);
+            btn_relTOP10.setVisible(true);
             btn_relFiltrado.setVisible(false);
             opcao_periodo.setSelected(false);
             listarVendas();
         } catch (DocumentException ex) {
             Logger.getLogger(RelVendas_VIEW.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_btn_relFiltradoActionPerformed
 
     private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
         if (opcao_periodo.isSelected() == true) {
             btn_relCompleto.setVisible(false);
+            btn_relTOP10.setVisible(false);
             btn_relFiltrado.setVisible(true);
         } else {
             btn_relCompleto.setVisible(true);
+            btn_relTOP10.setVisible(true);
             btn_relFiltrado.setVisible(false);
         }
     }//GEN-LAST:event_formWindowStateChanged
@@ -537,6 +560,21 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     private void txt_cod_vendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cod_vendaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_cod_vendaActionPerformed
+
+    private void btn_relTOP10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relTOP10ActionPerformed
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
+            vendaDAO.gerarRelatorioTOP10();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_relTOP10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -549,6 +587,7 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     private javax.swing.JButton btn_reimprimir;
     private javax.swing.JButton btn_relCompleto;
     private javax.swing.JButton btn_relFiltrado;
+    private javax.swing.JButton btn_relTOP10;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
