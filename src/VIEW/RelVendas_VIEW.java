@@ -10,13 +10,7 @@ import MODEL.Usuario;
 import MODEL.Venda;
 import com.lowagie.text.DocumentException;
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -169,7 +163,6 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         Dialog_Filtro.setMinimumSize(new java.awt.Dimension(630, 135));
         Dialog_Filtro.setModal(true);
         Dialog_Filtro.setName("Dialog_Reimprimir"); // NOI18N
-        Dialog_Filtro.setPreferredSize(new java.awt.Dimension(529, 120));
         Dialog_Filtro.setResizable(false);
         Dialog_Filtro.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -364,7 +357,8 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                     .addComponent(btn_relFiltrado)
                     .addComponent(btn_relTOP10))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         lbl_periodo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N

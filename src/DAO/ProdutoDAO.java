@@ -6,7 +6,6 @@ import MODEL.CategoriaProduto;
 import MODEL.Fornecedor;
 import MODEL.MarcaProduto;
 import MODEL.Produto;
-import MODEL.Venda;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
