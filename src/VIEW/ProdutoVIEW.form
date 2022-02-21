@@ -609,8 +609,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btn_relproduto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnRelatorioMin" min="-2" pref="163" max="-2" attributes="0"/>
-                      <EmptySpace pref="149" max="32767" attributes="0"/>
+                      <Component id="btnRelatorioMin" min="-2" pref="192" max="-2" attributes="0"/>
+                      <EmptySpace pref="120" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
               </Group>
@@ -760,7 +760,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnRelatorioMin">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de Quant. M&#xed;nima"/>
+                <Property name="text" type="java.lang.String" value="Relat&#xf3;rio Quant. M&#xed;nima"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRelatorioMinActionPerformed"/>

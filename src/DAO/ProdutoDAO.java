@@ -503,7 +503,7 @@ public class ProdutoDAO {
             titulo1.setAlignment(Element.ALIGN_CENTER);
             titulo1.setSpacingAfter(10);
 
-            Paragraph titulo2 = new Paragraph("RELATÓRIO PRODUTOS SEM ESTOQUE", f1);
+            Paragraph titulo2 = new Paragraph("RELATÓRIO PRODUTOS ABAIXO DA QUANTIDADE MINIMA", f1);
             titulo2.setAlignment(Element.ALIGN_CENTER);
             titulo2.setSpacingAfter(10);
 

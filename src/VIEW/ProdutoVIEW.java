@@ -718,7 +718,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             }
         });
 
-        btnRelatorioMin.setText("Relatório de Quant. Mínima");
+        btnRelatorioMin.setText("Relatório Quant. Mínima");
         btnRelatorioMin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRelatorioMinActionPerformed(evt);
@@ -741,8 +741,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btn_relproduto)
                 .addGap(18, 18, 18)
-                .addComponent(btnRelatorioMin, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addComponent(btnRelatorioMin, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         pnl_consultaprodutoLayout.setVerticalGroup(
