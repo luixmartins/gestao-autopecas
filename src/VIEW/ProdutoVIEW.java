@@ -265,6 +265,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         rbt_quantidaMinima = new javax.swing.JRadioButton();
         btn_relproduto = new javax.swing.JToggleButton();
         opc_Categoria = new javax.swing.JRadioButton();
+        btnRelatorioMin = new javax.swing.JButton();
         btnNovoProdutos = new javax.swing.JButton();
 
         Dialog_Produto.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -717,6 +718,13 @@ public class ProdutoVIEW extends javax.swing.JFrame {
             }
         });
 
+        btnRelatorioMin.setText("Relatório de Quant. Mínima");
+        btnRelatorioMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioMinActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_consultaprodutoLayout = new javax.swing.GroupLayout(pnl_consultaproduto);
         pnl_consultaproduto.setLayout(pnl_consultaprodutoLayout);
         pnl_consultaprodutoLayout.setHorizontalGroup(
@@ -732,7 +740,9 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                 .addComponent(opc_Categoria)
                 .addGap(18, 18, 18)
                 .addComponent(btn_relproduto)
-                .addContainerGap(330, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnRelatorioMin, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(149, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         pnl_consultaprodutoLayout.setVerticalGroup(
@@ -744,7 +754,8 @@ public class ProdutoVIEW extends javax.swing.JFrame {
                     .addComponent(txtBuscaProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbt_quantidaMinima)
                     .addComponent(btn_relproduto)
-                    .addComponent(opc_Categoria))
+                    .addComponent(opc_Categoria)
+                    .addComponent(btnRelatorioMin))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
         );
@@ -1159,6 +1170,22 @@ public class ProdutoVIEW extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txt_relCategoriaActionPerformed
 
+    private void btnRelatorioMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioMinActionPerformed
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
+            produtoDAO.gerarDocumentoMinimoProdutos();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRelatorioMinActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Dialog_Produto;
@@ -1168,6 +1195,7 @@ public class ProdutoVIEW extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluirProdutos;
     private javax.swing.JToggleButton btnMarca;
     private javax.swing.JButton btnNovoProdutos;
+    private javax.swing.JButton btnRelatorioMin;
     private javax.swing.JButton btnSalvarProdutos;
     private javax.swing.JButton btn_RelCategoria;
     private javax.swing.JToggleButton btn_relproduto;

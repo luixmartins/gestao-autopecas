@@ -348,6 +348,7 @@ public class ProdutoDAO {
             JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
         }
     }
+    
 
     public void gerarRelatorioCategoria(String categoria) throws DocumentException {
         try {
@@ -475,6 +476,102 @@ public class ProdutoDAO {
         pst.setInt(10, produto.getCod_produto());
         pst.execute();
         pst.close();
+    }
+    
+    public void gerarDocumentoMinimoProdutos() {
+        try {
+            List<Produto> lista = new ArrayList<>();
+            lista = listaQuantidade();
+
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioProdutosMinimo" + ".pdf"));
+            // Abrindo o Arquivo
+            doc.open();
+            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            String nomeproduto = null;
+            String qtd_produto = null;
+
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO PRODUTOS SEM ESTOQUE", f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+
+            PdfPTable tabela = new PdfPTable(6);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1, 1});
+            PdfPCell cabecalho0 = new PdfPCell(new Paragraph("CODIGO", f5));
+            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("DESCRIÇÃO", f5));
+            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("QUANTIDADE", f5));
+            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("QUANTIDADE MINIMA", f5));
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("MARCA", f5));
+            PdfPCell cabecalho5 = new PdfPCell(new Paragraph("CATEGORIA", f5));
+
+            tabela.addCell(cabecalho0);
+            tabela.addCell(cabecalho1);
+            tabela.addCell(cabecalho2);
+            tabela.addCell(cabecalho3);
+            tabela.addCell(cabecalho4);
+            tabela.addCell(cabecalho5);
+
+            for (Produto produto : lista) {
+                Paragraph p0 = new Paragraph(Integer.toString(produto.getCod_produto()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p1 = new Paragraph(produto.getDescricao(), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+
+                Paragraph p2 = new Paragraph(Integer.toString(produto.getQuantidade()) + " UN", f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+
+                Paragraph p3 = new Paragraph(Integer.toString(produto.getQuantidadeMinima()) + " UN", f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+
+                Paragraph p4 = new Paragraph(produto.getMarca().getNome_marca(), f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+                
+                Paragraph p5 = new Paragraph(produto.getCategoria().getNome_categoria(), f5);
+                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col5 = new PdfPCell(p5);
+
+
+                tabela.addCell(col0);
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+                tabela.addCell(col4);
+                tabela.addCell(col5);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho;
+            caminho = "C:/SRS/RelatorioProdutosMinimo.pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
     }
 
 }
