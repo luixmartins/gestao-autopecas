@@ -466,16 +466,29 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_Dialog_ReimprimirWindowOpened
 
     private void btn_reimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reimprimirActionPerformed
-        if (txt_cod_venda.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo COD Venda");
-        } else {
-            try {
-                vendaDAO.ReimprimirComprovante(Integer.parseInt(txt_cod_venda.getText()));
-                Dialog_Reimprimir.dispose();
-            } catch (DocumentException ex) {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro, código invalido ou inexistente !");
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
             }
+            if (txt_cod_venda.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Preencha o campo COD Venda");
+            } else {
+                try {
+                    vendaDAO.ReimprimirComprovante(Integer.parseInt(txt_cod_venda.getText()));
+                    Dialog_Reimprimir.dispose();
+                } catch (DocumentException ex) {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro, código invalido ou inexistente !");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
     }//GEN-LAST:event_btn_reimprimirActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
@@ -526,15 +539,22 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
 
     private void btn_relFiltradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relFiltradoActionPerformed
 
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
         try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
             vendaDAO.gerarRelatorioPeriodo(txt_data_inicial.getText(), txt_data_final.getText());
             btn_relCompleto.setVisible(true);
             btn_relTOP10.setVisible(true);
             btn_relFiltrado.setVisible(false);
             opcao_periodo.setSelected(false);
             listarVendas();
-        } catch (DocumentException ex) {
-            Logger.getLogger(RelVendas_VIEW.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }//GEN-LAST:event_btn_relFiltradoActionPerformed
