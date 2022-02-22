@@ -178,7 +178,7 @@ public class RelFaturamento_VIEW extends javax.swing.JFrame {
                 if (!new File(nomediretorio).exists()) {
                     (new File(nomediretorio)).mkdir();
                 }
-                vendaDAO.gerarRelatorioFaturamento(txt_data_inicial_faturamento.getText(), txt_data_inicial_faturamento.getText());
+                vendaDAO.gerarRelatorioFaturamento(txt_data_inicial_faturamento.getText(), txt_data_final_faturamento.getText());
             } catch (Exception e) {
                 e.printStackTrace();
             }
