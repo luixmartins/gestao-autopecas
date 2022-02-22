@@ -166,7 +166,7 @@ public class VendaDAO {
         try {
             List<Venda> lista = new ArrayList<>();
 
-            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.data_venda >= \"" + data_inicial + "\" and venda.data_venda <= \"" + data_final + "\" ORDER BY itensvenda.Venda_idVenda ASC";
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.data_venda >= date_format(str_to_date(\"" + data_inicial + "\" , '%d-%m-%Y'), '%Y-%m-%d') and venda.data_venda <= date_format(str_to_date(\"" + data_final + "\" , '%d-%m-%Y'), '%Y-%m-%d') ORDER BY itensvenda.Venda_idVenda ASC";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -1097,7 +1097,7 @@ public class VendaDAO {
         try {
             List<Venda> lista = new ArrayList<>();
 
-            String sql = "SELECT SUM(venda.valor_total_venda) AS valorFaturamento FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.data_venda >= \"" + data_inicial + "\" and venda.data_venda <= \"" + data_final + "\" ORDER BY itensvenda.Venda_idVenda ASC";
+            String sql = "SELECT SUM(venda.valor_total_venda) AS valorFaturamento FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE  venda.data_venda >= date_format(str_to_date(\"" + data_inicial + "\" , '%d-%m-%Y'), '%Y-%m-%d') and venda.data_venda <= date_format(str_to_date(\"" + data_final + "\" , '%d-%m-%Y'), '%Y-%m-%d')  ORDER BY itensvenda.Venda_idVenda ASC";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();

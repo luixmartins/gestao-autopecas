@@ -79,7 +79,7 @@ public class RelFaturamento_VIEW extends javax.swing.JFrame {
         jLabel7.setText("Data Inicial:");
 
         try {
-            txt_data_inicial_faturamento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+            txt_data_inicial_faturamento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##-##-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class RelFaturamento_VIEW extends javax.swing.JFrame {
         jLabel8.setText("Data Final:");
 
         try {
-            txt_data_final_faturamento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+            txt_data_final_faturamento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##-##-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }

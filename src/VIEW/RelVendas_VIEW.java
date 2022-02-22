@@ -184,7 +184,7 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         jLabel3.setText("FILTRAR POR PERÍODO");
 
         try {
-            txt_data_inicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+            txt_data_inicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##-##-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -198,7 +198,7 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         jLabel6.setText("Data Final:");
 
         try {
-            txt_data_final.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+            txt_data_final.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##-##-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
