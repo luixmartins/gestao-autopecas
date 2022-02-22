@@ -56,6 +56,7 @@ public class Principal extends javax.swing.JFrame {
         mni_funcionarios = new javax.swing.JMenuItem();
         mnu_relatorios = new javax.swing.JMenu();
         mni_relvendas = new javax.swing.JMenuItem();
+        mni_relfaturamento = new javax.swing.JMenuItem();
         mnu_sair = new javax.swing.JMenu();
         mniLogout = new javax.swing.JMenuItem();
         mni_sair = new javax.swing.JMenuItem();
@@ -283,6 +284,14 @@ public class Principal extends javax.swing.JFrame {
         });
         mnu_relatorios.add(mni_relvendas);
 
+        mni_relfaturamento.setText("Faturamento");
+        mni_relfaturamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mni_relfaturamentoActionPerformed(evt);
+            }
+        });
+        mnu_relatorios.add(mni_relfaturamento);
+
         jMenuBar1.add(mnu_relatorios);
 
         mnu_sair.setText("Sair");
@@ -429,6 +438,12 @@ public class Principal extends javax.swing.JFrame {
         relVendas.setVisible(true);
     }//GEN-LAST:event_mni_relvendasActionPerformed
 
+    private void mni_relfaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_relfaturamentoActionPerformed
+        RelFaturamento_VIEW relFaturamento;
+        relFaturamento = new RelFaturamento_VIEW(user);
+        relFaturamento.setVisible(true);                                 
+    }//GEN-LAST:event_mni_relfaturamentoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconeCliente;
@@ -453,6 +468,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mni_Produto;
     private javax.swing.JMenu mni_cliente;
     private javax.swing.JMenuItem mni_funcionarios;
+    private javax.swing.JMenuItem mni_relfaturamento;
     private javax.swing.JMenuItem mni_relvendas;
     private javax.swing.JMenuItem mni_sair;
     private javax.swing.JMenu mnu_relatorios;

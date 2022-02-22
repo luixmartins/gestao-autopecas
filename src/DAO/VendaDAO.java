@@ -1091,5 +1091,130 @@ public class VendaDAO {
         }
 
     }
+    
+public List<Venda> listarFaturamento(String data_inicial, String data_final) {
+        try {
+            List<Venda> lista = new ArrayList<>();
 
+            String sql = "SELECT SUM(venda.valor_total_venda) AS valorFaturamento FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.data_venda >= \"" + data_inicial + "\" and venda.data_venda <= \"" + data_final + "\" ORDER BY itensvenda.Venda_idVenda ASC";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Funcionario funcionario = new Funcionario();
+                Produto produto = new Produto();
+                Cliente cliente = new Cliente();
+                ItensVenda itensVenda = new ItensVenda();
+                Venda venda = new Venda();
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando Atributos Funcionário */
+                funcionario.setCod_funcionario(rs.getInt("idFuncionario"));
+                funcionario.setNome_funcionario(rs.getString("nome_funcionario"));
+                /* Setando Produto */
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                produto.setValor_venda(rs.getString("valorFaturamento"));
+                /* Setando Atributos ItensVenda */
+                itensVenda.setPreco_unitario(rs.getString("preco_total_itens"));
+                itensVenda.setQuantidade(rs.getInt("quantidade_itens"));
+                itensVenda.setIdItens_venda(rs.getInt("Venda_idVenda"));
+                /* Setando Atributos Venda */
+                venda.setData_venda(rs.getDate("data_venda"));
+                venda.setCliente(cliente);
+                venda.setVendedor(funcionario);
+                venda.setProduto(produto);
+                venda.setItensVenda(itensVenda);
+                //venda.setItens_venda((List<ItensVenda>) itensVenda);
+                venda.setValor_total(rs.getString("valor_total_venda"));
+
+                /* Adicionando dados na Lista */
+                lista.add(venda);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+public void gerarRelatorioFaturamento(String data_inical, String data_final) throws DocumentException {
+        try {
+
+            List<Venda> lista = new ArrayList();
+            lista = listarFaturamento(data_inical, data_final);
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioFaturamento" + data_inical + "-" + data_final + ".pdf"));
+            // Abrindo o Arquivo
+            doc.open();
+            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            String nomeCliente = null;
+            String valorTotal = null;
+            Date dataVenda = null;
+
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO FATURAMENTO - PERÍODO", f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+            Paragraph titulo3 = new Paragraph("INICIO: " + data_inical + " FINAL: " + data_final, f1);
+            titulo3.setAlignment(Element.ALIGN_CENTER);
+            titulo3.setSpacingAfter(10);
+
+            PdfPTable tabela = new PdfPTable(1);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1});
+
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR TOTAL", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho4.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho4.setBorder(0);
+
+            
+            tabela.addCell(cabecalho4);
+
+            for (Venda venda : lista) {
+
+                Paragraph p4 = new Paragraph("R$ " + venda.getProduto().getValor_venda(), f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+                //col4.setBorder(0);
+                
+                //col5.setBorder(0);
+                tabela.addCell(col4);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(titulo3);
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho = "C:/SRS/RelatorioFaturamento" + data_inical + "-" + data_final + ".pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (IOException exx) {
+            exx.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
+    }
 }
