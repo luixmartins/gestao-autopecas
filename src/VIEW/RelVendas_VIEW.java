@@ -10,9 +10,8 @@ import MODEL.Usuario;
 import MODEL.Venda;
 import com.lowagie.text.DocumentException;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +25,7 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     ItensVenda itensVenda;
     Venda venda;
     Usuario user;
+    public static String idTabelaVenda;
 
     public RelVendas_VIEW(Usuario user) {
         initComponents();
@@ -53,14 +53,34 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         for (Venda ven : lista) {
             dadosTable.addRow(new Object[]{
                 ven.getItensVenda().getIdItens_venda(),
+                ven.getValor_total(),
+                ven.getVendedor().getNome_funcionario(),
+                ven.getCliente().getNome_cliente(),
+                new SimpleDateFormat("dd-MM-yyyy").format(ven.getData_venda()),});
+        }
+    }
+
+    public void listarDetalhado() {
+        List<Venda> lista = vendaDAO.listarVendasDetalhado(Integer.parseInt(idTabelaVenda));
+
+        DefaultTableModel dadosDetalhado = (DefaultTableModel) tbl_vendaDetalhado.getModel();
+        dadosDetalhado.setNumRows(0);
+        lbl_idVenda.setText("VENDA COD: " + Integer.parseInt(idTabelaVenda));
+        for (Venda ven : lista) {
+            lbl_cliente.setText("Cliente: " + ven.getCliente().getNome_cliente());
+            lbl_vendedor.setText("Vendedor: " + ven.getVendedor().getNome_funcionario());
+            lbl_dtVenda.setText("Data da Venda: " + new SimpleDateFormat("dd-MM-yyyy").format(ven.getData_venda()));
+            lbl_totalVenda.setText("Total: R$ " + ven.getValor_total());
+            dadosDetalhado.addRow(new Object[]{
+                //ven.getItensVenda().getIdItens_venda(),
                 ven.getProduto().getCodigo_barras(),
                 ven.getProduto().getDescricao(),
                 ven.getItensVenda().getQuantidade(),
                 ven.getProduto().getValor_venda(),
-                ven.getItensVenda().getPreco_unitario(),
-                ven.getVendedor().getNome_funcionario(),
-                ven.getCliente().getNome_cliente(),
-                ven.getData_venda(),});
+                ven.getItensVenda().getPreco_unitario(), //ven.getVendedor().getNome_funcionario(),
+            //ven.getCliente().getNome_cliente(),
+            //new SimpleDateFormat("dd-MM-yyyy").format(ven.getData_venda()),
+            });
         }
     }
 
@@ -68,11 +88,6 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Dialog_Reimprimir = new javax.swing.JDialog();
-        jLabel4 = new javax.swing.JLabel();
-        txt_cod_venda = new javax.swing.JTextField();
-        btn_reimprimir = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         Dialog_Filtro = new javax.swing.JDialog();
         jLabel5 = new javax.swing.JLabel();
         btn_filtrar = new javax.swing.JButton();
@@ -80,84 +95,26 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         txt_data_inicial = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
         txt_data_final = new javax.swing.JFormattedTextField();
+        Dialog_VendaDetalhado = new javax.swing.JDialog();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_vendaDetalhado = new javax.swing.JTable();
+        lbl_cliente = new javax.swing.JLabel();
+        lbl_dtVenda = new javax.swing.JLabel();
+        lbl_totalVenda = new javax.swing.JLabel();
+        lbl_vendedor = new javax.swing.JLabel();
+        btn_imprimeDetalhado = new javax.swing.JButton();
+        lbl_idVenda = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaVendas = new javax.swing.JTable();
-        opcao_reimprimir = new javax.swing.JRadioButton();
         opcao_periodo = new javax.swing.JRadioButton();
         btn_relCompleto = new javax.swing.JButton();
         btn_relFiltrado = new javax.swing.JButton();
         btn_relTOP10 = new javax.swing.JButton();
         lbl_periodo = new javax.swing.JLabel();
-
-        Dialog_Reimprimir.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        Dialog_Reimprimir.setMinimumSize(new java.awt.Dimension(630, 135));
-        Dialog_Reimprimir.setModal(true);
-        Dialog_Reimprimir.setName("Dialog_Reimprimir"); // NOI18N
-        Dialog_Reimprimir.setResizable(false);
-        Dialog_Reimprimir.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                Dialog_ReimprimirWindowOpened(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel4.setText("COD Venda: ");
-
-        txt_cod_venda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_cod_vendaActionPerformed(evt);
-            }
-        });
-        txt_cod_venda.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_cod_vendaKeyPressed(evt);
-            }
-        });
-
-        btn_reimprimir.setText("Reimprimir");
-        btn_reimprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_reimprimirActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("REIMPRIMIR COMPROVANTE");
-
-        javax.swing.GroupLayout Dialog_ReimprimirLayout = new javax.swing.GroupLayout(Dialog_Reimprimir.getContentPane());
-        Dialog_Reimprimir.getContentPane().setLayout(Dialog_ReimprimirLayout);
-        Dialog_ReimprimirLayout.setHorizontalGroup(
-            Dialog_ReimprimirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Dialog_ReimprimirLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(Dialog_ReimprimirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ReimprimirLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(138, 138, 138))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ReimprimirLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_cod_venda, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_reimprimir)
-                        .addGap(19, 19, 19))))
-        );
-        Dialog_ReimprimirLayout.setVerticalGroup(
-            Dialog_ReimprimirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_ReimprimirLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(Dialog_ReimprimirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_cod_venda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(btn_reimprimir))
-                .addGap(38, 38, 38))
-        );
 
         Dialog_Filtro.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         Dialog_Filtro.setMinimumSize(new java.awt.Dimension(630, 135));
@@ -240,6 +197,120 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                 .addGap(38, 38, 38))
         );
 
+        Dialog_VendaDetalhado.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Dialog_VendaDetalhado.setMinimumSize(new java.awt.Dimension(900, 429));
+        Dialog_VendaDetalhado.setModal(true);
+        Dialog_VendaDetalhado.setName("Dialog_VendaDetalhado"); // NOI18N
+        Dialog_VendaDetalhado.setPreferredSize(new java.awt.Dimension(900, 429));
+        Dialog_VendaDetalhado.setResizable(false);
+        Dialog_VendaDetalhado.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                Dialog_VendaDetalhadoWindowActivated(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                Dialog_VendaDetalhadoWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                Dialog_VendaDetalhadoWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                Dialog_VendaDetalhadoWindowOpened(evt);
+            }
+        });
+
+        tbl_vendaDetalhado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cod. Barra", "Descrição", "Quantidade", "Valor Produto", "Total Produto"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_vendaDetalhado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_vendaDetalhadoMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbl_vendaDetalhado);
+
+        lbl_cliente.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lbl_cliente.setText("Cliente");
+
+        lbl_dtVenda.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lbl_dtVenda.setText("Data da Venda: ");
+
+        lbl_totalVenda.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lbl_totalVenda.setForeground(new java.awt.Color(153, 0, 0));
+        lbl_totalVenda.setText("Total");
+
+        lbl_vendedor.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lbl_vendedor.setText("Vendedor");
+
+        btn_imprimeDetalhado.setText("IMPRIMIR");
+        btn_imprimeDetalhado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_imprimeDetalhadoActionPerformed(evt);
+            }
+        });
+
+        lbl_idVenda.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        lbl_idVenda.setText("ID VENDA");
+
+        javax.swing.GroupLayout Dialog_VendaDetalhadoLayout = new javax.swing.GroupLayout(Dialog_VendaDetalhado.getContentPane());
+        Dialog_VendaDetalhado.getContentPane().setLayout(Dialog_VendaDetalhadoLayout);
+        Dialog_VendaDetalhadoLayout.setHorizontalGroup(
+            Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                        .addComponent(lbl_totalVenda)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                        .addGroup(Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                                .addComponent(lbl_vendedor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_imprimeDetalhado, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                                .addComponent(lbl_cliente)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_idVenda))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                                .addGroup(Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbl_dtVenda, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(40, 40, 40))))
+        );
+        Dialog_VendaDetalhadoLayout.setVerticalGroup(
+            Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Dialog_VendaDetalhadoLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_cliente)
+                    .addComponent(lbl_idVenda))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(Dialog_VendaDetalhadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_imprimeDetalhado, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_vendedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_dtVenda)
+                .addGap(7, 7, 7)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_totalVenda)
+                .addGap(15, 15, 15))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
         addWindowStateListener(new java.awt.event.WindowStateListener() {
@@ -269,11 +340,11 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Código Barra", "Descrição", "Quantidade", "Valor Produto", "Sub Total", "Vendedor", "Cliente", "Data"
+                "ID", "Valor Venda", "Vendedor", "Cliente", "Data"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -286,13 +357,6 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tabelaVendas);
-
-        opcao_reimprimir.setText("Reimprimir Comprovante");
-        opcao_reimprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcao_reimprimirActionPerformed(evt);
-            }
-        });
 
         opcao_periodo.setText("Periodo");
         opcao_periodo.addActionListener(new java.awt.event.ActionListener() {
@@ -329,11 +393,9 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1035, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel21)
-                        .addGap(18, 18, 18)
-                        .addComponent(opcao_reimprimir)
                         .addGap(18, 18, 18)
                         .addComponent(opcao_periodo)
                         .addGap(30, 30, 30)
@@ -351,7 +413,6 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
-                    .addComponent(opcao_reimprimir)
                     .addComponent(opcao_periodo)
                     .addComponent(btn_relCompleto)
                     .addComponent(btn_relFiltrado)
@@ -406,7 +467,9 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tabelaVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaVendasMouseClicked
-
+        this.idTabelaVenda = tabelaVendas.getValueAt(tabelaVendas.getSelectedRow(), 0).toString();
+        Dialog_VendaDetalhado.setLocationRelativeTo(null);
+        Dialog_VendaDetalhado.setVisible(true);
     }//GEN-LAST:event_tabelaVendasMouseClicked
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
@@ -428,68 +491,12 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_relCompletoActionPerformed
 
-    private void opcao_reimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcao_reimprimirActionPerformed
-        opcao_periodo.setSelected(false);
-        if (opcao_reimprimir.isSelected() == false && opcao_periodo.isSelected() == false) {
-            listarVendas();
-            btn_filtrar.setVisible(false);
-            btn_relCompleto.setVisible(true);
-            lbl_periodo.setVisible(false);
-        }
-        if (opcao_reimprimir.isSelected() == true) {
-            Dialog_Reimprimir.setLocationRelativeTo(null);
-            Dialog_Reimprimir.setVisible(true);
-        }
-    }//GEN-LAST:event_opcao_reimprimirActionPerformed
-
     private void opcao_periodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcao_periodoActionPerformed
-        opcao_reimprimir.setSelected(false);
-        if (opcao_reimprimir.isSelected() == false && opcao_periodo.isSelected() == false) {
-            listarVendas();
-            btn_relFiltrado.setVisible(false);
-            btn_relCompleto.setVisible(true);
-            lbl_periodo.setVisible(false);
-
-        }
         if (opcao_periodo.isSelected() == true) {
             Dialog_Filtro.setLocationRelativeTo(null);
             Dialog_Filtro.setVisible(true);
         }
     }//GEN-LAST:event_opcao_periodoActionPerformed
-
-    private void txt_cod_vendaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cod_vendaKeyPressed
-
-    }//GEN-LAST:event_txt_cod_vendaKeyPressed
-
-    private void Dialog_ReimprimirWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_ReimprimirWindowOpened
-
-    }//GEN-LAST:event_Dialog_ReimprimirWindowOpened
-
-    private void btn_reimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reimprimirActionPerformed
-        String nomediretorio = null;
-        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
-        String separador = java.io.File.separator;
-        try {
-            nomediretorio = "C:" + separador + nomepasta;
-            if (!new File(nomediretorio).exists()) {
-                (new File(nomediretorio)).mkdir();
-            }
-            if (txt_cod_venda.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Preencha o campo COD Venda");
-            } else {
-                try {
-                    vendaDAO.ReimprimirComprovante(Integer.parseInt(txt_cod_venda.getText()));
-                    Dialog_Reimprimir.dispose();
-                } catch (DocumentException ex) {
-                    JOptionPane.showMessageDialog(null, "Ocorreu um erro, código invalido ou inexistente !");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }//GEN-LAST:event_btn_reimprimirActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
         if (txt_data_inicial.getText().matches(".*\\d.*") == false
@@ -508,14 +515,10 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
                 for (Venda ven : lista) {
                     dadosTable.addRow(new Object[]{
                         ven.getItensVenda().getIdItens_venda(),
-                        ven.getProduto().getCodigo_barras(),
-                        ven.getProduto().getDescricao(),
-                        ven.getItensVenda().getQuantidade(),
-                        ven.getProduto().getValor_venda(),
-                        ven.getItensVenda().getPreco_unitario(),
+                        ven.getValor_total(),
                         ven.getVendedor().getNome_funcionario(),
                         ven.getCliente().getNome_cliente(),
-                        ven.getData_venda(),});
+                        new SimpleDateFormat("dd-MM-yyyy").format(ven.getData_venda()),});
                 }
             } catch (Exception e) {
             }
@@ -571,10 +574,6 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowStateChanged
 
-    private void txt_cod_vendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cod_vendaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_cod_vendaActionPerformed
-
     private void btn_relTOP10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relTOP10ActionPerformed
         String nomediretorio = null;
         String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
@@ -590,33 +589,71 @@ public class RelVendas_VIEW extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_relTOP10ActionPerformed
 
+    private void tbl_vendaDetalhadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_vendaDetalhadoMouseClicked
+
+    }//GEN-LAST:event_tbl_vendaDetalhadoMouseClicked
+
+    private void Dialog_VendaDetalhadoWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_VendaDetalhadoWindowOpened
+
+    }//GEN-LAST:event_Dialog_VendaDetalhadoWindowOpened
+
+    private void btn_imprimeDetalhadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_imprimeDetalhadoActionPerformed
+        String nomediretorio = null;
+        String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+        String separador = java.io.File.separator;
+        try {
+            nomediretorio = "C:" + separador + nomepasta;
+            if (!new File(nomediretorio).exists()) {
+                (new File(nomediretorio)).mkdir();
+            }
+            vendaDAO.ReimprimirComprovante(Integer.parseInt(idTabelaVenda));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btn_imprimeDetalhadoActionPerformed
+
+    private void Dialog_VendaDetalhadoWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_VendaDetalhadoWindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Dialog_VendaDetalhadoWindowClosed
+
+    private void Dialog_VendaDetalhadoWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_VendaDetalhadoWindowClosing
+
+    }//GEN-LAST:event_Dialog_VendaDetalhadoWindowClosing
+
+    private void Dialog_VendaDetalhadoWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Dialog_VendaDetalhadoWindowActivated
+        listarDetalhado();
+    }//GEN-LAST:event_Dialog_VendaDetalhadoWindowActivated
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Dialog_Filtro;
-    private javax.swing.JDialog Dialog_Reimprimir;
+    private javax.swing.JDialog Dialog_VendaDetalhado;
     private javax.swing.JButton btn_filtrar;
-    private javax.swing.JButton btn_reimprimir;
+    private javax.swing.JButton btn_imprimeDetalhado;
     private javax.swing.JButton btn_relCompleto;
     private javax.swing.JButton btn_relFiltrado;
     private javax.swing.JButton btn_relTOP10;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lbl_cliente;
+    private javax.swing.JLabel lbl_dtVenda;
+    private javax.swing.JLabel lbl_idVenda;
     private javax.swing.JLabel lbl_periodo;
+    private javax.swing.JLabel lbl_totalVenda;
+    private javax.swing.JLabel lbl_vendedor;
     private javax.swing.JRadioButton opcao_periodo;
-    private javax.swing.JRadioButton opcao_reimprimir;
     private javax.swing.JTable tabelaVendas;
-    private javax.swing.JTextField txt_cod_venda;
+    private javax.swing.JTable tbl_vendaDetalhado;
     private javax.swing.JFormattedTextField txt_data_final;
     private javax.swing.JFormattedTextField txt_data_inicial;
     // End of variables declaration//GEN-END:variables

@@ -220,7 +220,61 @@ public class VendaDAO {
         try {
             List<Venda> lista = new ArrayList<>();
 
-            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente ORDER BY itensvenda.Venda_idVenda ASC";
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente GROUP BY venda.idVenda ORDER BY venda.idVenda ASC";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Funcionario funcionario = new Funcionario();
+                Produto produto = new Produto();
+                Cliente cliente = new Cliente();
+                ItensVenda itensVenda = new ItensVenda();
+                Venda venda = new Venda();
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando Atributos Funcionário */
+                funcionario.setCod_funcionario(rs.getInt("idFuncionario"));
+                funcionario.setNome_funcionario(rs.getString("nome_funcionario"));
+                /* Setando Produto */
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                /* Setando Atributos ItensVenda */
+                itensVenda.setPreco_unitario(rs.getString("preco_total_itens"));
+                itensVenda.setQuantidade(rs.getInt("quantidade_itens"));
+                itensVenda.setIdItens_venda(rs.getInt("Venda_idVenda"));
+                /* Setando Atributos Venda */
+                venda.setData_venda(rs.getDate("data_venda"));
+                venda.setCliente(cliente);
+                venda.setVendedor(funcionario);
+                venda.setProduto(produto);
+                venda.setItensVenda(itensVenda);
+                //venda.setItens_venda((List<ItensVenda>) itensVenda);
+                venda.setValor_total(rs.getString("valor_total_venda"));
+
+                /* Adicionando dados na Lista */
+                lista.add(venda);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+    public List<Venda> listarVendasDetalhado(int idTabelaVenda) {
+        try {
+            List<Venda> lista = new ArrayList<>();
+
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.idVenda = \"" + idTabelaVenda + "\" ORDER BY itensvenda.Venda_idVenda ASC";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -455,36 +509,20 @@ public class VendaDAO {
             titulo2.setAlignment(Element.ALIGN_CENTER);
             titulo2.setSpacingAfter(10);
 
-            PdfPTable tabela = new PdfPTable(9);
+            PdfPTable tabela = new PdfPTable(5);
             tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
             tabela.setWidthPercentage(100f);
 
-            tabela.setWidths(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1});
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1});
             PdfPCell cabecalho0 = new PdfPCell(new Paragraph("ID VENDA", f5));
-            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("COD BARRA", f5));
             //cabecalho1.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
             //cabecalho1.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
             //cabecalho1.setBorder(0);
 
-            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("DESCRIÇÃO", f5));
-
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho2.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho2.setBorder(0);
-            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("QUANT", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho3.setBorder(0);
-
-            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR", f5));
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR VENDA", f5));
             //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
             //cabecalho4.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
             //cabecalho4.setBorder(0);
-
-            PdfPCell cabecalho5 = new PdfPCell(new Paragraph("SUB TOTAL", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho5.setBorder(0);
 
             PdfPCell cabecalho6 = new PdfPCell(new Paragraph("CLIENTE", f5));
             //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
@@ -501,11 +539,7 @@ public class VendaDAO {
             //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
             //cabecalho5.setBorder(0);
             tabela.addCell(cabecalho0);
-            tabela.addCell(cabecalho1);
-            tabela.addCell(cabecalho2);
-            tabela.addCell(cabecalho3);
             tabela.addCell(cabecalho4);
-            tabela.addCell(cabecalho5);
             tabela.addCell(cabecalho6);
             tabela.addCell(cabecalho7);
             tabela.addCell(cabecalho8);
@@ -515,44 +549,24 @@ public class VendaDAO {
                 p0.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col0 = new PdfPCell(p0);
 
-                Paragraph p1 = new Paragraph(venda.getProduto().getCodigo_barras(), f5);
-                p1.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col1 = new PdfPCell(p1);
-                //col1.setBorder(0);
-                Paragraph p2 = new Paragraph(venda.getProduto().getDescricao(), f5);
-                p2.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col2 = new PdfPCell(p2);
-                //col2.setBorder(0);
-                Paragraph p3 = new Paragraph(Integer.toString(venda.getItensVenda().getQuantidade()) + " UN", f5);
-                p3.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col3 = new PdfPCell(p3);
-                //col3.setBorder(0);
-                Paragraph p4 = new Paragraph("R$ " + venda.getProduto().getValor_venda(), f5);
+                Paragraph p4 = new Paragraph("R$ " + venda.getValor_total(), f5);
                 p4.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col4 = new PdfPCell(p4);
-                //col4.setBorder(0);
-                Paragraph p5 = new Paragraph("R$ " + venda.getItensVenda().getPreco_unitario(), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col5 = new PdfPCell(p5);
                 //col5.setBorder(0);
                 Paragraph p6 = new Paragraph(venda.getCliente().getNome_cliente(), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                p6.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col6 = new PdfPCell(p6);
                 //col5.setBorder(0);
                 Paragraph p7 = new Paragraph(venda.getVendedor().getNome_funcionario(), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                p7.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col7 = new PdfPCell(p7);
                 //col5.setBorder(0);
                 Paragraph p8 = new Paragraph(new SimpleDateFormat("dd-MM-yyyy").format(venda.getData_venda()), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                p8.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col8 = new PdfPCell(p8);
                 //col5.setBorder(0);
                 tabela.addCell(col0);
-                tabela.addCell(col1);
-                tabela.addCell(col2);
-                tabela.addCell(col3);
                 tabela.addCell(col4);
-                tabela.addCell(col5);
                 tabela.addCell(col6);
                 tabela.addCell(col7);
                 tabela.addCell(col8);
@@ -604,57 +618,19 @@ public class VendaDAO {
             titulo3.setAlignment(Element.ALIGN_CENTER);
             titulo3.setSpacingAfter(10);
 
-            PdfPTable tabela = new PdfPTable(9);
+            PdfPTable tabela = new PdfPTable(5);
             tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
             tabela.setWidthPercentage(100f);
 
-            tabela.setWidths(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1});
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1});
             PdfPCell cabecalho0 = new PdfPCell(new Paragraph("ID VENDA", f5));
-            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("COD BARRA", f5));
-            //cabecalho1.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho1.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho1.setBorder(0);
-
-            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("DESCRIÇÃO", f5));
-
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho2.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho2.setBorder(0);
-            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("QUANT", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho3.setBorder(0);
-
-            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho4.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho4.setBorder(0);
-
-            PdfPCell cabecalho5 = new PdfPCell(new Paragraph("SUB TOTAL", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho5.setBorder(0);
-
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR VENDA", f5));
             PdfPCell cabecalho6 = new PdfPCell(new Paragraph("CLIENTE", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho5.setBorder(0);
-
             PdfPCell cabecalho7 = new PdfPCell(new Paragraph("VENDEDOR", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho5.setBorder(0);
-
             PdfPCell cabecalho8 = new PdfPCell(new Paragraph("DATA", f5));
-            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
-            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            //cabecalho5.setBorder(0);
+            
             tabela.addCell(cabecalho0);
-            tabela.addCell(cabecalho1);
-            tabela.addCell(cabecalho2);
-            tabela.addCell(cabecalho3);
             tabela.addCell(cabecalho4);
-            tabela.addCell(cabecalho5);
             tabela.addCell(cabecalho6);
             tabela.addCell(cabecalho7);
             tabela.addCell(cabecalho8);
@@ -663,45 +639,25 @@ public class VendaDAO {
                 Paragraph p0 = new Paragraph(Integer.toString(venda.getItensVenda().getIdItens_venda()), f5);
                 p0.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col0 = new PdfPCell(p0);
-
-                Paragraph p1 = new Paragraph(venda.getProduto().getCodigo_barras(), f5);
-                p1.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col1 = new PdfPCell(p1);
-                //col1.setBorder(0);
-                Paragraph p2 = new Paragraph(venda.getProduto().getDescricao(), f5);
-                p2.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col2 = new PdfPCell(p2);
-                //col2.setBorder(0);
-                Paragraph p3 = new Paragraph(Integer.toString(venda.getItensVenda().getQuantidade()) + " UN", f5);
-                p3.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col3 = new PdfPCell(p3);
                 //col3.setBorder(0);
-                Paragraph p4 = new Paragraph("R$ " + venda.getProduto().getValor_venda(), f5);
+                Paragraph p4 = new Paragraph("R$ " + venda.getValor_total(), f5);
                 p4.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col4 = new PdfPCell(p4);
-                //col4.setBorder(0);
-                Paragraph p5 = new Paragraph("R$ " + venda.getItensVenda().getPreco_unitario(), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col5 = new PdfPCell(p5);
+                PdfPCell col4 = new PdfPCell(p4);                
                 //col5.setBorder(0);
                 Paragraph p6 = new Paragraph(venda.getCliente().getNome_cliente(), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                p6.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col6 = new PdfPCell(p6);
                 //col5.setBorder(0);
                 Paragraph p7 = new Paragraph(venda.getVendedor().getNome_funcionario(), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                p7.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col7 = new PdfPCell(p7);
                 //col5.setBorder(0);
                 Paragraph p8 = new Paragraph(new SimpleDateFormat("dd-MM-yyyy").format(venda.getData_venda()), f5);
-                p5.setAlignment(Element.ALIGN_JUSTIFIED);
+                p8.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col8 = new PdfPCell(p8);
                 //col5.setBorder(0);
                 tabela.addCell(col0);
-                tabela.addCell(col1);
-                tabela.addCell(col2);
-                tabela.addCell(col3);
                 tabela.addCell(col4);
-                tabela.addCell(col5);
                 tabela.addCell(col6);
                 tabela.addCell(col7);
                 tabela.addCell(col8);
