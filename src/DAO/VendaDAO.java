@@ -166,7 +166,7 @@ public class VendaDAO {
         try {
             List<Venda> lista = new ArrayList<>();
 
-            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.data_venda >= date_format(str_to_date(\"" + data_inicial + "\" , '%d-%m-%Y'), '%Y-%m-%d') and venda.data_venda <= date_format(str_to_date(\"" + data_final + "\" , '%d-%m-%Y'), '%Y-%m-%d') ORDER BY itensvenda.Venda_idVenda ASC";
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE venda.data_venda >= date_format(str_to_date(\"" + data_inicial + "\" , '%d-%m-%Y'), '%Y-%m-%d') and venda.data_venda <= date_format(str_to_date(\"" + data_final + "\" , '%d-%m-%Y'), '%Y-%m-%d') GROUP BY venda.idVenda ORDER BY itensvenda.Venda_idVenda ASC";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -628,7 +628,7 @@ public class VendaDAO {
             PdfPCell cabecalho6 = new PdfPCell(new Paragraph("CLIENTE", f5));
             PdfPCell cabecalho7 = new PdfPCell(new Paragraph("VENDEDOR", f5));
             PdfPCell cabecalho8 = new PdfPCell(new Paragraph("DATA", f5));
-            
+
             tabela.addCell(cabecalho0);
             tabela.addCell(cabecalho4);
             tabela.addCell(cabecalho6);
@@ -642,7 +642,7 @@ public class VendaDAO {
                 //col3.setBorder(0);
                 Paragraph p4 = new Paragraph("R$ " + venda.getValor_total(), f5);
                 p4.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col4 = new PdfPCell(p4);                
+                PdfPCell col4 = new PdfPCell(p4);
                 //col5.setBorder(0);
                 Paragraph p6 = new Paragraph(venda.getCliente().getNome_cliente(), f5);
                 p6.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -1053,17 +1053,42 @@ public class VendaDAO {
         try {
             List<Venda> lista = new ArrayList<>();
 
-            String sql = "SELECT SUM(venda.valor_total_venda) AS valorFaturamento FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE  venda.data_venda >= date_format(str_to_date(\"" + data_inicial + "\" , '%d-%m-%Y'), '%Y-%m-%d') and venda.data_venda <= date_format(str_to_date(\"" + data_final + "\" , '%d-%m-%Y'), '%Y-%m-%d')  ORDER BY itensvenda.Venda_idVenda ASC";
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente WHERE  venda.data_venda >= date_format(str_to_date(\"" + data_inicial + "\" , '%d-%m-%Y'), '%Y-%m-%d') and venda.data_venda <= date_format(str_to_date(\"" + data_final + "\" , '%d-%m-%Y'), '%Y-%m-%d') GROUP BY venda.idVenda ORDER BY itensvenda.Venda_idVenda ASC";
 
             pst = Conexao.getInstance().prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 /* Instanciando */
+                Funcionario funcionario = new Funcionario();
                 Produto produto = new Produto();
-
+                Cliente cliente = new Cliente();
+                ItensVenda itensVenda = new ItensVenda();
                 Venda venda = new Venda();
-                produto.setValor_venda(rs.getString("valorFaturamento"));
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando Atributos Funcionário */
+                funcionario.setCod_funcionario(rs.getInt("idFuncionario"));
+                funcionario.setNome_funcionario(rs.getString("nome_funcionario"));
+                /* Setando Produto */
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                /* Setando Atributos ItensVenda */
+                itensVenda.setPreco_unitario(rs.getString("preco_total_itens"));
+                itensVenda.setQuantidade(rs.getInt("quantidade_itens"));
+                itensVenda.setIdItens_venda(rs.getInt("Venda_idVenda"));
+                /* Setando Atributos Venda */
+                venda.setData_venda(rs.getDate("data_venda"));
+                venda.setCliente(cliente);
+                venda.setVendedor(funcionario);
+                venda.setProduto(produto);
+                venda.setItensVenda(itensVenda);
+                //venda.setItens_venda((List<ItensVenda>) itensVenda);
+                venda.setValor_total(rs.getString("valor_total_venda"));
+                //produto.setValor_venda(rs.getString("valorFaturamento"));
                 venda.setProduto(produto);
 
                 /* Adicionando dados na Lista */
@@ -1080,7 +1105,63 @@ public class VendaDAO {
         return null;
     }
 
-    public void gerarRelatorioFaturamento(String data_inical, String data_final) throws DocumentException {
+    public List<Venda> listarFaturamentoTodo() {
+        try {
+            List<Venda> lista = new ArrayList<>();
+
+            String sql = "SELECT * FROM itensvenda INNER JOIN venda ON itensvenda.Venda_idVenda = venda.idVenda INNER JOIN produto on itensvenda.Produto_cod_Produto = produto.cod_Produto INNER JOIN funcionario on venda.Funcionario_idFuncionario = funcionario.idFuncionario INNER JOIN cliente ON venda.cliente_cod_cliente = cliente.cod_cliente GROUP BY venda.idVenda ORDER BY itensvenda.Venda_idVenda ASC";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Funcionario funcionario = new Funcionario();
+                Produto produto = new Produto();
+                Cliente cliente = new Cliente();
+                ItensVenda itensVenda = new ItensVenda();
+                Venda venda = new Venda();
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+                /* Setando Atributos Funcionário */
+                funcionario.setCod_funcionario(rs.getInt("idFuncionario"));
+                funcionario.setNome_funcionario(rs.getString("nome_funcionario"));
+                /* Setando Produto */
+                produto.setCodigo_barras(rs.getString("codigo_barras"));
+                produto.setCod_produto(rs.getInt("cod_Produto"));
+                produto.setDescricao(rs.getString("descricao_produto"));
+                produto.setValor_venda(rs.getString("valor_venda"));
+                /* Setando Atributos ItensVenda */
+                itensVenda.setPreco_unitario(rs.getString("preco_total_itens"));
+                itensVenda.setQuantidade(rs.getInt("quantidade_itens"));
+                itensVenda.setIdItens_venda(rs.getInt("Venda_idVenda"));
+                /* Setando Atributos Venda */
+                venda.setData_venda(rs.getDate("data_venda"));
+                venda.setCliente(cliente);
+                venda.setVendedor(funcionario);
+                venda.setProduto(produto);
+                venda.setItensVenda(itensVenda);
+                //venda.setItens_venda((List<ItensVenda>) itensVenda);
+                venda.setValor_total(rs.getString("valor_total_venda"));
+                //produto.setValor_venda(rs.getString("valorFaturamento"));
+                venda.setProduto(produto);
+
+                /* Adicionando dados na Lista */
+                lista.add(venda);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
+    public void gerarRelatorioFaturamentoPeriodo(String data_inical, String data_final, double valorTotalVenda) throws DocumentException {
         try {
 
             List<Venda> lista = new ArrayList();
@@ -1098,54 +1179,194 @@ public class VendaDAO {
             Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
             Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
 
-            String nomeCliente = null;
-            String valorTotal = null;
-            Date dataVenda = null;
+            Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("RELATÓRIO FATURAMENTO - Periodo: Inicio: " + data_inical + " Final:" + data_final, f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+
+            Paragraph titulo3 = new Paragraph("TOTAL R$: " + valorTotalVenda, f2);
+            titulo3.setAlignment(Element.ALIGN_LEFT);
+            titulo3.setSpacingAfter(10);
+
+            PdfPTable tabela = new PdfPTable(5);
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1});
+            PdfPCell cabecalho0 = new PdfPCell(new Paragraph("ID VENDA", f5));
+            //cabecalho1.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho1.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho1.setBorder(0);
+
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR VENDA", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho4.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho4.setBorder(0);
+
+            PdfPCell cabecalho6 = new PdfPCell(new Paragraph("CLIENTE", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+
+            PdfPCell cabecalho7 = new PdfPCell(new Paragraph("VENDEDOR", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+
+            PdfPCell cabecalho8 = new PdfPCell(new Paragraph("DATA", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+            tabela.addCell(cabecalho0);
+            tabela.addCell(cabecalho4);
+            tabela.addCell(cabecalho6);
+            tabela.addCell(cabecalho7);
+            tabela.addCell(cabecalho8);
+
+            for (Venda venda : lista) {
+                Paragraph p0 = new Paragraph(Integer.toString(venda.getItensVenda().getIdItens_venda()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p4 = new Paragraph("R$ " + venda.getValor_total(), f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+                //col5.setBorder(0);
+                Paragraph p6 = new Paragraph(venda.getCliente().getNome_cliente(), f5);
+                p6.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col6 = new PdfPCell(p6);
+                //col5.setBorder(0);
+                Paragraph p7 = new Paragraph(venda.getVendedor().getNome_funcionario(), f5);
+                p7.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col7 = new PdfPCell(p7);
+                //col5.setBorder(0);
+                Paragraph p8 = new Paragraph(new SimpleDateFormat("dd-MM-yyyy").format(venda.getData_venda()), f5);
+                p8.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col8 = new PdfPCell(p8);
+                //col5.setBorder(0);
+                tabela.addCell(col0);
+                tabela.addCell(col4);
+                tabela.addCell(col6);
+                tabela.addCell(col7);
+                tabela.addCell(col8);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            doc.add(tabela);
+            doc.add(titulo3);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho = "C:/SRS/RelatorioFaturamento" + data_inical + "-" + data_final + ".pdf";
+            Desktop.getDesktop().open(new File(caminho));
+
+        } catch (IOException exx) {
+            exx.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
+    }
+
+    public void gerarRelatorioFaturamentoCompleto(double valorTotalVenda) throws DocumentException {
+        try {
+
+            List<Venda> lista = new ArrayList();
+            lista = listarFaturamentoTodo();
+            // Definindo o tamanho do Documento
+            Document doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            // Salvando o Arquivo
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/RelatorioFaturamentoCompleto" + ".pdf"));
+            // Abrindo o Arquivo
+            doc.open();
+            // Tamanho de Fonte
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
 
             Paragraph titulo1 = new Paragraph("GESTÃO AUTO PEÇAS", f2);
             titulo1.setAlignment(Element.ALIGN_CENTER);
             titulo1.setSpacingAfter(10);
 
-            Paragraph titulo2 = new Paragraph("RELATÓRIO FATURAMENTO - PERÍODO", f1);
+            Paragraph titulo2 = new Paragraph("RELATÓRIO FATURAMENTO - COMPLETO", f1);
             titulo2.setAlignment(Element.ALIGN_CENTER);
             titulo2.setSpacingAfter(10);
-            Paragraph titulo3 = new Paragraph("INICIO: " + data_inical + " FINAL: " + data_final, f1);
-            titulo3.setAlignment(Element.ALIGN_CENTER);
+
+            Paragraph titulo3 = new Paragraph("TOTAL R$: " + valorTotalVenda, f2);
+            titulo3.setAlignment(Element.ALIGN_LEFT);
             titulo3.setSpacingAfter(10);
 
-            PdfPTable tabela = new PdfPTable(1);
+            PdfPTable tabela = new PdfPTable(5);
             tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
             tabela.setWidthPercentage(100f);
 
-            tabela.setWidths(new int[]{1});
+            tabela.setWidths(new int[]{1, 1, 1, 1, 1});
+            PdfPCell cabecalho0 = new PdfPCell(new Paragraph("ID VENDA", f5));
+            //cabecalho1.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho1.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho1.setBorder(0);
 
-            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR TOTAL", f5));
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("VALOR VENDA", f5));
             //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
             //cabecalho4.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
             //cabecalho4.setBorder(0);
 
+            PdfPCell cabecalho6 = new PdfPCell(new Paragraph("CLIENTE", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+
+            PdfPCell cabecalho7 = new PdfPCell(new Paragraph("VENDEDOR", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+
+            PdfPCell cabecalho8 = new PdfPCell(new Paragraph("DATA", f5));
+            //cabecalho2.setBackgroundColor(new Color(0xc0, 0xc0, 0xc0));
+            //cabecalho5.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+            //cabecalho5.setBorder(0);
+            tabela.addCell(cabecalho0);
             tabela.addCell(cabecalho4);
-            String valorTotal1;
+            tabela.addCell(cabecalho6);
+            tabela.addCell(cabecalho7);
+            tabela.addCell(cabecalho8);
+
             for (Venda venda : lista) {
-                NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US);
-                ((DecimalFormat) df).applyPattern("0.00");
-                String value = String.valueOf(venda.getProduto().getValor_venda());
-                double amount = Double.valueOf(value);
-                Paragraph p4 = new Paragraph("R$ " + df.format(amount), f5);
+                Paragraph p0 = new Paragraph(Integer.toString(venda.getItensVenda().getIdItens_venda()), f5);
+                p0.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col0 = new PdfPCell(p0);
+
+                Paragraph p4 = new Paragraph("R$ " + venda.getValor_total(), f5);
                 p4.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col4 = new PdfPCell(p4);
-                //col4.setBorder(0);
-
                 //col5.setBorder(0);
+                Paragraph p6 = new Paragraph(venda.getCliente().getNome_cliente(), f5);
+                p6.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col6 = new PdfPCell(p6);
+                //col5.setBorder(0);
+                Paragraph p7 = new Paragraph(venda.getVendedor().getNome_funcionario(), f5);
+                p7.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col7 = new PdfPCell(p7);
+                //col5.setBorder(0);
+                Paragraph p8 = new Paragraph(new SimpleDateFormat("dd-MM-yyyy").format(venda.getData_venda()), f5);
+                p8.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col8 = new PdfPCell(p8);
+                //col5.setBorder(0);
+                tabela.addCell(col0);
                 tabela.addCell(col4);
+                tabela.addCell(col6);
+                tabela.addCell(col7);
+                tabela.addCell(col8);
             }
             doc.add(titulo1);
             doc.add(titulo2);
-            doc.add(titulo3);
             doc.add(tabela);
+            doc.add(titulo3);
             doc.close();
             JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
-            String caminho = "C:/SRS/RelatorioFaturamento" + data_inical + "-" + data_final + ".pdf";
+            String caminho = "C:/SRS/RelatorioFaturamentoCompleto.pdf";
             Desktop.getDesktop().open(new File(caminho));
 
         } catch (IOException exx) {

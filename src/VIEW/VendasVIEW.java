@@ -871,10 +871,10 @@ public class VendasVIEW extends javax.swing.JFrame {
             }
             try {
                 venda.setItens_venda(itens);
-                DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
-                decimalFormat.setRoundingMode(RoundingMode.DOWN);
-
-                venda.setValor_total(String.valueOf(decimalFormat.format(total_venda)));
+                NumberFormat df = NumberFormat.getCurrencyInstance(Locale.US);
+                //decimalFormat.setRoundingMode(RoundingMode.DOWN);
+                ((DecimalFormat) df).applyPattern("0.00");
+                venda.setValor_total(String.valueOf(df.format(total_venda)));
                 vendaDAO.SalvarVenda(venda);
                 String nomediretorio = null;
                 String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
