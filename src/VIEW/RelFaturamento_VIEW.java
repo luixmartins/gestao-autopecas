@@ -338,7 +338,7 @@ public class RelFaturamento_VIEW extends javax.swing.JFrame {
             }
             vendaDAO.gerarRelatorioFaturamentoPeriodo(txt_data_inicial_faturamento.getText(), txt_data_final_faturamento.getText(), this.valorTotalVenda);
             btnRelPeriodo.setVisible(false);
-            btn_relCompleto.setVisible(true);
+            btnRelCompleto.setVisible(true);
             this.valorTotalVenda = 0;
             listarFaturamentoCompleto();
         } catch (Exception e) {
