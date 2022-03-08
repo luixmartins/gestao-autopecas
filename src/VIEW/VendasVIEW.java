@@ -966,7 +966,23 @@ public class VendasVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_Dialog_VendedorPropertyChange
 
     private void txt_buscaVendedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscaVendedorKeyPressed
+        String nome = "%" + txt_buscaVendedor.getText() + "%";
 
+        funcionarioDAO = new FuncionarioDAO();
+        List<Funcionario> lista2 = null;
+        try {
+            lista2 = funcionarioDAO.buscarFuncionarios(nome);
+        } catch (ParseException ex) {
+            Logger.getLogger(VendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        DefaultTableModel dados2 = (DefaultTableModel) tbl_vendedor.getModel();
+        dados2.setNumRows(0);
+        for (Funcionario f : lista2) {
+            dados2.addRow(new Object[]{
+                f.getCod_funcionario(),
+                f.getNome_funcionario(),});
+        }
         btnNovo.setEnabled(false);
         btnCancelarProdutos.setEnabled(true);
     }//GEN-LAST:event_txt_buscaVendedorKeyPressed
@@ -1085,7 +1101,17 @@ public class VendasVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_buscaClienteActionPerformed
 
     private void txt_buscaClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscaClienteKeyPressed
-        // TODO add your handling code here:
+        String nome = "%" + txt_buscaCliente.getText() + "%";
+        clienteDAO = new ClienteDAO();
+
+        List<Cliente> lista = clienteDAO.buscaClientes(nome);
+        DefaultTableModel dados = (DefaultTableModel) tbl_Cliente.getModel();
+        dados.setNumRows(0);
+        for (Cliente c : lista) {
+            dados.addRow(new Object[]{
+                c.getCod_cliente(),
+                c.getNome_cliente(),});
+        }
     }//GEN-LAST:event_txt_buscaClienteKeyPressed
 
     private void tbl_ClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ClienteMouseClicked

@@ -455,6 +455,37 @@ public class ClienteDAO {
         return null;
     }
 
+    public List<Cliente> buscaClientes(String nome) {
+        try {
+            List<Cliente> lista = new ArrayList<>();
+
+            String sql = "select * from cliente inner join contato on contato.cod_contato = cliente.cod_cliente inner join endereco on endereco.cod_endereco = cliente.cod_cliente where nome_cliente like \"" + nome + "\"";
+
+            pst = Conexao.getInstance().prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                /* Instanciando */
+                Cliente cliente = new Cliente();
+                /* Setando Atributos Cliente */
+                cliente.setCod_cliente(rs.getInt("cod_cliente"));
+                cliente.setNome_cliente(rs.getString("nome_cliente"));
+
+                /* Adicionando dados na Lista */
+                lista.add(cliente);
+            }
+
+            System.out.println(lista);
+            return lista;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro no banco de dados. Contate o desenvolvedor");
+        }
+
+        return null;
+    }
+
     public void gerarDocumentoCompletoPClientes() {
 
         try {
@@ -496,7 +527,6 @@ public class ClienteDAO {
             PdfPCell cabecalho2 = new PdfPCell(new Paragraph("CPF / CNPJ", f5));
             PdfPCell cabecalho3 = new PdfPCell(new Paragraph("TEL / CEL", f5));
 
-
             tabela.addCell(cabecalho0);
             tabela.addCell(cabecalho1);
             tabela.addCell(cabecalho2);
@@ -517,7 +547,6 @@ public class ClienteDAO {
                 Paragraph p3 = new Paragraph(cliente.getCliContato().getCelular_cliente(), f5);
                 p3.setAlignment(Element.ALIGN_JUSTIFIED);
                 PdfPCell col3 = new PdfPCell(p3);
-                
 
                 tabela.addCell(col0);
                 tabela.addCell(col1);
