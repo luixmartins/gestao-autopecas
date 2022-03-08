@@ -895,7 +895,7 @@ public class VendaDAO {
 
                 Paragraph p6 = new Paragraph(venda.getProduto().getCategoria().getNome_categoria(), f5);
                 p5.setAlignment(Element.ALIGN_JUSTIFIED);
-                PdfPCell col6 = new PdfPCell(p5);
+                PdfPCell col6 = new PdfPCell(p6);
 
                 tabela.addCell(col1);
                 tabela.addCell(col2);
