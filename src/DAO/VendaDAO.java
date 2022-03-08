@@ -48,6 +48,7 @@ public class VendaDAO {
 
     /* Método para Salvar uma Venda */
     public void SalvarVenda(Venda venda) throws SQLException {
+
         int idVenda = 0;
         sql = "INSERT INTO Venda (valor_total_venda, data_venda, "
                 + " cliente_cod_cliente, Funcionario_idFuncionario) VALUES (?,?,?,?)";
@@ -73,18 +74,6 @@ public class VendaDAO {
     public void SalvarListaVenda(List<ItensVenda> itensVenda, int idVenda) throws SQLException {
         try {
             for (ItensVenda itens : itensVenda) {
-                sql = "INSERT INTO ItensVenda VALUES (?, ?, ? , ? , ? )";
-
-                pst = Conexao.getInstance().prepareStatement(sql);
-
-                pst.setInt(1, 0);
-                pst.setInt(2, itens.getQuantidade());
-                pst.setInt(3, itens.getProduto().getCod_produto());
-                pst.setInt(4, idVenda);
-                pst.setString(5, itens.getPreco_unitario());
-
-                pst.execute();
-                /* Realizando o Update da Quantidade */
 
                 String busca = "select * from produto where cod_produto = " + itens.getProduto().getCod_produto();
 
@@ -98,7 +87,19 @@ public class VendaDAO {
                 }
 
                 if (itens.getQuantidade() <= quantidade) {
-                    /* Subtraindo a quantidade*/
+                    sql = "INSERT INTO ItensVenda VALUES (?, ?, ? , ? , ? )";
+
+                    pst = Conexao.getInstance().prepareStatement(sql);
+
+                    pst.setInt(1, 0);
+                    pst.setInt(2, itens.getQuantidade());
+                    pst.setInt(3, itens.getProduto().getCod_produto());
+                    pst.setInt(4, idVenda);
+                    pst.setString(5, itens.getPreco_unitario());
+
+                    pst.execute();
+                    /* Realizando o Update da Quantidade */
+
                     int subQuantidade = quantidade - itens.getQuantidade();
                     String atualiza;
                     /* Atualizando Quantidade */
@@ -109,7 +110,24 @@ public class VendaDAO {
                     pst.execute();
                     pst.close();
                     JOptionPane.showMessageDialog(null, "A venda foi salva com sucesso!");
+                    String nomediretorio = null;
+                    String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
+                    String separador = java.io.File.separator;
+                    try {
+                        nomediretorio = "C:" + separador + nomepasta;
+                        if (!new File(nomediretorio).exists()) {
+                            (new File(nomediretorio)).mkdir();
+                        }
+                        gerarDocumentoVenda();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
+                                
+                    String deletaVendaFail = "DELETE FROM venda WHERE idVenda = " + idVenda;
+                    pst = Conexao.getInstance().prepareStatement(deletaVendaFail);
+                    pst.execute();
                     JOptionPane.showMessageDialog(null, "Um dos produtos não contém a quantidade necessária de estoque para realizar a venda !", "Atenção", JOptionPane.ERROR_MESSAGE);
                 }
             }

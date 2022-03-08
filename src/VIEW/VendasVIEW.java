@@ -875,20 +875,7 @@ public class VendasVIEW extends javax.swing.JFrame {
                 //decimalFormat.setRoundingMode(RoundingMode.DOWN);
                 ((DecimalFormat) df).applyPattern("0.00");
                 venda.setValor_total(String.valueOf(df.format(total_venda)));
-                vendaDAO.SalvarVenda(venda);
-                String nomediretorio = null;
-                String nomepasta = "SRS"; // Informe o nome da pasta que armazenará o relatório
-                String separador = java.io.File.separator;
-                try {
-                    nomediretorio = "C:" + separador + nomepasta;
-                    if (!new File(nomediretorio).exists()) {
-                        (new File(nomediretorio)).mkdir();
-                    }
-                    vendaDAO.gerarDocumentoVenda();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                vendaDAO.SalvarVenda(venda);               
 
             } catch (SQLException e) {
                 Logger.getLogger(EntradaVIEW.class.getName()).log(Level.SEVERE, null, e);
